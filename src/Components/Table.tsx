@@ -1,6 +1,9 @@
 import { useEffect, useState, useContext } from "react";
 import TableContext from "../Contexts/TableContext";
+
 import AddProductForm from "./AddProductForm";
+
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function Table() {
   const [virtualProductsArr, setVirtualProductsArr] = useState();
@@ -15,10 +18,7 @@ function Table() {
       },
     };
     try {
-      const response = await fetch(
-        `https://colossal-zorah-dasfg2t4gdfsgs.koyeb.app/products`,
-        requestOptions
-      );
+      const response = await fetch(`${apiUrl}/products`, requestOptions);
       if (!response.ok) {
         throw new Error("Request failed");
       }
@@ -97,10 +97,9 @@ function TableRow({
   const [enableEdit, setEnableEdit] = useState(false);
   const {
     productKeys,
-    fetchProductsAndSetState,
+
     virtualProductsArr,
     setVirtualProductsArr,
-    dbProductsArr,
   } = useContext(TableContext);
   return (
     <>
@@ -110,8 +109,9 @@ function TableRow({
           <td key={`cell-${key}`} style={{ borderRadius: "0.5rem" }}>
             <input
               value={virtualProduct[key]}
+              required={key === "flavours" ? false : true}
               disabled={!enableEdit}
-              type="text"
+              type={key === "flavours" ? "number" : "text"}
               onChange={(e) => {
                 const newValue = e.target.value;
                 const virtualProductsArrCopy = [
@@ -164,7 +164,7 @@ function Buttons({
 
     try {
       const request = await fetch(
-        `https://colossal-zorah-dasfg2t4gdfsgs.koyeb.app/products/${product._id}`,
+        `${apiUrl}/products/${product._id}`,
         requestOptions
       );
       if (!request.ok) {
@@ -181,14 +181,14 @@ function Buttons({
 
   async function updateProductInDbFromState(virtualProduct) {
     const body = {
-      name: product.name,
-      price: product.price,
-      imgUrl: product.imgUrl,
-      outOfStock: product.outOfStock,
+      name: virtualProduct.name,
+      price: virtualProduct.price,
+      imgUrl: virtualProduct.imgUrl,
+      outOfStock: virtualProduct.outOfStock,
     };
 
-    if (product.flavours !== "") {
-      body.flavours = product.flavours;
+    if (virtualProduct?.flavours !== "") {
+      body.flavours = virtualProduct.flavours;
     }
 
     try {
@@ -202,7 +202,7 @@ function Buttons({
         body: JSON.stringify(body), // Set the body content
       };
       const response = await fetch(
-        `https://colossal-zorah-dasfg2t4gdfsgs.koyeb.app/products/${virtualProduct._id}`,
+        `${apiUrl}/products/${virtualProduct._id}`,
         fetchOptions
       );
       if (response.ok) {

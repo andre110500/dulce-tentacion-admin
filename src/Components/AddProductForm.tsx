@@ -11,8 +11,11 @@ export default function AddProductForm({ fetchProductsAndSetState }) {
       name: formRef.current.elements.name.value,
       price: formRef.current.elements.price.value,
       imgUrl: formRef.current.elements.imgUrl.value,
-      flavours: formRef.current.elements.flavours.value,
     };
+
+    if (product?.flavours !== "") {
+      product.flavours = formRef.current.elements.flavours.value;
+    }
 
     try {
       await addProductToDb(product); // Wait for this to complete
@@ -46,11 +49,8 @@ export default function AddProductForm({ fetchProductsAndSetState }) {
         },
         body: JSON.stringify(body),
       };
-
-      const response = await fetch(
-        `https://colossal-zorah-dasfg2t4gdfsgs.koyeb.app/products`,
-        requestOptions
-      );
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const response = await fetch(`${apiUrl}/products`, requestOptions);
 
       const post = await response.json();
       console.log(`the post is ${post}`);

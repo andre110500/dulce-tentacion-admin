@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
 
 export default function Signin({ setIsUserOnline }) {
   const dialogRef = useRef(null);
@@ -23,11 +23,8 @@ export default function Signin({ setIsUserOnline }) {
         password: passwordRef.current.value,
       }),
     };
-
-    const response = await fetch(
-      `https://colossal-zorah-dasfg2t4gdfsgs.koyeb.app/users/signin`,
-      requestOptions
-    );
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const response = await fetch(`${apiUrl}/users/signin`, requestOptions);
 
     if (response.ok) {
       const token = await response.json();

@@ -23,11 +23,8 @@ export default function Signup() {
         password: passwordRef.current.value,
       }),
     };
-
-    const response = await fetch(
-      `https://colossal-zorah-dasfg2t4gdfsgs.koyeb.app/users/signup`,
-      requestOptions
-    );
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const response = await fetch(`${apiUrl}/users/signup`, requestOptions);
 
     if (response.ok) {
       alert("account created");

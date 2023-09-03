@@ -1,6 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
+
 import AddFlavourForm from "./AddFLavourForm";
+
+const apiUrl = import.meta.env.VITE_API_URL;
 export default function FlavoursList() {
   const [dbFlavoursArr, setDbFlavoursArr] = useState();
   const [virtualFlavoursArr, setVirtualFlavoursArr] = useState();
@@ -13,10 +16,7 @@ export default function FlavoursList() {
       },
     };
     try {
-      const response = await fetch(
-        `https://colossal-zorah-dasfg2t4gdfsgs.koyeb.app/flavours`,
-        requestOptions
-      );
+      const response = await fetch(`${apiUrl}/flavours`, requestOptions);
       if (!response.ok) {
         throw new Error("Request failed");
       }
@@ -104,7 +104,7 @@ function Buttons({
 
     try {
       const request = await fetch(
-        `https://colossal-zorah-dasfg2t4gdfsgs.koyeb.app/flavours/${flavour._id}`,
+        `${apiUrl}/flavours/${flavour._id}`,
         requestOptions
       );
       if (!request.ok) {
@@ -135,7 +135,7 @@ function Buttons({
         }), // Set the body content
       };
       const response = await fetch(
-        `https://colossal-zorah-dasfg2t4gdfsgs.koyeb.app/flavours/${virtualFlavour._id}`,
+        `${apiUrl}/flavours/${virtualFlavour._id}`,
         fetchOptions
       );
       if (response.ok) {

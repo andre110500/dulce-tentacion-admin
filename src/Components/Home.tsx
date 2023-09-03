@@ -11,6 +11,7 @@ import FlavoursList from "./FlavoursList";
 export default function Home() {
   const [isUserOnline, setIsUserOnline] = useState(false);
   const isProduction = process.env.NODE_ENV === "production";
+
   async function checkTokenValidityAndSetUserOnlineStatus(token) {
     const requestOptions = {
       method: "POST",
@@ -20,10 +21,8 @@ export default function Home() {
       },
     };
     try {
-      const response = await fetch(
-        `https://colossal-zorah-dasfg2t4gdfsgs.koyeb.app/users/auth`,
-        requestOptions
-      );
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const response = await fetch(`${apiUrl}/users/auth`, requestOptions);
       if (!response.ok) {
         setIsUserOnline(false);
         throw new Error("Request failed");
