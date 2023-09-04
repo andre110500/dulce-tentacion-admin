@@ -1,5 +1,6 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import ListContext from "../Contexts/ListContext";
 
 import AddFlavourForm from "./AddFLavourForm";
 
@@ -7,7 +8,6 @@ const apiUrl = import.meta.env.VITE_API_URL;
 export default function FlavoursList() {
   const [dbFlavoursArr, setDbFlavoursArr] = useState();
   const [virtualFlavoursArr, setVirtualFlavoursArr] = useState();
-  const [enableEdit, setEnableEdit] = useState(false);
 
   async function fetchFlavoursAndSetState() {
     const requestOptions = {
@@ -22,7 +22,7 @@ export default function FlavoursList() {
       }
 
       const products = await response.json();
-      console.log(`the posts content is : ${products}`);
+
       setDbFlavoursArr(products);
 
       // Process the data or perform other operations
@@ -38,7 +38,6 @@ export default function FlavoursList() {
   useEffect(() => {
     if (dbFlavoursArr) {
       setVirtualFlavoursArr(dbFlavoursArr);
-      console.log(JSON.stringify(dbFlavoursArr));
     }
   }, [dbFlavoursArr]);
 
@@ -46,36 +45,20 @@ export default function FlavoursList() {
     <div>
       <ul className="flavours-list">
         {virtualFlavoursArr?.map((virtualFlavour, index) => (
-          <li key={virtualFlavour._id}>
-            <label>
-              {virtualFlavour.name}
-              <input
-                disabled={!enableEdit}
-                onChange={(e) => {
-                  const newValue = e.target.checked;
-                  const virtualFlavoursArrCopy = [
-                    ...structuredClone(virtualFlavoursArr),
-                  ];
-                  virtualFlavoursArrCopy[index].outOfStock = newValue;
-                  setVirtualFlavoursArr(virtualFlavoursArrCopy);
-                  console.log(`the new value is ${newValue}`);
-                }}
-                checked={virtualFlavour.outOfStock}
-                type="checkbox"
-                name={virtualFlavour.name}
-              />
-            </label>
-            <Buttons
-              index={index}
+          <ListContext.Provider
+            value={{
+              virtualFlavoursArr,
+              setVirtualFlavoursArr,
+              fetchFlavoursAndSetState,
+              dbFlavoursArr,
+            }}
+          >
+            <FlavourItem
               key={virtualFlavour._id}
-              enableEdit={enableEdit}
-              setEnableEdit={setEnableEdit}
-              fetchFlavoursAndSetState={fetchFlavoursAndSetState}
-              setVirtualFlavoursArr={setVirtualFlavoursArr}
-              virtualFlavoursArr={virtualFlavoursArr}
-              dbFlavoursArr={dbFlavoursArr}
+              virtualFlavour={virtualFlavour}
+              index={index}
             />
-          </li>
+          </ListContext.Provider>
         ))}
       </ul>
       <AddFlavourForm fetchFlavoursAndSetState={fetchFlavoursAndSetState} />
@@ -83,15 +66,53 @@ export default function FlavoursList() {
   );
 }
 
+function FlavourItem({ virtualFlavour, index }) {
+  const [enableEdit, setEnableEdit] = useState(false);
+  const { virtualFlavoursArr, setVirtualFlavoursArr } = useContext(ListContext);
+  return (
+    <li>
+      <label>
+        {virtualFlavour.name}
+        <input
+          disabled={!enableEdit}
+          onChange={(e) => {
+            const newValue = e.target.checked;
+            const virtualFlavoursArrCopy = [
+              ...structuredClone(virtualFlavoursArr),
+            ];
+            virtualFlavoursArrCopy[index].outOfStock = newValue;
+            setVirtualFlavoursArr(virtualFlavoursArrCopy);
+            console.log(`the new value is ${newValue}`);
+          }}
+          checked={virtualFlavour.outOfStock}
+          type="checkbox"
+          name={virtualFlavour.name}
+        />
+      </label>
+      <Buttons
+        index={index}
+        key={virtualFlavour._id}
+        enableEdit={enableEdit}
+        setEnableEdit={setEnableEdit}
+      />
+    </li>
+  );
+}
+
 function Buttons({
   enableEdit,
-  fetchFlavoursAndSetState,
+
   setEnableEdit,
-  setVirtualFlavoursArr,
-  virtualFlavoursArr,
-  dbFlavoursArr,
+
   index,
 }) {
+  const {
+    dbFlavoursArr,
+    setVirtualFlavoursArr,
+    virtualFlavoursArr,
+    fetchFlavoursAndSetState,
+  } = useContext(ListContext);
+
   async function deleteFlavourFromDb(flavour) {
     const token = JSON.parse(localStorage.getItem("jwtToken")).token;
     const requestOptions = {

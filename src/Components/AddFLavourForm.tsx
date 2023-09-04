@@ -36,11 +36,8 @@ export default function AddFlavourForm({ fetchFlavoursAndSetState }) {
           outOfStock: flavour.outOfStock,
         }),
       };
-
-      const response = await fetch(
-        `https://colossal-zorah-dasfg2t4gdfsgs.koyeb.app/flavours`,
-        requestOptions
-      );
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const response = await fetch(`${apiUrl}/flavours`, requestOptions);
 
       const post = await response.json();
       console.log(`the post is ${post}`);

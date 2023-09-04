@@ -4,7 +4,7 @@ import TableContext from "../Contexts/TableContext";
 import AddProductForm from "./AddProductForm";
 
 const apiUrl = import.meta.env.VITE_API_URL;
-
+alert(apiUrl);
 function Table() {
   const [virtualProductsArr, setVirtualProductsArr] = useState();
   const [dbProductsArr, setDbProductsArr] = useState();
@@ -24,7 +24,7 @@ function Table() {
       }
 
       const products = await response.json();
-      console.log(`the posts content is : ${products}`);
+
       setDbProductsArr(products);
 
       // Process the data or perform other operations
@@ -36,7 +36,6 @@ function Table() {
   useEffect(() => {
     if (dbProductsArr) {
       setVirtualProductsArr(dbProductsArr);
-      console.log(JSON.stringify(dbProductsArr));
     }
   }, [dbProductsArr]);
 
@@ -189,6 +188,8 @@ function Buttons({
 
     if (virtualProduct?.flavours !== "") {
       body.flavours = virtualProduct.flavours;
+    } else {
+      body.flavours = undefined;
     }
 
     try {
@@ -201,6 +202,7 @@ function Buttons({
         },
         body: JSON.stringify(body), // Set the body content
       };
+      console.log(`apiurl to update is ${apiUrl}`);
       const response = await fetch(
         `${apiUrl}/products/${virtualProduct._id}`,
         fetchOptions
