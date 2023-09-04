@@ -4,7 +4,7 @@ import TableContext from "../Contexts/TableContext";
 import AddProductForm from "./AddProductForm";
 
 const apiUrl = import.meta.env.VITE_API_URL;
-alert(apiUrl);
+
 function Table() {
   const [virtualProductsArr, setVirtualProductsArr] = useState();
   const [dbProductsArr, setDbProductsArr] = useState();
