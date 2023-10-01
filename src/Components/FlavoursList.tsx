@@ -1,13 +1,26 @@
 import React from "react";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import ListContext from "../Contexts/ListContext";
 import ProductsMenu from "./ProductsMenu";
 import AddFlavourForm from "./AddFLavourForm";
-
+import { toPng } from "html-to-image";
 const apiUrl = import.meta.env.VITE_API_URL;
 export default function FlavoursList() {
   const [dbFlavoursArr, setDbFlavoursArr] = useState();
   const [virtualFlavoursArr, setVirtualFlavoursArr] = useState();
+  const elementRef = useRef(null);
+  const htmlToImageConvert = () => {
+    toPng(elementRef.current, { cacheBust: false })
+      .then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = "my-image-name.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   async function fetchFlavoursAndSetState() {
     const requestOptions = {
@@ -62,7 +75,8 @@ export default function FlavoursList() {
         ))}
       </ul>
       <AddFlavourForm fetchFlavoursAndSetState={fetchFlavoursAndSetState} />
-      <ProductsMenu flavoursList={dbFlavoursArr} />
+      <ProductsMenu refe={elementRef} flavoursList={dbFlavoursArr} />
+      <button onClick={htmlToImageConvert}>Download Image</button>
     </div>
   );
 }

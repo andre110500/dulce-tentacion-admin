@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import TableContext from "../Contexts/TableContext";
-import { toPng } from "html-to-image";
 
 import AddProductForm from "./AddProductForm";
 
@@ -10,19 +9,6 @@ function Table() {
   const [virtualProductsArr, setVirtualProductsArr] = useState();
   const [dbProductsArr, setDbProductsArr] = useState();
   const elementRef = useRef(null);
-
-  const htmlToImageConvert = () => {
-    toPng(elementRef.current, { cacheBust: false })
-      .then((dataUrl) => {
-        const link = document.createElement("a");
-        link.download = "my-image-name.png";
-        link.href = dataUrl;
-        link.click();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   async function fetchProductsAndSetState() {
     const token = JSON.parse(localStorage.getItem("jwtToken")).token;
@@ -64,7 +50,7 @@ function Table() {
     <>
       <h1>Productos</h1>
       <div className="table-container">
-        <table ref={elementRef}>
+        <table>
           <thead>
             <tr>
               {productKeys.map((key) => (
@@ -97,7 +83,6 @@ function Table() {
         </table>
       </div>
       <AddProductForm fetchProductsAndSetState={fetchProductsAndSetState} />
-      <button onClick={htmlToImageConvert}>Download Image</button>
     </>
   );
 }
