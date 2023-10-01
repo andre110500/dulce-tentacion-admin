@@ -42,7 +42,7 @@ export default function ProductsMenu({ flavoursList, refe }) {
             }
           })}
         </ul>
-        <ul style={ulStyle}>
+        <ul style={{ ...ulStyle, paddingLeft: "0.8rem" }}>
           {flavoursList?.map((flavour, index) => {
             if (index > flavoursList.length / 2) {
               return (
