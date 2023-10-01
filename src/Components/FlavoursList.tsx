@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import ListContext from "../Contexts/ListContext";
-
+import ProductsMenu from "./ProductsMenu";
 import AddFlavourForm from "./AddFLavourForm";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -62,6 +62,7 @@ export default function FlavoursList() {
         ))}
       </ul>
       <AddFlavourForm fetchFlavoursAndSetState={fetchFlavoursAndSetState} />
+      <ProductsMenu flavoursList={dbFlavoursArr} />
     </div>
   );
 }

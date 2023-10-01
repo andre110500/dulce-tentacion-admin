@@ -6,7 +6,7 @@ import Signin from "./Signin";
 import Signup from "./Signup";
 import LogoutButton from "./LogoutButton";
 import Table from "./Table";
-
+import ProductsMenu from "./ProductsMenu";
 import FlavoursList from "./FlavoursList";
 export default function Home() {
   const [isUserOnline, setIsUserOnline] = useState(false);
@@ -69,7 +69,7 @@ export default function Home() {
         ) : (
           <div>
             <LogoutButton setIsUserOnline={setIsUserOnline} />
-            COntent here
+
             <Table />
             <FlavoursList />
           </div>
