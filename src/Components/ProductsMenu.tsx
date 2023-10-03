@@ -18,7 +18,7 @@ export default function ProductsMenu({ flavoursList, refe }) {
           transform: "translate(-50% ,-50%)",
           width: "100%",
           height: "45%",
-
+          color: "black",
           display: "grid",
 
           gridTemplateColumns: "1fr 1fr",
@@ -27,15 +27,20 @@ export default function ProductsMenu({ flavoursList, refe }) {
           fontWeight: "bold",
           letterSpacing: "0.05rem",
           wordSpacing: "0.1rem",
-          padding: "0rem 0.4rem",
+          padding: "0.5rem 0.4rem",
         }}
       >
         <ul style={ulStyle}>
           {flavoursList?.map((flavour, index) => {
-            if (index <= flavoursList.length / 2) {
+            if (
+              index < Math.floor(flavoursList.length / 2) &&
+              !flavour.outOfStock
+            ) {
               return (
                 <li>
-                  <span style={{ paddingRight: "0.2rem" }}>.</span>
+                  <span style={{ paddingRight: "0.05rem", fontSize: "1.2rem" }}>
+                    .
+                  </span>
                   {flavour.name}
                 </li>
               );
@@ -44,10 +49,15 @@ export default function ProductsMenu({ flavoursList, refe }) {
         </ul>
         <ul style={{ ...ulStyle, paddingLeft: "0.8rem" }}>
           {flavoursList?.map((flavour, index) => {
-            if (index > flavoursList.length / 2) {
+            if (
+              index >= Math.floor(flavoursList.length / 2) &&
+              !flavour.outOfStock
+            ) {
               return (
                 <li>
-                  <span style={{ paddingRight: "0.2rem" }}>.</span>
+                  <span style={{ paddingRight: "0.05rem", fontSize: "1.2rem" }}>
+                    .
+                  </span>
                   {flavour.name}
                 </li>
               );
