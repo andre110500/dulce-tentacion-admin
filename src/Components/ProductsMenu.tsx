@@ -5,7 +5,6 @@ export default function ProductsMenu({ flavoursList, refe }) {
   const ulStyle = {
     display: "flex",
     flexDirection: "column",
-    gap: "0.75rem",
   };
   return (
     <div ref={refe} id="menu" style={{ width: "400px", position: "relative" }}>
