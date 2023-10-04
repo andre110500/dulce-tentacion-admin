@@ -16,9 +16,7 @@ function App() {
 function Main() {
   return (
     <main>
-      <div className="content">
-        <Home />
-      </div>
+      <Home />
     </main>
   );
 }

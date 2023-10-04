@@ -55,8 +55,8 @@ export default function FlavoursList() {
   }, [dbFlavoursArr]);
 
   return (
-    <div>
-      <ul className="flavours-list">
+    <section id="flavours">
+      <ul>
         {virtualFlavoursArr?.map((virtualFlavour, index) => (
           <ListContext.Provider
             value={{
@@ -77,7 +77,7 @@ export default function FlavoursList() {
       <AddFlavourForm fetchFlavoursAndSetState={fetchFlavoursAndSetState} />
       <ProductsMenu refe={elementRef} flavoursList={dbFlavoursArr} />
       <button onClick={htmlToImageConvert}>Download Image</button>
-    </div>
+    </section>
   );
 }
 
@@ -86,24 +86,25 @@ function FlavourItem({ virtualFlavour, index }) {
   const { virtualFlavoursArr, setVirtualFlavoursArr } = useContext(ListContext);
   return (
     <li>
-      <label>
+      <label htmlFor={`${virtualFlavour.name}-index`}>
         {virtualFlavour.name}
-        <input
-          disabled={!enableEdit}
-          onChange={(e) => {
-            const newValue = e.target.checked;
-            const virtualFlavoursArrCopy = [
-              ...structuredClone(virtualFlavoursArr),
-            ];
-            virtualFlavoursArrCopy[index].outOfStock = newValue;
-            setVirtualFlavoursArr(virtualFlavoursArrCopy);
-            console.log(`the new value is ${newValue}`);
-          }}
-          checked={virtualFlavour.outOfStock}
-          type="checkbox"
-          name={virtualFlavour.name}
-        />
       </label>
+      <input
+        id={`${virtualFlavour.name}-index`}
+        disabled={!enableEdit}
+        onChange={(e) => {
+          const newValue = e.target.checked;
+          const virtualFlavoursArrCopy = [
+            ...structuredClone(virtualFlavoursArr),
+          ];
+          virtualFlavoursArrCopy[index].outOfStock = newValue;
+          setVirtualFlavoursArr(virtualFlavoursArrCopy);
+          console.log(`the new value is ${newValue}`);
+        }}
+        checked={virtualFlavour.outOfStock}
+        type="checkbox"
+        name={virtualFlavour.name}
+      />
       <Buttons
         index={index}
         key={virtualFlavour._id}
@@ -188,13 +189,13 @@ function Buttons({
     }
   }
   return (
-    <>
+    <div className="buttons">
       {enableEdit ? (
         <>
           <input
             type="submit"
             disabled={!enableEdit}
-            value="delete"
+            value="borrar"
             onClick={() => {
               deleteFlavourFromDb(virtualFlavoursArr[index]);
             }}
@@ -218,7 +219,7 @@ function Buttons({
         </>
       ) : (
         <input
-          value="edit"
+          value="editar"
           type="submit"
           className="edit"
           onClick={() => {
@@ -227,6 +228,6 @@ function Buttons({
           }}
         />
       )}
-    </>
+    </div>
   );
 }

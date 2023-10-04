@@ -47,7 +47,7 @@ function Table() {
   const productKeys = ["name", "price", "imgUrl", "outOfStock", "flavours"];
 
   return (
-    <>
+    <section id="products">
       <h1>Productos</h1>
       <div className="table-container">
         <table>
@@ -83,7 +83,7 @@ function Table() {
         </table>
       </div>
       <AddProductForm fetchProductsAndSetState={fetchProductsAndSetState} />
-    </>
+    </section>
   );
 }
 

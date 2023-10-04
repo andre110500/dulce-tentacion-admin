@@ -58,23 +58,20 @@ export default function Home() {
 
   return (
     <>
-      <div>
-        Home
-        {!isUserOnline ? (
-          <div>
-            {!isProduction && <Signup />}
+      {!isUserOnline ? (
+        <>
+          {!isProduction && <Signup />}
 
-            <Signin setIsUserOnline={setIsUserOnline} />
-          </div>
-        ) : (
-          <div>
-            <LogoutButton setIsUserOnline={setIsUserOnline} />
+          <Signin setIsUserOnline={setIsUserOnline} />
+        </>
+      ) : (
+        <>
+          <LogoutButton setIsUserOnline={setIsUserOnline} />
 
-            <Table />
-            <FlavoursList />
-          </div>
-        )}
-      </div>
+          <Table />
+          <FlavoursList />
+        </>
+      )}
     </>
   );
 }

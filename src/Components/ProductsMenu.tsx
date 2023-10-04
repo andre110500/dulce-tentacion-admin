@@ -7,7 +7,7 @@ export default function ProductsMenu({ flavoursList, refe }) {
     flexDirection: "column",
   };
   return (
-    <div ref={refe} id="menu" style={{ width: "400px", position: "relative" }}>
+    <div ref={refe} id="menu" style={{ position: "relative" }}>
       <img src={template} alt="" style={{ width: "100%" }} />
       <div
         style={{
@@ -22,7 +22,7 @@ export default function ProductsMenu({ flavoursList, refe }) {
 
           gridTemplateColumns: "1fr 1fr",
 
-          fontSize: "0.8951rem",
+          fontSize: "1%",
           fontWeight: "bold",
           letterSpacing: "0.05rem",
           wordSpacing: "0.1rem",
