@@ -56,27 +56,32 @@ export default function FlavoursList() {
 
   return (
     <section id="flavours">
-      <ul>
-        {virtualFlavoursArr?.map((virtualFlavour, index) => (
-          <ListContext.Provider
-            value={{
-              virtualFlavoursArr,
-              setVirtualFlavoursArr,
-              fetchFlavoursAndSetState,
-              dbFlavoursArr,
-            }}
-          >
-            <FlavourItem
-              key={virtualFlavour._id}
-              virtualFlavour={virtualFlavour}
-              index={index}
-            />
-          </ListContext.Provider>
-        ))}
-      </ul>
-      <AddFlavourForm fetchFlavoursAndSetState={fetchFlavoursAndSetState} />
-      <ProductsMenu refe={elementRef} flavoursList={dbFlavoursArr} />
-      <button onClick={htmlToImageConvert}>Download Image</button>
+      <h1>Sabores</h1>
+      <div>
+        <ul>
+          {virtualFlavoursArr?.map((virtualFlavour, index) => (
+            <ListContext.Provider
+              value={{
+                virtualFlavoursArr,
+                setVirtualFlavoursArr,
+                fetchFlavoursAndSetState,
+                dbFlavoursArr,
+              }}
+            >
+              <FlavourItem
+                key={virtualFlavour._id}
+                virtualFlavour={virtualFlavour}
+                index={index}
+              />
+            </ListContext.Provider>
+          ))}
+        </ul>
+        <AddFlavourForm fetchFlavoursAndSetState={fetchFlavoursAndSetState} />
+      </div>
+      <div>
+        <ProductsMenu refe={elementRef} flavoursList={dbFlavoursArr} />
+        <button onClick={htmlToImageConvert}>Download Image</button>
+      </div>
     </section>
   );
 }
