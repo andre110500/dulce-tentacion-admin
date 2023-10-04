@@ -55,10 +55,11 @@ export default function FlavoursList() {
   }, [dbFlavoursArr]);
 
   return (
-    <section id="flavours">
-      <h1>Sabores</h1>
-      <div>
-        <ul>
+    <>
+      <section>
+        <h1>Sabores</h1>
+
+        <ul className="flavours">
           {virtualFlavoursArr?.map((virtualFlavour, index) => (
             <ListContext.Provider
               value={{
@@ -77,12 +78,12 @@ export default function FlavoursList() {
           ))}
         </ul>
         <AddFlavourForm fetchFlavoursAndSetState={fetchFlavoursAndSetState} />
-      </div>
-      <div>
+      </section>
+      <section>
         <ProductsMenu refe={elementRef} flavoursList={dbFlavoursArr} />
-        <button onClick={htmlToImageConvert}>Download Image</button>
-      </div>
-    </section>
+        <button onClick={htmlToImageConvert}>Descargar</button>
+      </section>
+    </>
   );
 }
 

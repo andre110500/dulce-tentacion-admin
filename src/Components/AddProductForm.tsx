@@ -72,23 +72,27 @@ export default function AddProductForm({ fetchProductsAndSetState }) {
   }
 
   return (
-    <div>
+    <>
       {!showForm ? (
-        <button onClick={() => setShowForm(true)}>Agregar producto</button>
+        <button onClick={() => setShowForm(true)}>Agregar</button>
       ) : (
-        <form ref={formRef} onSubmit={handleSubmit}>
-          <input type="text" name="name" placeholder="name" required />
-          <input type="number" name="price" placeholder="price" required />
-          <input type="number" name="flavours" placeholder="flavours" />
-          <input type="text" name="imgUrl" placeholder="imgUrl" required />
-          <label>
-            <input type="checkbox" name="outOfStock" />
-            outOfStock
-          </label>
-          <button>Ok</button>
-          <button onClick={() => setShowForm(false)}>Cancel</button>
+        <form className="product" ref={formRef} onSubmit={handleSubmit}>
+          <div className="input-container">
+            <input type="text" name="name" placeholder="name" required />
+            <input type="number" name="price" placeholder="price" required />
+            <input type="number" name="flavours" placeholder="flavours" />
+            <input type="text" name="imgUrl" placeholder="imgUrl" required />
+            <label>
+              <input type="checkbox" name="outOfStock" />
+              outOfStock
+            </label>
+          </div>
+          <div className="buttons-container">
+            <button>Ok</button>
+            <button onClick={() => setShowForm(false)}>Cancel</button>
+          </div>
         </form>
       )}
-    </div>
+    </>
   );
 }

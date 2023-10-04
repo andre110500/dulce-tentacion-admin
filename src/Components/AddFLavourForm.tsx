@@ -59,11 +59,11 @@ export default function AddFlavourForm({ fetchFlavoursAndSetState }) {
   }
 
   return (
-    <div>
+    <>
       {!showForm ? (
-        <button onClick={() => setShowForm(true)}>Agregar sabor</button>
+        <button onClick={() => setShowForm(true)}>Agregar</button>
       ) : (
-        <form ref={formRef} onSubmit={handleSubmit}>
+        <form className="flavour" ref={formRef} onSubmit={handleSubmit}>
           <input type="text" name="name" placeholder="name" required />
 
           <label>
@@ -74,6 +74,6 @@ export default function AddFlavourForm({ fetchFlavoursAndSetState }) {
           <button onClick={() => setShowForm(false)}>Cancel</button>
         </form>
       )}
-    </div>
+    </>
   );
 }

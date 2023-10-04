@@ -106,7 +106,7 @@ function TableRow({
       <tr id={virtualProduct._id}>
         {productKeys.map((key) => (
           //return a cell per key
-          <td key={`cell-${key}`} style={{ borderRadius: "0.5rem" }}>
+          <td key={`cell-${key}`}>
             <input
               value={virtualProduct[key]}
               required={key === "flavours" ? false : true}
@@ -125,7 +125,7 @@ function TableRow({
           </td>
         ))}
 
-        <td style={{ display: "flex" }}>
+        <td className="buttons-container">
           <Buttons
             key={`buttons-${virtualProduct._id}`}
             enableEdit={enableEdit}
@@ -225,41 +225,41 @@ function Buttons({
     <>
       {enableEdit ? (
         <>
-          <input
-            type="submit"
-            disabled={!enableEdit}
-            value="delete"
+          <button
             onClick={() => {
               deleteProductFromDb(virtualProductsArr[index]);
             }}
-          />
-          <input
-            value="aceptar"
-            type="submit"
+          >
+            borrar
+          </button>
+
+          <button
             onClick={() => {
               updateProductInDbFromState(virtualProductsArr[index]);
               setEnableEdit(false);
             }}
-          />
-          <input
-            value="cancelar"
-            type="submit"
+          >
+            aceptar
+          </button>
+
+          <button
             onClick={() => {
               setEnableEdit(false);
               setVirtualProductsArr([...structuredClone(dbProductsArr)]);
             }}
-          />
+          >
+            cancelar
+          </button>
         </>
       ) : (
-        <input
-          value="edit"
-          type="submit"
-          className="edit"
+        <button
           onClick={() => {
             console.log("edit button clicked");
             setEnableEdit(true);
           }}
-        />
+        >
+          editar
+        </button>
       )}
     </>
   );
