@@ -147,9 +147,9 @@ ul.flavours {
   li {
     display: grid;
     margin: auto;
-    grid-template-columns: 200px min-content min-content;
+    grid-template-columns: 100px min-content min-content;
     width: 100%;
-
+    align-items: center;
     gap: 1rem;
 
     label {
