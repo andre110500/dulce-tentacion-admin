@@ -64,14 +64,17 @@ export default function AddFlavourForm({ fetchFlavoursAndSetState }) {
         <button onClick={() => setShowForm(true)}>Agregar</button>
       ) : (
         <form className="flavour" ref={formRef} onSubmit={handleSubmit}>
-          <input type="text" name="name" placeholder="name" required />
-
-          <label>
-            <input type="checkbox" name="outOfStock" />
-            outOfStock
-          </label>
-          <button>Ok</button>
-          <button onClick={() => setShowForm(false)}>Cancel</button>
+          <div className="input-container">
+            <input type="text" name="name" placeholder="name" required />
+            <label>
+              <input type="checkbox" name="outOfStock" />
+              outOfStock
+            </label>
+          </div>
+          <div className="buttons-container">
+            <button>Ok</button>
+            <button onClick={() => setShowForm(false)}>Cancel</button>
+          </div>
         </form>
       )}
     </>

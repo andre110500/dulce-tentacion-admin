@@ -211,6 +211,10 @@ ul.flavours {
   }
 }
 
+section > button {
+  margin: auto;
+}
+
 button,
 input {
   height: 30px;
@@ -249,7 +253,8 @@ input {
   //cqw
 }
 
-form.product {
+form.product,
+form.flavour {
   display: flex;
 
   gap: 2rem;
@@ -279,10 +284,10 @@ form.product {
   input {
   }
   label {
-    display: flex;
-    width: 100px;
+    display: grid;
+
+    grid-template-columns: auto auto;
     align-items: center;
-    justify-content: space-between;
   }
 }
 
