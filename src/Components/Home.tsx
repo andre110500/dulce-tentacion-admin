@@ -58,20 +58,8 @@ export default function Home() {
 
   return (
     <>
-      {!isUserOnline ? (
-        <>
-          {!isProduction && <Signup />}
-
-          <Signin setIsUserOnline={setIsUserOnline} />
-        </>
-      ) : (
-        <>
-          <LogoutButton setIsUserOnline={setIsUserOnline} />
-
-          <Table />
-          <FlavoursList />
-        </>
-      )}
+      <Table />
+      <FlavoursList />
     </>
   );
 }

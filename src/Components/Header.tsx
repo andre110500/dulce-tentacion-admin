@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 
 import logo from "../assets/react.svg";
-const tabsArr = ["Nosotros", "Unite", "Galeria"];
+import LogoutButton from "./LogoutButton";
+import UserContext from "../Contexts/UserContext";
+
+const tabsArr = ["a", "b", "c"];
 
 export default function Header() {
+  const { isUserOnline, setIsUserOnline } = useContext(UserContext);
   return (
     <section id="header">
       <a className="logo" href="">
@@ -11,11 +15,13 @@ export default function Header() {
       </a>
       <nav>
         <ul>
-          {tabsArr.map((tab) => (
-            <li>
-              <a href="#">{tab}</a>
-            </li>
-          ))}
+          <li>
+            {isUserOnline ? (
+              <LogoutButton setIsUserOnline={setIsUserOnline} />
+            ) : (
+              <button> Sign Up</button>
+            )}
+          </li>
         </ul>
       </nav>
 
