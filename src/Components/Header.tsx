@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
-
+import Signup from "./Signup";
+import Signin from "./Signin";
 import logo from "../assets/react.svg";
 import LogoutButton from "./LogoutButton";
 import UserContext from "../Contexts/UserContext";
@@ -15,13 +16,20 @@ export default function Header() {
       </a>
       <nav>
         <ul>
-          <li>
-            {isUserOnline ? (
+          {isUserOnline ? (
+            <li>
               <LogoutButton setIsUserOnline={setIsUserOnline} />
-            ) : (
-              <button> Sign Up</button>
-            )}
-          </li>
+            </li>
+          ) : (
+            <>
+              <li>
+                <Signup />
+              </li>
+              <li>
+                <Signin setIsUserOnline={setIsUserOnline} />
+              </li>
+            </>
+          )}
         </ul>
       </nav>
 
