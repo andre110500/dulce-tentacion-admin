@@ -4,6 +4,7 @@ import Footer from "./Components/Footer";
 import Home from "./Components/Home";
 import React, { useState, useEffect } from "react";
 import UserContext from "./Contexts/UserContext";
+import { showSuccessAlert } from "./alerts";
 import Swal from "sweetalert2";
 
 function App() {
