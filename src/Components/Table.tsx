@@ -1,6 +1,10 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import TableContext from "../Contexts/TableContext";
-
+import {
+  showSuccessAlert,
+  showNotLoggedAlert,
+  showUnknownErrorAlert,
+} from "../alerts";
 import AddProductForm from "./AddProductForm";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -11,11 +15,9 @@ function Table() {
   const elementRef = useRef(null);
 
   async function fetchProductsAndSetState() {
-    const token = JSON.parse(localStorage.getItem("jwtToken")).token;
     const requestOptions = {
       headers: {
         "Content-Type": "application/json",
-        authorization: `Bearer ${token}`, // Add the JWT to the Authorization header
       },
     };
     try {
@@ -163,20 +165,26 @@ function Buttons({
     };
 
     try {
-      const request = await fetch(
+      const response = await fetch(
         `${apiUrl}/products/${product._id}`,
         requestOptions
       );
-      if (!request.ok) {
-        alert("response not ok");
+      if (!response.ok) {
+        if (response.status === 403) {
+          showNotLoggedAlert();
+        } else {
+          showUnknownErrorAlert();
+        }
       } else {
-        alert("response ok");
-
-        fetchProductsAndSetState();
+        showSuccessAlert();
       }
     } catch (error) {
       console.log(error.message);
+      if (error.message == "Cannot read properties of null (reading 'token')") {
+        showNotLoggedAlert();
+      }
     }
+    fetchProductsAndSetState();
   }
 
   async function updateProductInDbFromState(virtualProduct) {
@@ -209,17 +217,22 @@ function Buttons({
         fetchOptions
       );
       if (response.ok) {
-        alert("post updated");
-        console.log("post updated");
-        fetchProductsAndSetState();
+        showSuccessAlert();
       } else {
-        alert(`response not ok : ${response.statusTex}`);
+        if (response.status === 403) {
+          showNotLoggedAlert();
+        } else {
+          showUnknownErrorAlert();
+        }
         console.log("post not updated");
       }
     } catch (error) {
-      alert("error");
+      if (error.message == "Cannot read properties of null (reading 'token')") {
+        showNotLoggedAlert();
+      }
       console.log(error.message);
     }
+    fetchProductsAndSetState();
   }
   return (
     <>

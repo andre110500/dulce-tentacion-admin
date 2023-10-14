@@ -4,7 +4,7 @@ import ListContext from "../Contexts/ListContext";
 import ProductsMenu from "./ProductsMenu";
 import AddFlavourForm from "./AddFLavourForm";
 import { toPng } from "html-to-image";
-import Swal from "sweetalert2";
+
 import {
   showSuccessAlert,
   showNotLoggedAlert,
@@ -152,11 +152,11 @@ function Buttons({
     };
 
     try {
-      const request = await fetch(
+      const response = await fetch(
         `${apiUrl}/flavours/${flavour._id}`,
         requestOptions
       );
-      if (!request.ok) {
+      if (!response.ok) {
         if (response.status === 403) {
           showNotLoggedAlert();
         } else {
