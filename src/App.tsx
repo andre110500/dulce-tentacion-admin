@@ -4,6 +4,7 @@ import Footer from "./Components/Footer";
 import Home from "./Components/Home";
 import React, { useState, useEffect } from "react";
 import UserContext from "./Contexts/UserContext";
+import Swal from "sweetalert2";
 
 function App() {
   const [isUserOnline, setIsUserOnline] = useState(false);
@@ -21,6 +22,8 @@ function App() {
       const response = await fetch(`${apiUrl}/users/auth`, requestOptions);
       if (!response.ok) {
         setIsUserOnline(false);
+        console.log(response.status);
+
         throw new Error("Request failed");
       }
       console.log("auth succeded, setting user state to online!");
@@ -28,7 +31,7 @@ function App() {
 
       // Process the data or perform other operations
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error.message);
       setIsUserOnline(false);
     }
   }

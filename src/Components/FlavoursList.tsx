@@ -4,6 +4,8 @@ import ListContext from "../Contexts/ListContext";
 import ProductsMenu from "./ProductsMenu";
 import AddFlavourForm from "./AddFLavourForm";
 import { toPng } from "html-to-image";
+import Swal from "sweetalert2";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 export default function FlavoursList() {
   const [dbFlavoursArr, setDbFlavoursArr] = useState();
@@ -159,6 +161,7 @@ function Buttons({
       }
     } catch (error) {
       console.log(error.message);
+      alert(`error: ${error}`);
     }
   }
 
@@ -182,16 +185,44 @@ function Buttons({
         fetchOptions
       );
       if (response.ok) {
-        alert("post updated");
-        console.log("post updated");
+        Swal.fire({
+          title: "Todo bien",
+          text: "Loa cambios se realizaron con exito",
+          icon: "success", // Displays a warning icon
+          confirmButtonText: "OK",
+        });
+
         fetchFlavoursAndSetState();
       } else {
-        alert(`response not ok : ${response.statusTex}`);
+        /* alert(`response not ok : ${response.statusTex}`); */
+        if (response.status === 403) {
+          Swal.fire({
+            title: "Error!",
+            text: "Debes estar logeado para realizar cambios.",
+            icon: "warning", // Displays a warning icon
+            confirmButtonText: "OK",
+          });
+        } else {
+          Swal.fire({
+            title: `Error ${response.status}`,
+            text: "Contacta con un administrador",
+            icon: "warning", // Displays a warning icon
+            confirmButtonText: "OK",
+          });
+        }
         console.log("post not updated");
       }
     } catch (error) {
-      alert("error");
+      /*   alert(`error: ${error}`); */
       console.log(error.message);
+      if (error.message == "Cannot read properties of null (reading 'token')") {
+        Swal.fire({
+          title: `Inicia session`,
+          text: "No podes realizar modificaciones sin logearte",
+          icon: "warning", // Displays a warning icon
+          confirmButtonText: "OK",
+        });
+      }
     }
   }
   return (
