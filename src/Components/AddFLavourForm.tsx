@@ -1,5 +1,10 @@
 import React from "react";
 import { useState, useRef } from "react";
+import {
+  showSuccessAlert,
+  showNotLoggedAlert,
+  showUnknownErrorAlert,
+} from "../alerts";
 export default function AddFlavourForm({ fetchFlavoursAndSetState }) {
   const [showForm, setShowForm] = useState(false);
   const formRef = useRef(null);
@@ -46,15 +51,21 @@ export default function AddFlavourForm({ fetchFlavoursAndSetState }) {
       //alert(response.status);
 
       if (response.ok) {
-        alert("post created");
+        showSuccessAlert();
 
         console.log("post created ");
       } else {
-        alert(`response not ok : ${response.statusTex}`);
-        console.log("post not created");
+        if (response.status === 403) {
+          showNotLoggedAlert();
+        } else {
+          showUnknownErrorAlert();
+        }
       }
     } catch (error) {
       console.log("error");
+      if (error.message == "Cannot read properties of null (reading 'token')") {
+        showNotLoggedAlert();
+      }
     }
   }
 
