@@ -142,16 +142,15 @@ function Buttons({
   } = useContext(ListContext);
 
   async function deleteFlavourFromDb(flavour) {
-    const token = JSON.parse(localStorage.getItem("jwtToken")).token;
-    const requestOptions = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${token}`, // Add the JWT to the Authorization header
-      },
-    };
-
     try {
+      const token = JSON.parse(localStorage.getItem("jwtToken")).token;
+      const requestOptions = {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`, // Add the JWT to the Authorization header
+        },
+      };
       const response = await fetch(
         `${apiUrl}/flavours/${flavour._id}`,
         requestOptions

@@ -155,16 +155,15 @@ function Buttons({
   } = useContext(TableContext);
 
   async function deleteProductFromDb(product) {
-    const token = JSON.parse(localStorage.getItem("jwtToken")).token;
-    const requestOptions = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${token}`, // Add the JWT to the Authorization header
-      },
-    };
-
     try {
+      const token = JSON.parse(localStorage.getItem("jwtToken")).token;
+      const requestOptions = {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`, // Add the JWT to the Authorization header
+        },
+      };
       const response = await fetch(
         `${apiUrl}/products/${product._id}`,
         requestOptions
@@ -188,20 +187,19 @@ function Buttons({
   }
 
   async function updateProductInDbFromState(virtualProduct) {
-    const body = {
-      name: virtualProduct.name,
-      price: virtualProduct.price,
-      imgUrl: virtualProduct.imgUrl,
-      outOfStock: virtualProduct.outOfStock,
-    };
-
-    if (virtualProduct?.flavours !== "") {
-      body.flavours = virtualProduct.flavours;
-    } else {
-      body.flavours = undefined;
-    }
-
     try {
+      const body = {
+        name: virtualProduct.name,
+        price: virtualProduct.price,
+        imgUrl: virtualProduct.imgUrl,
+        outOfStock: virtualProduct.outOfStock,
+      };
+
+      if (virtualProduct?.flavours !== "") {
+        body.flavours = virtualProduct.flavours;
+      } else {
+        body.flavours = undefined;
+      }
       const token = JSON.parse(localStorage.getItem("jwtToken")).token;
       const fetchOptions = {
         method: "PUT",
