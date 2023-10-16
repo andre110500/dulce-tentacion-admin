@@ -1,4 +1,5 @@
 import React from "react";
+import callToApi from "../functions/callToApi";
 import { useState, useEffect, useContext, useRef } from "react";
 import ListContext from "../Contexts/ListContext";
 import ProductsMenu from "./ProductsMenu";
@@ -141,92 +142,44 @@ function Buttons({
     fetchFlavoursAndSetState,
   } = useContext(ListContext);
 
-  async function deleteFlavourFromDb(flavour) {
-    try {
-      const token = JSON.parse(localStorage.getItem("jwtToken")).token;
-      const requestOptions = {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`, // Add the JWT to the Authorization header
-        },
-      };
-      const response = await fetch(
-        `${apiUrl}/flavours/${flavour._id}`,
-        requestOptions
-      );
-      if (!response.ok) {
-        if (response.status === 403) {
-          showNotLoggedAlert();
-        } else {
-          showUnknownErrorAlert();
-        }
-      } else {
-        showSuccessAlert();
-      }
-    } catch (error) {
-      console.log(error.message);
-      if (error.message == "Cannot read properties of null (reading 'token')") {
-        showNotLoggedAlert();
-      }
-    }
-    fetchFlavoursAndSetState();
-  }
-
-  async function updateFlavoursInDbFromState(virtualFlavour) {
-    try {
-      const token = JSON.parse(localStorage.getItem("jwtToken")).token;
-      const fetchOptions = {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          name: virtualFlavour.name,
-
-          outOfStock: virtualFlavour.outOfStock,
-        }), // Set the body content
-      };
-      const response = await fetch(
-        `${apiUrl}/flavours/${virtualFlavour._id}`,
-        fetchOptions
-      );
-      if (response.ok) {
-        showSuccessAlert();
-      } else {
-        if (response.status === 403) {
-          showNotLoggedAlert();
-        } else {
-          showUnknownErrorAlert();
-        }
-        console.log("post not updated");
-      }
-    } catch (error) {
-      console.log(error.message);
-      if (error.message == "Cannot read properties of null (reading 'token')") {
-        showNotLoggedAlert();
-      }
-    }
-    fetchFlavoursAndSetState();
-  }
   return (
     <div className="buttons">
       {enableEdit ? (
         <>
           <input
             type="submit"
-            disabled={!enableEdit}
             value="borrar"
             onClick={() => {
-              deleteFlavourFromDb(virtualFlavoursArr[index]);
+              const settings = {
+                route: "flavours",
+                id: `${virtualFlavoursArr[index]._id}`,
+                method: "DELETE",
+
+                callback: fetchFlavoursAndSetState,
+              };
+
+              callToApi(settings);
             }}
           />
           <input
             value="aceptar"
             type="submit"
             onClick={() => {
-              updateFlavoursInDbFromState(virtualFlavoursArr[index]);
+              const item = virtualFlavoursArr[index];
+              const settings = {
+                method: "PUT",
+                route: "flavours",
+                id: item._id,
+                callback: fetchFlavoursAndSetState,
+                body: JSON.stringify({
+                  name: item.name,
+
+                  outOfStock: item.outOfStock,
+                }),
+              };
+
+              callToApi(settings);
+
               setEnableEdit(false);
             }}
           />
