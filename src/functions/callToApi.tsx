@@ -4,7 +4,16 @@ import {
   showNotLoggedAlert,
   showUnknownErrorAlert,
 } from "../alerts";
-async function callToApi(settings) {
+
+interface Settings {
+  route: string;
+  id?: string;
+  method: string;
+  body?: string;
+  callback: () => void;
+}
+
+async function callToApi(settings: Settings) {
   const { route, id, method, body, callback } = settings;
   try {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -17,7 +26,10 @@ async function callToApi(settings) {
       },
       body: body,
     };
-    const response = await fetch(`${apiUrl}/${route}/${id}`, requestOptions);
+    const response = await fetch(
+      `${apiUrl}/${route}${id ? `/${id}` : ""}`,
+      requestOptions
+    );
     if (!response.ok) {
       if (response.status === 403) {
         showNotLoggedAlert();

@@ -1,10 +1,12 @@
 import React from "react";
 import { useState, useRef } from "react";
+import callToApi from "../functions/callToApi";
 import {
   showSuccessAlert,
   showNotLoggedAlert,
   showUnknownErrorAlert,
 } from "../alerts";
+
 export default function AddProductForm({ fetchProductsAndSetState }) {
   const [showForm, setShowForm] = useState(false);
   const formRef = useRef(null);
@@ -22,64 +24,17 @@ export default function AddProductForm({ fetchProductsAndSetState }) {
       product.flavours = formRef.current.elements.flavours.value;
     }
 
-    try {
-      await addProductToDb(product); // Wait for this to complete
-      setShowForm(false);
-      fetchProductsAndSetState();
-    } catch (error) {
-      console.error("Error adding product:", error);
-      // You can handle the error here if needed
-    }
-  }
-
-  async function addProductToDb(virtualProduct) {
-    const body = {
-      name: virtualProduct.name,
-      price: virtualProduct.price,
-      imgUrl: virtualProduct.imgUrl,
-      outOfStock: virtualProduct.outOfStock,
+    const settings = {
+      route: "products",
+      method: "POST",
+      body: JSON.stringify(product),
+      callback: () => {
+        setShowForm(false);
+        fetchProductsAndSetState();
+      },
     };
 
-    if (virtualProduct.flavours !== "") {
-      body.flavours = virtualProduct.flavours;
-    }
-
-    try {
-      const token = JSON.parse(localStorage.getItem("jwtToken")).token;
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(body),
-      };
-      const apiUrl = import.meta.env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/products`, requestOptions);
-
-      const post = await response.json();
-      console.log(`the post is ${post}`);
-      //alert(JSON.stringify(post));
-      console.log(`the resonse status is  : ${response.status}`);
-      //alert(response.status);
-
-      if (response.ok) {
-        showSuccessAlert();
-
-        console.log("post created ");
-      } else {
-        if (response.status === 403) {
-          showNotLoggedAlert();
-        } else {
-          showUnknownErrorAlert();
-        }
-      }
-    } catch (error) {
-      console.log("error");
-      if (error.message == "Cannot read properties of null (reading 'token')") {
-        showNotLoggedAlert();
-      }
-    }
+    callToApi(settings);
   }
 
   return (
