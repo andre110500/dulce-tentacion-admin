@@ -6,11 +6,6 @@ import ProductsMenu from "./ProductsMenu";
 import AddFlavourForm from "./AddFLavourForm";
 import { toPng } from "html-to-image";
 
-import {
-  showSuccessAlert,
-  showNotLoggedAlert,
-  showUnknownErrorAlert,
-} from "../alerts";
 const apiUrl = import.meta.env.VITE_API_URL;
 export default function FlavoursList() {
   const [dbFlavoursArr, setDbFlavoursArr] = useState();

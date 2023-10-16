@@ -1,10 +1,7 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import TableContext from "../Contexts/TableContext";
-import {
-  showSuccessAlert,
-  showNotLoggedAlert,
-  showUnknownErrorAlert,
-} from "../alerts";
+import callToApi from "../functions/callToApi";
+
 import AddProductForm from "./AddProductForm";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -154,91 +151,21 @@ function Buttons({
     dbProductsArr,
   } = useContext(TableContext);
 
-  async function deleteProductFromDb(product) {
-    try {
-      const token = JSON.parse(localStorage.getItem("jwtToken")).token;
-      const requestOptions = {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`, // Add the JWT to the Authorization header
-        },
-      };
-      const response = await fetch(
-        `${apiUrl}/products/${product._id}`,
-        requestOptions
-      );
-      if (!response.ok) {
-        if (response.status === 403) {
-          showNotLoggedAlert();
-        } else {
-          showUnknownErrorAlert();
-        }
-      } else {
-        showSuccessAlert();
-      }
-    } catch (error) {
-      console.log(error.message);
-      if (error.message == "Cannot read properties of null (reading 'token')") {
-        showNotLoggedAlert();
-      }
-    }
-    fetchProductsAndSetState();
-  }
-
-  async function updateProductInDbFromState(virtualProduct) {
-    try {
-      const body = {
-        name: virtualProduct.name,
-        price: virtualProduct.price,
-        imgUrl: virtualProduct.imgUrl,
-        outOfStock: virtualProduct.outOfStock,
-      };
-
-      if (virtualProduct?.flavours !== "") {
-        body.flavours = virtualProduct.flavours;
-      } else {
-        body.flavours = undefined;
-      }
-      const token = JSON.parse(localStorage.getItem("jwtToken")).token;
-      const fetchOptions = {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(body), // Set the body content
-      };
-      console.log(`apiurl to update is ${apiUrl}`);
-      const response = await fetch(
-        `${apiUrl}/products/${virtualProduct._id}`,
-        fetchOptions
-      );
-      if (response.ok) {
-        showSuccessAlert();
-      } else {
-        if (response.status === 403) {
-          showNotLoggedAlert();
-        } else {
-          showUnknownErrorAlert();
-        }
-        console.log("post not updated");
-      }
-    } catch (error) {
-      if (error.message == "Cannot read properties of null (reading 'token')") {
-        showNotLoggedAlert();
-      }
-      console.log(error.message);
-    }
-    fetchProductsAndSetState();
-  }
   return (
     <>
       {enableEdit ? (
         <>
           <button
             onClick={() => {
-              deleteProductFromDb(virtualProductsArr[index]);
+              const settings = {
+                route: "products",
+                id: `${virtualProductsArr[index]._id}`,
+                method: "DELETE",
+
+                callback: fetchProductsAndSetState,
+              };
+
+              callToApi(settings);
             }}
           >
             borrar
@@ -246,7 +173,27 @@ function Buttons({
 
           <button
             onClick={() => {
-              updateProductInDbFromState(virtualProductsArr[index]);
+              const item = virtualProductsArr[index];
+              const body = {
+                name: item.name,
+                price: item.price,
+                imgUrl: item.imgUrl,
+                outOfStock: item.outOfStock,
+              };
+              if (item.flavours !== "") {
+                body.flavours = item.flavours;
+              } else {
+                body.flavours = undefined;
+              }
+              const settings = {
+                route: "products",
+                id: item._id,
+                method: "PUT",
+                callback: fetchProductsAndSetState,
+                body: JSON.stringify(body),
+              };
+
+              callToApi(settings);
               setEnableEdit(false);
             }}
           >
