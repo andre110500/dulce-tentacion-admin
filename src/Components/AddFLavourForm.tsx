@@ -1,10 +1,7 @@
 import React from "react";
+import callToApi from "../functions/callToApi";
 import { useState, useRef } from "react";
-import {
-  showSuccessAlert,
-  showNotLoggedAlert,
-  showUnknownErrorAlert,
-} from "../alerts";
+
 export default function AddFlavourForm({ fetchFlavoursAndSetState }) {
   const [showForm, setShowForm] = useState(false);
   const formRef = useRef(null);
@@ -16,57 +13,17 @@ export default function AddFlavourForm({ fetchFlavoursAndSetState }) {
       name: formRef.current.elements.name.value,
     };
 
-    try {
-      await addFlavourToDb(flavour); // Wait for this to complete
-      setShowForm(false);
-      fetchFlavoursAndSetState();
-    } catch (error) {
-      console.error("Error adding flavour:", error);
-      // You can handle the error here if needed
-    }
-  }
+    const settings = {
+      route: "flavours",
+      callback: () => {
+        setShowForm(false);
+        fetchFlavoursAndSetState();
+      },
+      method: "POST",
+      body: JSON.stringify(flavour),
+    };
 
-  async function addFlavourToDb(flavour) {
-    try {
-      const token = JSON.parse(localStorage.getItem("jwtToken")).token;
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          name: flavour.name,
-
-          outOfStock: flavour.outOfStock,
-        }),
-      };
-      const apiUrl = import.meta.env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/flavours`, requestOptions);
-
-      const post = await response.json();
-      console.log(`the post is ${post}`);
-      //alert(JSON.stringify(post));
-      console.log(`the resonse status is  : ${response.status}`);
-      //alert(response.status);
-
-      if (response.ok) {
-        showSuccessAlert();
-
-        console.log("post created ");
-      } else {
-        if (response.status === 403) {
-          showNotLoggedAlert();
-        } else {
-          showUnknownErrorAlert();
-        }
-      }
-    } catch (error) {
-      console.log("error");
-      if (error.message == "Cannot read properties of null (reading 'token')") {
-        showNotLoggedAlert();
-      }
-    }
+    callToApi(settings);
   }
 
   return (

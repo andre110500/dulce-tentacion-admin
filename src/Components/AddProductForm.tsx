@@ -1,11 +1,6 @@
 import React from "react";
 import { useState, useRef } from "react";
 import callToApi from "../functions/callToApi";
-import {
-  showSuccessAlert,
-  showNotLoggedAlert,
-  showUnknownErrorAlert,
-} from "../alerts";
 
 export default function AddProductForm({ fetchProductsAndSetState }) {
   const [showForm, setShowForm] = useState(false);
