@@ -39,17 +39,18 @@ export default function Signup() {
       <button onClick={openDialog}>Signup</button>
 
       <dialog ref={dialogRef}>
-        <h2>Sign up</h2>
-
-        <form id="signup-form" onSubmit={handleSubmit}>
-          <input ref={usernameRef} placeholder="user name" required />
-          <input ref={passwordRef} placeholder="password" required />
-        </form>
-        <div>
-          <button type="submit" form="signup-form">
-            Accept
-          </button>
-          <button onClick={closeDialog}>Close</button>
+        <div className="content">
+          <h2>Sign up</h2>
+          <form id="signup-form" onSubmit={handleSubmit}>
+            <input ref={usernameRef} placeholder="user name" required />
+            <input ref={passwordRef} placeholder="password" required />
+          </form>
+          <div className="buttons-container">
+            <button type="submit" form="signup-form">
+              Accept
+            </button>
+            <button onClick={closeDialog}>Close</button>
+          </div>
         </div>
       </dialog>
     </div>

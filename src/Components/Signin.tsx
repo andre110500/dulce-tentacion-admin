@@ -50,17 +50,18 @@ export default function Signin({ setIsUserOnline }) {
       <button onClick={openDialog}>Login</button>
 
       <dialog ref={dialogRef}>
-        <h2>Sign in</h2>
-
-        <form id="signin-form" onSubmit={handleSubmit}>
-          <input ref={usernameRef} name="username" placeholder="username" />
-          <input ref={passwordRef} name="password" placeholder="password" />
-        </form>
-        <div>
-          <button type="submit" form="signin-form">
-            Accept
-          </button>
-          <button onClick={closeDialog}>Close</button>
+        <div className="content">
+          <h2>Sign in</h2>
+          <form id="signin-form" onSubmit={handleSubmit}>
+            <input ref={usernameRef} name="username" placeholder="username" />
+            <input ref={passwordRef} name="password" placeholder="password" />
+          </form>
+          <div className="buttons-container">
+            <button type="submit" form="signin-form">
+              Accept
+            </button>
+            <button onClick={closeDialog}>Close</button>
+          </div>
         </div>
       </dialog>
     </div>

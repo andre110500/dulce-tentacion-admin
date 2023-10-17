@@ -29,10 +29,28 @@ $purpple: #100b35;
   background-color: $purpple;
 }
 
+dialog {
+  margin: auto;
+  .content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    form {
+      display: flex;
+      gap: 2rem;
+    }
+    .buttons-container {
+      display: flex;
+      gap: 2rem;
+    }
+  }
+}
+
 #header {
   container-name: header;
   container-type: inline-size;
-  padding: 1rem 2rem;
+  padding: 2rem 2rem;
   font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: 1px;
@@ -67,7 +85,7 @@ $purpple: #100b35;
 main {
   background-color: grey;
   background-size: cover;
-  padding: 2rem 1rem;
+  padding: 2rem 2rem;
   width: 100%;
   max-width: 800px;
 
@@ -101,7 +119,7 @@ main {
 
           &.buttons-container {
             display: flex;
-            gap: 1rem;
+            gap: 2rem;
             button {
               border-radius: 0.5rem;
             }
@@ -126,12 +144,12 @@ main section {
 
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
   background-color: skyblue;
 }
 
 section {
-  padding: 1rem;
+  padding: 2rem;
 }
 
 ul.flavours {
@@ -141,7 +159,7 @@ ul.flavours {
   margin: auto;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
 
   overflow-x: auto;
   li {
@@ -150,12 +168,12 @@ ul.flavours {
     grid-template-columns: 100px min-content min-content;
     width: 100%;
     align-items: center;
-    gap: 1rem;
+    gap: 2rem;
 
     label {
       display: flex;
 
-      gap: 1rem;
+      gap: 2rem;
     }
 
     .buttons {
@@ -190,7 +208,7 @@ ul.flavours {
   justify-content: center;
   align-items: center;
   gap: 2rem;
-  padding: 1rem;
+  padding: 2rem;
   .social {
     display: flex;
     gap: 2rem;
@@ -275,7 +293,7 @@ form.flavour {
 
   flex-wrap: wrap;
 
-  padding: 1rem 0rem;
+  padding: 2rem 0rem;
   .buttons-container {
     width: 180px;
 
