@@ -29,7 +29,7 @@ const useFetch = (method: string, id: string, route: string) => {
           if (response.status === 403) {
             showNotLoggedAlert();
           } else {
-            showUnknownErrorAlert();
+            showUnknownErrorAlert(response.status);
           }
         } else {
           showSuccessAlert();

@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext } from "react";
 import TableContext from "../Contexts/TableContext";
 import callToApi from "../functions/callToApi";
 
@@ -9,7 +9,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 function Table() {
   const [virtualProductsArr, setVirtualProductsArr] = useState();
   const [dbProductsArr, setDbProductsArr] = useState();
-  const elementRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   async function fetchProductsAndSetState() {
     const requestOptions = {
@@ -36,6 +36,7 @@ function Table() {
   useEffect(() => {
     if (dbProductsArr) {
       setVirtualProductsArr(dbProductsArr);
+      setIsLoading(false);
     }
   }, [dbProductsArr]);
 
@@ -44,43 +45,43 @@ function Table() {
   }, []);
 
   const productKeys = ["name", "price", "imgUrl", "outOfStock", "flavours"];
+  const table = (
+    <table>
+      <thead>
+        <tr>
+          {productKeys.map((key) => (
+            <th key={`hcell-${key}`}>{key}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {virtualProductsArr?.map((virtualProduct, index) => (
+          //return a row per product
 
+          <TableContext.Provider
+            value={{
+              productKeys,
+              fetchProductsAndSetState,
+              virtualProductsArr,
+              setVirtualProductsArr,
+              dbProductsArr,
+              setDbProductsArr,
+            }}
+          >
+            <TableRow
+              key={`row-${virtualProduct._id}`}
+              index={index}
+              virtualProduct={virtualProduct}
+            />
+          </TableContext.Provider>
+        ))}
+      </tbody>
+    </table>
+  );
   return (
     <section id="products">
       <h1>Productos</h1>
-      <div className="table-container">
-        <table>
-          <thead>
-            <tr>
-              {productKeys.map((key) => (
-                <th key={`hcell-${key}`}>{key}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {virtualProductsArr?.map((virtualProduct, index) => (
-              //return a row per product
-
-              <TableContext.Provider
-                value={{
-                  productKeys,
-                  fetchProductsAndSetState,
-                  virtualProductsArr,
-                  setVirtualProductsArr,
-                  dbProductsArr,
-                  setDbProductsArr,
-                }}
-              >
-                <TableRow
-                  key={`row-${virtualProduct._id}`}
-                  index={index}
-                  virtualProduct={virtualProduct}
-                />
-              </TableContext.Provider>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <div className="table-container">{isLoading ? "Loading" : table}</div>
       <AddProductForm fetchProductsAndSetState={fetchProductsAndSetState} />
     </section>
   );

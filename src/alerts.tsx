@@ -8,6 +8,15 @@ const showSuccessAlert = () => {
   });
 };
 
+const showWelcomeAlert = () => {
+  return Swal.fire({
+    title: "Bienvenido",
+    text: "Que tenga un buen dia",
+    icon: "success",
+    confirmButtonText: "OK",
+  });
+};
+
 const showNotLoggedAlert = () => {
   return Swal.fire({
     title: "Error!",
@@ -17,13 +26,18 @@ const showNotLoggedAlert = () => {
   });
 };
 
-const showUnknownErrorAlert = () => {
+const showUnknownErrorAlert = (responseStatus) => {
   return Swal.fire({
-    title: `Error ${response.status}`,
+    title: `Error ${responseStatus}`,
     text: "Contacta con un administrador",
     icon: "warning", // Displays a warning icon
     confirmButtonText: "OK",
   });
 };
 
-export { showSuccessAlert, showNotLoggedAlert, showUnknownErrorAlert };
+export {
+  showSuccessAlert,
+  showNotLoggedAlert,
+  showUnknownErrorAlert,
+  showWelcomeAlert,
+};

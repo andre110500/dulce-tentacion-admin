@@ -34,7 +34,7 @@ async function callToApi(settings: Settings) {
       if (response.status === 403) {
         showNotLoggedAlert();
       } else {
-        showUnknownErrorAlert();
+        showUnknownErrorAlert(response.status);
       }
     } else {
       showSuccessAlert();
