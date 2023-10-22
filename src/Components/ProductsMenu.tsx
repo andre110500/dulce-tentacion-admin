@@ -7,7 +7,7 @@ export default function ProductsMenu({ flavoursList, refe }) {
     flexDirection: "column",
   };
   return (
-    <div ref={refe} id="menu" style={{ position: "relative" }}>
+    <div ref={refe} id="menu">
       <img src={template} alt="" style={{ width: "100%" }} />
       <div className="uls-container">
         <ul className="first" style={ulStyle}>

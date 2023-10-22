@@ -1,6 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap");
 $google-font: "Roboto", sans-serif;
 $purpple: #100b35;
+$main-color: #e8547e;
+$cool-shadow: 0 0 5px rgba(0, 0, 0, 0.502);
 
 * {
   padding: 0px;
@@ -15,7 +17,6 @@ $purpple: #100b35;
 }
 
 #root {
-  color: red;
   min-height: 100vh;
   min-height: 100svh;
   display: grid;
@@ -26,7 +27,8 @@ $purpple: #100b35;
 
 #header,
 #footer {
-  background-color: $purpple;
+  background-color: $main-color;
+  box-shadow: $cool-shadow;
 }
 
 .spinner {
@@ -78,6 +80,7 @@ dialog {
 
 #header {
   container-name: header;
+  z-index: 2;
   container-type: inline-size;
   padding: 2rem 2rem;
   font-size: 1.2rem;
@@ -112,7 +115,6 @@ dialog {
 }
 
 main {
-  background-color: grey;
   background-size: cover;
   padding: 2rem 2rem;
   width: 100%;
@@ -174,7 +176,9 @@ main section {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  background-color: skyblue;
+  background-color: $main-color;
+  border-radius: 1rem;
+  box-shadow: $cool-shadow;
 }
 
 section {
@@ -212,16 +216,13 @@ ul.flavours {
   }
 }
 
-/* button {
-  padding: 1rem 2rem;
-} */
-
 #menu {
   container-type: inline-size;
   container-name: menu;
   width: 100%;
   margin: auto;
   max-width: 400px;
+  position: relative;
 }
 
 @keyframes slide {
@@ -361,14 +362,14 @@ aside {
   bottom: -100vh;
   height: 100vh;
   right: 0px;
+  background-color: $main-color;
+  box-shadow: $cool-shadow;
 
   ul {
     display: flex;
     flex-direction: column;
     gap: 3rem;
   }
-
-  background-color: rgba(0, 0, 0, 0.9);
 }
 
 input:checked + aside {
