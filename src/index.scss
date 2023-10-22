@@ -29,6 +29,23 @@ $purpple: #100b35;
   background-color: $purpple;
 }
 
+.spinner {
+  width: 100%;
+  margin: 5rem auto;
+
+  max-width: 200px;
+
+  animation: spin 2s linear infinite; /* Using the spin animation */
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    } /* Start from 0 degrees */
+    100% {
+      transform: rotate(360deg);
+    } /* End at 360 degrees (a full rotation) */
+  }
+}
+
 dialog {
   margin: auto;
   .content {
@@ -43,6 +60,18 @@ dialog {
     .buttons-container {
       display: flex;
       gap: 2rem;
+    }
+  }
+}
+
+#signin {
+  form {
+    display: flex;
+    flex-direction: column;
+    input {
+      width: 100%;
+      padding-left: 1rem;
+      background-color: orange !important;
     }
   }
 }

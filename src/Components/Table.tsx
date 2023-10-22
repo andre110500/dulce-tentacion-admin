@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import TableContext from "../Contexts/TableContext";
 import callToApi from "../functions/callToApi";
-
+import spinner from "../assets/spinner.svg";
 import AddProductForm from "./AddProductForm";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -81,8 +81,14 @@ function Table() {
   return (
     <section id="products">
       <h1>Productos</h1>
-      <div className="table-container">{isLoading ? "Loading" : table}</div>
-      <AddProductForm fetchProductsAndSetState={fetchProductsAndSetState} />
+      {isLoading ? (
+        <img className="spinner" src={spinner} alt="" />
+      ) : (
+        <>
+          <div className="table-container">{table}</div>
+          <AddProductForm fetchProductsAndSetState={fetchProductsAndSetState} />
+        </>
+      )}
     </section>
   );
 }

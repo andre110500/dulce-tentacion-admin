@@ -51,7 +51,7 @@ export default function Signin({ setIsUserOnline }) {
   }
 
   return (
-    <div>
+    <div id="signin">
       <button onClick={openDialog}>Login</button>
 
       <dialog ref={dialogRef}>

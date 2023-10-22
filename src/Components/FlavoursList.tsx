@@ -5,12 +5,13 @@ import ListContext from "../Contexts/ListContext";
 import ProductsMenu from "./ProductsMenu";
 import AddFlavourForm from "./AddFLavourForm";
 import { toPng } from "html-to-image";
-
+import spinner from "../assets/spinner.svg";
 const apiUrl = import.meta.env.VITE_API_URL;
 export default function FlavoursList() {
   const [dbFlavoursArr, setDbFlavoursArr] = useState();
   const [virtualFlavoursArr, setVirtualFlavoursArr] = useState();
   const elementRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
   const htmlToImageConvert = () => {
     toPng(elementRef.current, { cacheBust: false })
       .then((dataUrl) => {
@@ -53,6 +54,7 @@ export default function FlavoursList() {
   useEffect(() => {
     if (dbFlavoursArr) {
       setVirtualFlavoursArr(dbFlavoursArr);
+      setIsLoading(false);
     }
   }, [dbFlavoursArr]);
 
@@ -61,25 +63,33 @@ export default function FlavoursList() {
       <section>
         <h1>Sabores</h1>
 
-        <ul className="flavours">
-          {virtualFlavoursArr?.map((virtualFlavour, index) => (
-            <ListContext.Provider
-              value={{
-                virtualFlavoursArr,
-                setVirtualFlavoursArr,
-                fetchFlavoursAndSetState,
-                dbFlavoursArr,
-              }}
-            >
-              <FlavourItem
-                key={virtualFlavour._id}
-                virtualFlavour={virtualFlavour}
-                index={index}
-              />
-            </ListContext.Provider>
-          ))}
-        </ul>
-        <AddFlavourForm fetchFlavoursAndSetState={fetchFlavoursAndSetState} />
+        {isLoading ? (
+          <img src={spinner} className="spinner" alt="spinner" />
+        ) : (
+          <>
+            <ul className="flavours">
+              {virtualFlavoursArr.map((virtualFlavour, index) => (
+                <ListContext.Provider
+                  value={{
+                    virtualFlavoursArr,
+                    setVirtualFlavoursArr,
+                    fetchFlavoursAndSetState,
+                    dbFlavoursArr,
+                  }}
+                >
+                  <FlavourItem
+                    key={virtualFlavour._id}
+                    virtualFlavour={virtualFlavour}
+                    index={index}
+                  />
+                </ListContext.Provider>
+              ))}
+            </ul>
+            <AddFlavourForm
+              fetchFlavoursAndSetState={fetchFlavoursAndSetState}
+            />
+          </>
+        )}
       </section>
       <section>
         <ProductsMenu refe={elementRef} flavoursList={dbFlavoursArr} />
