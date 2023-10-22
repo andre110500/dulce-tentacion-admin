@@ -16,9 +16,13 @@ export default function Header() {
         </li>
       ) : (
         <>
-          <li>
-            <Signup />
-          </li>
+          {process.env.NODE_ENV == "production" ? (
+            ""
+          ) : (
+            <li>
+              <Signup />
+            </li>
+          )}
           <li>
             <Signin setIsUserOnline={setIsUserOnline} />
           </li>
