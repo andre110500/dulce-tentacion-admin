@@ -4,7 +4,7 @@ function LogoutButton({ setIsUserOnline }) {
     setIsUserOnline(false);
   }
 
-  return <button onClick={logout}>Logout</button>;
+  return <button onClick={logout}>Salir</button>;
 }
 
 export default LogoutButton;
