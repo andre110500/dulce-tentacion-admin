@@ -105,28 +105,9 @@ function FlavourItem({ virtualFlavour, index }) {
       <label htmlFor={`${virtualFlavour.name}-index`}>
         {virtualFlavour.name}
       </label>
-      <input
-        id={`${virtualFlavour.name}-index`}
-        disabled={!enableEdit}
-        onChange={(e) => {
-          const newValue = e.target.checked;
-          const virtualFlavoursArrCopy = [
-            ...structuredClone(virtualFlavoursArr),
-          ];
-          virtualFlavoursArrCopy[index].outOfStock = newValue;
-          setVirtualFlavoursArr(virtualFlavoursArrCopy);
-          console.log(`the new value is ${newValue}`);
-        }}
-        checked={virtualFlavour.outOfStock}
-        type="checkbox"
-        name={virtualFlavour.name}
-      />
-      <Buttons
-        index={index}
-        key={virtualFlavour._id}
-        enableEdit={enableEdit}
-        setEnableEdit={setEnableEdit}
-      />
+      {`${virtualFlavour.outOfStock}`}
+
+      <FlavourDialog virtualFlavour={virtualFlavour} />
     </li>
   );
 }
