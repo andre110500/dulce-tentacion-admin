@@ -9,10 +9,8 @@ export function ProductDialog({ virtualProduct }) {
   const outOfStockRef = useRef(null);
   const flavoursRef = useRef(null);
   const { fetchProductsAndSetState, productKeys } = useContext(TableContext);
-  console.log(` fetchP is: ${fetchProductsAndSetState}`);
-  console.log(`productskeys is : ${productKeys}`);
 
-  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showDeleConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const openDialog = () => {
     dialogRef.current.showModal();
@@ -75,11 +73,15 @@ export function ProductDialog({ virtualProduct }) {
       </button>
 
       <dialog className="edit-product" ref={dialogRef}>
-        {showConfirmation ? (
-          <div className="comfirmation">
+        {showDeleConfirmation ? (
+          <div className="delete-comfirmation">
             <h2>Estas seguro?</h2>
-            <button onClick={deleteProduct}>Aceptar</button>
-            <button onClick={() => setShowConfirmation(false)}>cancelar</button>
+            <div className="buttons-container">
+              <button onClick={deleteProduct}>Aceptar</button>
+              <button onClick={() => setShowDeleteConfirmation(false)}>
+                cancelar
+              </button>
+            </div>
           </div>
         ) : (
           ""
@@ -141,7 +143,7 @@ export function ProductDialog({ virtualProduct }) {
                 type="button"
                 className="delete"
                 onClick={() => {
-                  setShowConfirmation(true);
+                  setShowDeleteConfirmation(true);
                 }}
               >
                 borrar
