@@ -8,6 +8,22 @@ const showSuccessAlert = () => {
   });
 };
 
+const showConfirmAlert = (callback, settings) => {
+  return Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      callback(settings);
+    }
+  });
+};
+
 const showWelcomeAlert = () => {
   return Swal.fire({
     title: "Bienvenido",
@@ -40,4 +56,5 @@ export {
   showNotLoggedAlert,
   showUnknownErrorAlert,
   showWelcomeAlert,
+  showConfirmAlert,
 };

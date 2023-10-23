@@ -2,6 +2,7 @@ import React from "react";
 import callToApi from "../functions/callToApi";
 import { useState, useEffect, useContext, useRef } from "react";
 import ListContext from "../Contexts/ListContext";
+import { showConfirmAlert } from "../alerts";
 import FlavoursMenu from "./FlavoursMenu";
 import AddFlavourForm from "./AddFLavourForm";
 import { toPng } from "html-to-image";
@@ -163,7 +164,7 @@ function Buttons({
                 callback: fetchFlavoursAndSetState,
               };
 
-              callToApi(settings);
+              showConfirmAlert(callToApi, settings);
             }}
           />
           <input

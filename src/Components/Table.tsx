@@ -3,7 +3,7 @@ import TableContext from "../Contexts/TableContext";
 import callToApi from "../functions/callToApi";
 import spinner from "../assets/spinner.svg";
 import AddProductForm from "./AddProductForm";
-
+import { showConfirmAlert } from "../alerts";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 function Table() {
@@ -172,7 +172,9 @@ function Buttons({
                 callback: fetchProductsAndSetState,
               };
 
-              callToApi(settings);
+              showConfirmAlert(callToApi, settings);
+
+              ////
             }}
           >
             borrar
