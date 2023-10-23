@@ -233,13 +233,13 @@ export function Edit({ virtualProduct }) {
               required
             />
           </label>
-          <label>
+          <label className="outOfStock">
             No hay stock ?
             <input
-              defaultValue={virtualProduct.outOfStock}
+              type="checkbox"
+              defaultChecked={virtualProduct.outOfStock}
               ref={outOfStockRef}
               name="outOfStock"
-              placeholder="outOfStock"
               required
             />
           </label>

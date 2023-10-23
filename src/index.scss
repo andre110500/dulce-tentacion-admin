@@ -68,7 +68,17 @@ dialog {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      &.outOfStock {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        input {
+          width: 1.3rem;
+          height: 1.3rem;
+        }
+      }
     }
+
     input {
       padding: 0.2rem 0rem;
       padding-left: 0.3rem;
@@ -78,7 +88,7 @@ dialog {
     .buttons-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
+      gap: 0.8rem;
       justify-content: space-between;
       .delete {
         grid-column: 1/3;
@@ -170,21 +180,20 @@ main {
 
   table {
     margin: auto;
-    border-spacing: 20px;
+    border-spacing: 25px;
+    text-align: center;
+    th,
+    td {
+      max-width: 100px; /* Set the maximum width for table cells in the specific column */
+      overflow: hidden; /* Optional: Hide content that overflows the maximum width */
+      text-overflow: ellipsis; /* Optional: Add ellipsis (...) for text that overflows the maximum width */
+      white-space: nowrap; /* Optional: Prevent text from wrapping to the next line */
+    }
 
     tbody {
       tr {
         td {
-          border-radius: 0.5rem;
           overflow: hidden;
-
-          &.buttons-container {
-            display: flex;
-            gap: 2rem;
-            button {
-              border-radius: 0.5rem;
-            }
-          }
         }
       }
     }
