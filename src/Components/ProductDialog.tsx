@@ -1,5 +1,5 @@
 import React, { useRef, useContext, useState } from "react";
-import TableContext from "../Contexts/TableContext";
+import TableContext from "../Contexts/ProductsContext";
 import callToApi from "../functions/callToApi";
 export function ProductDialog({ virtualProduct }) {
   const dialogRef = useRef(null);

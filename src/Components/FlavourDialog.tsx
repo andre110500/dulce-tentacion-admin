@@ -1,5 +1,5 @@
 import React, { useRef, useContext, useState } from "react";
-import ListContext from "../Contexts/ListContext";
+import ListContext from "../Contexts/FlavoursContext";
 import callToApi from "../functions/callToApi";
 export function FlavourDialog({ virtualFlavour }) {
   const dialogRef = useRef(null);

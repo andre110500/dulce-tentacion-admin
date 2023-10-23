@@ -1,13 +1,13 @@
 import React from "react";
 
-import Table from "./Table";
+import ProductsTable from "./ProductsTable";
 
-import FlavoursList from "./FlavoursList";
+import FlavoursTable from "./FlavoursTable";
 export default function Home() {
   return (
     <>
-      <Table />
-      <FlavoursList />
+      <ProductsTable />
+      <FlavoursTable />
     </>
   );
 }

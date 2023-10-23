@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext, useRef } from "react";
-import TableContext from "../Contexts/TableContext";
+import TableContext from "../Contexts/ProductsContext";
 
 import spinner from "../assets/spinner.svg";
 
@@ -7,7 +7,7 @@ import { ProductDialog } from "./ProductDialog";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-function Table() {
+function ProductsTable() {
   const [virtualProductsArr, setVirtualProductsArr] = useState();
   const [dbProductsArr, setDbProductsArr] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -90,7 +90,7 @@ function Table() {
   );
 }
 
-export default Table;
+export default ProductsTable;
 
 function TableRow({ virtualProduct }) {
   const { productKeys } = useContext(TableContext);
