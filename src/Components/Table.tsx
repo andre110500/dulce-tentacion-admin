@@ -113,32 +113,10 @@ function TableRow({
       <tr id={virtualProduct._id}>
         {productKeys.map((key) => (
           //return a cell per key
-          <td key={`cell-${key}`}>
-            <input
-              value={virtualProduct[key]}
-              required={key === "flavours" ? false : true}
-              disabled={!enableEdit}
-              type={key === "flavours" ? "number" : "text"}
-              onChange={(e) => {
-                const newValue = e.target.value;
-                const virtualProductsArrCopy = [
-                  ...structuredClone(virtualProductsArr),
-                ];
-                virtualProductsArrCopy[index][key] = newValue;
-                setVirtualProductsArr(virtualProductsArrCopy);
-                console.log(`the new value is ${newValue}`);
-              }}
-            />
-          </td>
+          <td key={`cell-${key}`}>{`${virtualProduct[key]}`}</td>
         ))}
 
-        <td className="buttons-container">
-          {/*  <Buttons
-            key={`buttons-${virtualProduct._id}`}
-            enableEdit={enableEdit}
-            setEnableEdit={setEnableEdit}
-            index={index}
-          /> */}
+        <td>
           <Edit virtualProduct={virtualProduct} />
         </td>
       </tr>
@@ -146,7 +124,7 @@ function TableRow({
   );
 }
 
-export function Edit({ virtualProduct, index }) {
+export function Edit({ virtualProduct }) {
   const dialogRef = useRef(null);
   const nameRef = useRef(null);
   const priceRef = useRef(null);
@@ -212,9 +190,9 @@ export function Edit({ virtualProduct, index }) {
       <button onClick={openDialog}>Edit</button>
 
       <dialog ref={dialogRef}>
-        <div className="content">
-          <h2>Sign up</h2>
-          <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Nombre
             <input
               ref={nameRef}
               name="name"
@@ -222,6 +200,9 @@ export function Edit({ virtualProduct, index }) {
               placeholder="name"
               required
             />
+          </label>
+          <label>
+            Precio
             <input
               defaultValue={virtualProduct.price}
               ref={priceRef}
@@ -230,6 +211,9 @@ export function Edit({ virtualProduct, index }) {
               placeholder="price"
               required
             />
+          </label>
+          <label>
+            Sabores
             <input
               defaultValue={virtualProduct.flavours}
               ref={flavoursRef}
@@ -238,6 +222,9 @@ export function Edit({ virtualProduct, index }) {
               placeholder="flavours"
               required
             />
+          </label>
+          <label>
+            url de la imagen
             <input
               defaultValue={virtualProduct.imgUrl}
               ref={imgUrlRef}
@@ -245,6 +232,9 @@ export function Edit({ virtualProduct, index }) {
               placeholder="imgUrl"
               required
             />
+          </label>
+          <label>
+            No hay stock ?
             <input
               defaultValue={virtualProduct.outOfStock}
               ref={outOfStockRef}
@@ -252,16 +242,18 @@ export function Edit({ virtualProduct, index }) {
               placeholder="outOfStock"
               required
             />
-            <button onClick={deleteProduct}>borrar</button>
-            <div className="buttons-container">
-              <button type="submit">Accept</button>
+          </label>
+          <div className="buttons-container">
+            <button className="delete" onClick={deleteProduct}>
+              borrar
+            </button>
+            <button type="submit">Aceptar</button>
 
-              <button type="button" onClick={closeDialog}>
-                Close
-              </button>
-            </div>
-          </form>
-        </div>
+            <button type="button" onClick={closeDialog}>
+              Cancelar
+            </button>
+          </div>
+        </form>
       </dialog>
     </>
   );
