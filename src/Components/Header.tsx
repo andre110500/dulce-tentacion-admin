@@ -1,9 +1,10 @@
 import React, { useState, useContext } from "react";
 import Signup from "./Signup";
 import Signin from "./Signin";
-import logo from "../assets/react.svg";
+
 import LogoutButton from "./LogoutButton";
 import UserContext from "../Contexts/UserContext";
+import logo from "../assets/logo-white.png";
 
 export default function Header() {
   const { isUserOnline, setIsUserOnline } = useContext(UserContext);
@@ -28,13 +29,28 @@ export default function Header() {
           </li>
         </>
       )}
+      <li>
+        <a
+          href="https://dulce-tentacion-mp.netlify.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Tienda
+        </a>
+      </li>
     </ul>
   );
   return (
     <section id="header">
-      <a className="logo" href="">
-        <img src={logo} alt="" />
-      </a>
+      <img
+        className="logo"
+        onClick={() => {
+          window.scrollTo(0, 0);
+        }}
+        src={logo}
+        alt=""
+      />
+
       <nav>{tabs}</nav>
 
       <input type="checkbox" id="checkbox" />

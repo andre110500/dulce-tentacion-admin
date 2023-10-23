@@ -50,6 +50,9 @@ $cool-shadow: 0 0 5px rgba(0, 0, 0, 0.502);
 
 dialog {
   margin: auto;
+  background-color: black;
+  box-shadow: $cool-shadow;
+  border-radius: 0.5rem;
   .content {
     padding: 2rem;
     display: flex;
@@ -57,32 +60,33 @@ dialog {
     gap: 2rem;
     form {
       display: flex;
+      flex-direction: column;
       gap: 2rem;
+      input {
+        width: 100%;
+        padding-left: 1rem;
+        padding-left: 0.3rem;
+        text-align: center;
+        color: black;
+      }
     }
     .buttons-container {
       display: flex;
       gap: 2rem;
-    }
-  }
-}
-
-#signin {
-  form {
-    display: flex;
-    flex-direction: column;
-    input {
-      width: 100%;
-      padding-left: 1rem;
-      background-color: orange !important;
+      button {
+        background-color: white !important;
+        color: black;
+      }
     }
   }
 }
 
 #header {
   container-name: header;
+  color: white;
   z-index: 2;
   container-type: inline-size;
-  padding: 2rem 2rem;
+  padding: 1rem;
   font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: 1px;
@@ -90,11 +94,27 @@ dialog {
   position: sticky;
   top: 0;
   justify-content: space-between;
+
+  button {
+    background-color: transparent;
+    font-size: inherit;
+    font-weight: inherit;
+    cursor: pointer;
+  }
+
+  button:hover,
+  a:hover {
+    color: black;
+  }
+
   .logo {
-    img {
-      width: 3rem;
+    width: 6rem;
+    cursor: pointer;
+    &:hover {
+      filter: invert(100%);
     }
   }
+
   nav {
     display: flex;
     align-items: center;
@@ -163,6 +183,7 @@ main {
             text-align: center;
             font-style: inherit;
             padding: 0.5rem 0rem;
+            padding-left: 0.3rem;
           }
         }
       }
@@ -179,10 +200,16 @@ main section {
   background-color: $main-color;
   border-radius: 1rem;
   box-shadow: $cool-shadow;
-}
-
-section {
   padding: 2rem;
+  button,
+  input[type="submit"] {
+    text-transform: uppercase;
+    color: white;
+    background-color: black;
+  }
+  & > button {
+    width: 100%;
+  }
 }
 
 ul.flavours {
