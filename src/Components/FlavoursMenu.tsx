@@ -1,7 +1,7 @@
 import React from "react";
 import template from "../assets/flavours-template.png";
 
-export default function ProductsMenu({ flavoursList, refe }) {
+export default function FlavoursMenu({ flavoursList, refe }) {
   const ulStyle = {
     display: "flex",
     flexDirection: "column",

@@ -2,7 +2,7 @@ import React from "react";
 import callToApi from "../functions/callToApi";
 import { useState, useEffect, useContext, useRef } from "react";
 import ListContext from "../Contexts/ListContext";
-import ProductsMenu from "./ProductsMenu";
+import FlavoursMenu from "./FlavoursMenu";
 import AddFlavourForm from "./AddFLavourForm";
 import { toPng } from "html-to-image";
 import spinner from "../assets/spinner.svg";
@@ -92,7 +92,7 @@ export default function FlavoursList() {
         )}
       </section>
       <section>
-        <ProductsMenu refe={elementRef} flavoursList={dbFlavoursArr} />
+        <FlavoursMenu refe={elementRef} flavoursList={dbFlavoursArr} />
         <button onClick={htmlToImageConvert}>Descargar</button>
       </section>
     </>
