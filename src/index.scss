@@ -50,11 +50,23 @@ $cool-shadow: 0 0 5px rgba(0, 0, 0, 0.502);
 
 dialog {
   margin: auto;
+}
+
+dialog.edit-product {
   background-color: black;
   box-shadow: $cool-shadow;
   border-radius: 0.5rem;
   color: white;
-
+  position: relative;
+  .comfirmation {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    background-color: red;
+  }
   form {
     display: flex;
     padding: 2rem;
@@ -354,7 +366,7 @@ form.flavour {
 
   flex-wrap: wrap;
 
-  padding: 2rem 0rem;
+  padding: 2rem;
   .buttons-container {
     width: 180px;
 
@@ -364,6 +376,7 @@ form.flavour {
   }
   .input-container {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     gap: 1.2rem;

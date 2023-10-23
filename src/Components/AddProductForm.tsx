@@ -3,8 +3,17 @@ import { useState, useRef } from "react";
 import callToApi from "../functions/callToApi";
 
 export default function AddProductForm({ fetchProductsAndSetState }) {
-  const [showForm, setShowForm] = useState(false);
+  const dialogRef = useRef(null);
   const formRef = useRef(null);
+
+  const openDialog = () => {
+    dialogRef.current.showModal();
+  };
+
+  const closeDialog = () => {
+    dialogRef.current.close();
+  };
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -24,7 +33,7 @@ export default function AddProductForm({ fetchProductsAndSetState }) {
       method: "POST",
       body: JSON.stringify(product),
       callback: () => {
-        setShowForm(false);
+        closeDialog();
         fetchProductsAndSetState();
       },
     };
@@ -34,9 +43,9 @@ export default function AddProductForm({ fetchProductsAndSetState }) {
 
   return (
     <>
-      {!showForm ? (
-        <button onClick={() => setShowForm(true)}>Agregar</button>
-      ) : (
+      <button onClick={openDialog}>Agregar</button>
+
+      <dialog ref={dialogRef}>
         <form className="product" ref={formRef} onSubmit={handleSubmit}>
           <div className="input-container">
             <input type="text" name="name" placeholder="name" required />
@@ -50,10 +59,10 @@ export default function AddProductForm({ fetchProductsAndSetState }) {
           </div>
           <div className="buttons-container">
             <button>Ok</button>
-            <button onClick={() => setShowForm(false)}>Cancel</button>
+            <button onClick={closeDialog}>Cancel</button>
           </div>
         </form>
-      )}
+      </dialog>
     </>
   );
 }
