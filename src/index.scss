@@ -203,13 +203,31 @@ main {
 }
 
 .table-container {
+  $spacing-value: 25px;
   width: 100%;
   overflow-x: auto;
 
   table {
     margin: auto;
-    border-spacing: 25px;
+    border-collapse: collapse;
+    /*  border-spacing: $spacing-value; */
     text-align: center;
+    ////
+    td {
+      border: 0px solid transparent;
+      background-clip: padding-box;
+    }
+
+    tr > td + td {
+      border-left-width: $spacing-value;
+    }
+
+    tr > td {
+      border-top-width: $spacing-value;
+    }
+
+    ///
+
     th,
     td {
       max-width: 100px; /* Set the maximum width for table cells in the specific column */
@@ -235,9 +253,9 @@ main section {
   flex-direction: column;
   gap: 2rem;
   background-color: $main-color;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   box-shadow: $cool-shadow;
-  padding: 2rem;
+  padding: 2rem 1rem;
   button,
   input[type="submit"] {
     text-transform: uppercase;
