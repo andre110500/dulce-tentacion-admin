@@ -391,6 +391,10 @@ aside {
   right: 0px;
   background-color: $main-color;
   box-shadow: $cool-shadow;
+  text-align: left;
+  button {
+    text-align: inherit;
+  }
 
   ul {
     display: flex;
