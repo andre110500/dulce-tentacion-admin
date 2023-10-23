@@ -4,7 +4,8 @@ import { useState, useEffect, useContext, useRef } from "react";
 import ListContext from "../Contexts/ListContext";
 import { showConfirmAlert } from "../alerts";
 import FlavoursMenu from "./FlavoursMenu";
-import AddFlavourForm from "./AddFLavourForm";
+
+import { FlavourDialog } from "./FlavourDialog";
 import { toPng } from "html-to-image";
 import spinner from "../assets/spinner.svg";
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -67,29 +68,25 @@ export default function FlavoursList() {
         {isLoading ? (
           <img src={spinner} className="spinner" alt="spinner" />
         ) : (
-          <>
+          <ListContext.Provider
+            value={{
+              virtualFlavoursArr,
+              setVirtualFlavoursArr,
+              fetchFlavoursAndSetState,
+              dbFlavoursArr,
+            }}
+          >
             <ul className="flavours">
               {virtualFlavoursArr.map((virtualFlavour, index) => (
-                <ListContext.Provider
-                  value={{
-                    virtualFlavoursArr,
-                    setVirtualFlavoursArr,
-                    fetchFlavoursAndSetState,
-                    dbFlavoursArr,
-                  }}
-                >
-                  <FlavourItem
-                    key={virtualFlavour._id}
-                    virtualFlavour={virtualFlavour}
-                    index={index}
-                  />
-                </ListContext.Provider>
+                <FlavourItem
+                  key={virtualFlavour._id}
+                  virtualFlavour={virtualFlavour}
+                  index={index}
+                />
               ))}
             </ul>
-            <AddFlavourForm
-              fetchFlavoursAndSetState={fetchFlavoursAndSetState}
-            />
-          </>
+            <FlavourDialog virtualFlavour={undefined} />
+          </ListContext.Provider>
         )}
       </section>
       <section>
