@@ -17,7 +17,7 @@ export default function FlavoursMenu({ flavoursList, refe }) {
               !flavour.outOfStock
             ) {
               return (
-                <li>
+                <li key={flavour._id}>
                   <span>.</span>
                   {flavour.name}
                 </li>
@@ -32,7 +32,7 @@ export default function FlavoursMenu({ flavoursList, refe }) {
               !flavour.outOfStock
             ) {
               return (
-                <li>
+                <li key={flavour._id}>
                   <span>.</span>
                   {flavour.name}
                 </li>

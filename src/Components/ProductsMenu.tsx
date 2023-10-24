@@ -13,7 +13,7 @@ export default function ProductsMenu({ productsList, refe }) {
       <div className="uls-container">
         <ul className="first">
           {sortedProductsList.map((product) => (
-            <li>
+            <li key={product._id}>
               <span>{product.name}</span> <span>${product.price}</span>
             </li>
           ))}
