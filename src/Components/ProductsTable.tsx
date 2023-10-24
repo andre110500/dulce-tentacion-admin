@@ -12,22 +12,6 @@ function ProductsTable() {
   const [dbProductsArr, setDbProductsArr] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
-  const targetElementRef = useRef(null);
-
-  const [url, setUrl] = useState("");
-
-  const captureElement = () => {
-    if (targetElementRef.current) {
-      const scale = 4; // Increase the scale for higher resolution (e.g., 2 for double resolution)
-
-      html2canvas(targetElementRef.current, { scale }).then((canvas) => {
-        // Convert canvas to data URL as a JPG image
-        const imgData = canvas.toDataURL("image/jpeg");
-        setUrl(imgData);
-      });
-    }
-  };
-
   async function fetchProductsAndSetState() {
     const requestOptions = {
       headers: {
@@ -82,49 +66,72 @@ function ProductsTable() {
     </table>
   );
   return (
-    <>
+    <TableContext.Provider
+      value={{
+        productKeys,
+        fetchProductsAndSetState,
+        virtualProductsArr,
+        setVirtualProductsArr,
+        dbProductsArr,
+        setDbProductsArr,
+      }}
+    >
       <section id="products">
         <h1>Productos</h1>
         {isLoading ? (
           <img className="spinner" src={spinner} alt="" />
         ) : (
-          <TableContext.Provider
-            value={{
-              productKeys,
-              fetchProductsAndSetState,
-              virtualProductsArr,
-              setVirtualProductsArr,
-              dbProductsArr,
-              setDbProductsArr,
-            }}
-          >
+          <>
             <div className="table-container">{table}</div>
             <ProductDialog virtualProduct={undefined} />
-          </TableContext.Provider>
+          </>
         )}
       </section>
-      {isLoading ? (
-        "Loading"
-      ) : (
-        <section className="as">
-          <ProductsMenu refe={targetElementRef} productsList={dbProductsArr}>
-            <img
-              src={url}
-              style={{ display: url ? "block" : "none" }}
-              className="downloadable"
-              alt="Captured Image"
-            />
-          </ProductsMenu>
-          <button
-            onClick={() => {
-              captureElement();
-            }}
-          >
-            Compartir
-          </button>
-        </section>
+      {isLoading ? "Loading" : <SectionAs />}
+    </TableContext.Provider>
+  );
+}
+
+function SectionAs() {
+  const targetElementRef = useRef(null);
+  const { dbProductsArr } = useContext(TableContext);
+  const [shareData, setShareData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function getDataToShare() {
+    setIsLoading(true);
+    const canvas = await html2canvas(targetElementRef.current);
+    canvas.toBlob(async (blob) => {
+      const files = [new File([blob], "image.png", { type: blob.type })];
+      const shareData = {
+        text: "Some text",
+        title: "Some title",
+        files,
+      };
+      setShareData(shareData);
+      setIsLoading(false);
+    });
+  }
+
+  async function sendShare() {
+    try {
+      await navigator.share(shareData);
+      console.log("File was shared successfully");
+      setShareData(null);
+    } catch (err) {
+      console.error(err.name, err.message);
+    }
+  }
+  return (
+    <section className="as">
+      <ProductsMenu refe={targetElementRef} productsList={dbProductsArr} />
+      {!shareData && (
+        <button onClick={getDataToShare} disabled={isLoading}>
+          {isLoading ? "CARGANDO" : "GENERAR IMAGEN"}
+        </button>
       )}
-    </>
+      {shareData && <button onClick={sendShare}>COMPARTIR IMAGEN</button>}
+    </section>
   );
 }
 

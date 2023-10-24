@@ -1,7 +1,7 @@
 import React from "react";
 import template from "../assets/products-template.png";
 
-export default function ProductsMenu({ productsList, refe, children }) {
+export default function ProductsMenu({ productsList, refe }) {
   const sortedProductsList = productsList.sort((a, b) => b.price - a.price);
   function getPriceByFlavoursQuantity(number) {
     return sortedProductsList.find((obj) => obj.flavours === number).price;
@@ -10,7 +10,7 @@ export default function ProductsMenu({ productsList, refe, children }) {
   return (
     <div ref={refe} id="products-menu" className="menu">
       <img src={template} alt="" style={{ width: "100%" }} />
-      {children}
+
       <div className="uls-container">
         <ul className="first">
           {sortedProductsList.map((product) => (
