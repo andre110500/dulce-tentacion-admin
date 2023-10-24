@@ -304,6 +304,10 @@ ul.flavours {
   max-width: 400px;
   position: relative;
   container-type: inline-size;
+
+  img {
+    vertical-align: middle;
+  }
 }
 
 #products-menu {
@@ -361,6 +365,21 @@ section > button {
 button {
   height: 30px;
   width: 80px;
+}
+
+section.as {
+  position: relative;
+  .downloadable {
+    position: absolute;
+    width: 100%;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    max-width: 400px;
+    outline: 1px solid black;
+  }
 }
 
 @container products-menu (min-width:0px) {

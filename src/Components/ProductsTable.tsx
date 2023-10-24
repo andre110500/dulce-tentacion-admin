@@ -2,7 +2,7 @@ import { useEffect, useState, useContext, useRef } from "react";
 import TableContext from "../Contexts/ProductsContext";
 import ProductsMenu from "./ProductsMenu";
 import spinner from "../assets/spinner.svg";
-import htmlToImageConvert from "../functions/htmlToImageConvert";
+import html2canvas from "html2canvas";
 import { ProductDialog } from "./ProductDialog";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -11,7 +11,23 @@ function ProductsTable() {
   const [virtualProductsArr, setVirtualProductsArr] = useState();
   const [dbProductsArr, setDbProductsArr] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const elementRef = useRef(null);
+
+  const targetElementRef = useRef(null);
+
+  const [url, setUrl] = useState("");
+
+  const captureElement = () => {
+    if (targetElementRef.current) {
+      const scale = 4; // Increase the scale for higher resolution (e.g., 2 for double resolution)
+
+      html2canvas(targetElementRef.current, { scale }).then((canvas) => {
+        // Convert canvas to data URL as a JPG image
+        const imgData = canvas.toDataURL("image/jpeg");
+        setUrl(imgData);
+      });
+    }
+  };
+
   async function fetchProductsAndSetState() {
     const requestOptions = {
       headers: {
@@ -90,15 +106,21 @@ function ProductsTable() {
       {isLoading ? (
         "Loading"
       ) : (
-        <section>
-          <ProductsMenu refe={elementRef} productsList={dbProductsArr} />
+        <section className="as">
+          <ProductsMenu refe={targetElementRef} productsList={dbProductsArr}>
+            <img
+              src={url}
+              style={{ display: url ? "block" : "none" }}
+              className="downloadable"
+              alt="Captured Image"
+            />
+          </ProductsMenu>
           <button
             onClick={() => {
-              console.log("hoals");
-              htmlToImageConvert(elementRef);
+              captureElement();
             }}
           >
-            Descargar
+            Compartir
           </button>
         </section>
       )}

@@ -2,7 +2,7 @@ import React from "react";
 
 import { useState, useEffect, useContext, useRef } from "react";
 import ListContext from "../Contexts/FlavoursContext";
-import htmlToImageConvert from "../functions/htmlToImageConvert";
+
 import FlavoursMenu from "./FlavoursMenu";
 
 import { FlavourDialog } from "./FlavourDialog";
@@ -97,8 +97,7 @@ export default function FlavoursTable() {
         <FlavoursMenu refe={elementRef} flavoursList={dbFlavoursArr} />
         <button
           onClick={() => {
-            console.log("hoals");
-            htmlToImageConvert(elementRef);
+            console.log("sup");
           }}
         >
           Descargar
