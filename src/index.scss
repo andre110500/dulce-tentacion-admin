@@ -379,7 +379,7 @@ button {
     font-weight: bold;
     letter-spacing: 0.3cqw;
     word-spacing: 0.5cqw;
-    padding: 1cqw 8cqw;
+    padding: 1cqw 12cqw;
     font-size: 3.276cqw;
     color: #dc1537;
     h2 {
@@ -390,11 +390,11 @@ button {
       flex-direction: column;
       gap: 2cqw;
       li {
-        white-space: nowrap;
-
         display: grid;
+        align-items: center;
         grid-template-columns: 1fr 1fr;
         gap: 5cqw;
+
         span.line-through {
           text-decoration: line-through;
         }
