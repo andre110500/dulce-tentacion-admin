@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import TableContext from "../Contexts/ProductsContext";
-
+import ProductsMenu from "./ProductsMenu";
 import spinner from "../assets/spinner.svg";
-
+import htmlToImageConvert from "../functions/htmlToImageConvert";
 import { ProductDialog } from "./ProductDialog";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -11,7 +11,7 @@ function ProductsTable() {
   const [virtualProductsArr, setVirtualProductsArr] = useState();
   const [dbProductsArr, setDbProductsArr] = useState();
   const [isLoading, setIsLoading] = useState(true);
-
+  const elementRef = useRef(null);
   async function fetchProductsAndSetState() {
     const requestOptions = {
       headers: {
@@ -66,27 +66,43 @@ function ProductsTable() {
     </table>
   );
   return (
-    <section id="products">
-      <h1>Productos</h1>
+    <>
+      <section id="products">
+        <h1>Productos</h1>
+        {isLoading ? (
+          <img className="spinner" src={spinner} alt="" />
+        ) : (
+          <TableContext.Provider
+            value={{
+              productKeys,
+              fetchProductsAndSetState,
+              virtualProductsArr,
+              setVirtualProductsArr,
+              dbProductsArr,
+              setDbProductsArr,
+            }}
+          >
+            <div className="table-container">{table}</div>
+            <ProductDialog virtualProduct={undefined} />
+          </TableContext.Provider>
+        )}
+      </section>
       {isLoading ? (
-        <img className="spinner" src={spinner} alt="" />
+        "Loading"
       ) : (
-        <TableContext.Provider
-          value={{
-            productKeys,
-            fetchProductsAndSetState,
-            virtualProductsArr,
-            setVirtualProductsArr,
-            dbProductsArr,
-            setDbProductsArr,
-          }}
-        >
-          <div className="table-container">{table}</div>
-
-          <ProductDialog virtualProduct={undefined} />
-        </TableContext.Provider>
+        <section>
+          <ProductsMenu refe={elementRef} productsList={dbProductsArr} />
+          <button
+            onClick={() => {
+              console.log("hoals");
+              htmlToImageConvert(elementRef);
+            }}
+          >
+            Descargar
+          </button>
+        </section>
       )}
-    </section>
+    </>
   );
 }
 

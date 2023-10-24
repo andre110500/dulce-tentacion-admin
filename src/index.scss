@@ -298,13 +298,20 @@ ul.flavours {
   }
 }
 
-#menu {
-  container-type: inline-size;
-  container-name: menu;
+.menu {
   width: 100%;
   margin: auto;
   max-width: 400px;
   position: relative;
+  container-type: inline-size;
+}
+
+#products-menu {
+  container-name: products-menu;
+}
+
+#flavours-menu {
+  container-name: flavours-menu;
 }
 
 @keyframes slide {
@@ -356,7 +363,56 @@ button {
   width: 80px;
 }
 
-@container menu  (min-width:0px) {
+@container products-menu (min-width:0px) {
+  .uls-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5cqw;
+    font-weight: bold;
+    letter-spacing: 0.3cqw;
+    word-spacing: 0.5cqw;
+    padding: 1cqw 8cqw;
+    font-size: 3.276cqw;
+    color: #dc1537;
+    h2 {
+      text-align: center;
+    }
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 2cqw;
+      li {
+        white-space: nowrap;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5cqw;
+        span.line-through {
+          text-decoration: line-through;
+        }
+        & span:first-child {
+          text-align: right;
+        }
+      }
+      span {
+        font-size: 5cqw;
+      }
+    }
+    ul.second {
+      padding-left: 5cqw;
+    }
+  }
+}
+
+@container flavours-menu  (min-width:0px) {
   .uls-container {
     position: absolute;
     top: 50%;
@@ -373,6 +429,7 @@ button {
     word-spacing: 0.5cqw;
     padding: 1cqw 3cqw;
     font-size: 3.276cqw;
+
     ul {
       li {
         white-space: nowrap;

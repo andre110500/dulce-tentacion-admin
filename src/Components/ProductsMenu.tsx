@@ -1,44 +1,52 @@
 import React from "react";
-import template from "../assets/flavours-template.png";
+import template from "../assets/products-template.png";
 
-export default function FlavoursMenu({ flavoursList, refe }) {
-  const ulStyle = {
-    display: "flex",
-    flexDirection: "column",
-  };
+export default function ProductsMenu({ productsList, refe }) {
+  const sortedProductsList = productsList.sort((a, b) => b.price - a.price);
+  function getPriceByFlavoursQuantity(number) {
+    return sortedProductsList.find((obj) => obj.flavours === number).price;
+  }
+
   return (
-    <div ref={refe} id="menu">
+    <div ref={refe} id="products-menu" className="menu">
       <img src={template} alt="" style={{ width: "100%" }} />
       <div className="uls-container">
-        <ul className="first" style={ulStyle}>
-          {flavoursList?.map((flavour, index) => {
-            if (
-              index < Math.floor(flavoursList.length / 2) &&
-              !flavour.outOfStock
-            ) {
-              return (
-                <li>
-                  <span>.</span>
-                  {flavour.name}
-                </li>
-              );
-            }
-          })}
+        <ul className="first">
+          {sortedProductsList.map((product) => (
+            <li>
+              <span>{product.name}</span> <span>${product.price}</span>
+            </li>
+          ))}
         </ul>
-        <ul className="second" style={{ ...ulStyle }}>
-          {flavoursList?.map((flavour, index) => {
-            if (
-              index >= Math.floor(flavoursList.length / 2) &&
-              !flavour.outOfStock
-            ) {
-              return (
-                <li>
-                  <span>.</span>
-                  {flavour.name}
-                </li>
-              );
-            }
-          })}
+        <h2>Combos con descuento:</h2>
+        <ul>
+          <li>
+            <span>2u 1 kg</span>
+            <p>
+              <span className="line-through">
+                ${getPriceByFlavoursQuantity(4)}
+              </span>
+              <span> ${getPriceByFlavoursQuantity(4) * 2 - 300}</span>
+            </p>
+          </li>
+          <li>
+            <span>2u 1/2 kg</span>
+            <p>
+              <span className="line-through">
+                ${getPriceByFlavoursQuantity(3)}
+              </span>
+              <span> ${getPriceByFlavoursQuantity(3) * 2 - 200}</span>
+            </p>
+          </li>
+          <li>
+            <span>2u 1/4 kg</span>
+            <p>
+              <span className="line-through">
+                ${getPriceByFlavoursQuantity(2)}
+              </span>
+              <span> ${getPriceByFlavoursQuantity(2) * 2 - 200}</span>
+            </p>
+          </li>
         </ul>
       </div>
     </div>

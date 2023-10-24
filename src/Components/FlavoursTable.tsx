@@ -1,12 +1,12 @@
 import React from "react";
-import callToApi from "../functions/callToApi";
+
 import { useState, useEffect, useContext, useRef } from "react";
 import ListContext from "../Contexts/FlavoursContext";
-import { showConfirmAlert } from "../alerts";
+import htmlToImageConvert from "../functions/htmlToImageConvert";
 import FlavoursMenu from "./FlavoursMenu";
 
 import { FlavourDialog } from "./FlavourDialog";
-import { toPng } from "html-to-image";
+
 import spinner from "../assets/spinner.svg";
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -15,19 +15,6 @@ export default function FlavoursTable() {
   const [virtualFlavoursArr, setVirtualFlavoursArr] = useState();
   const elementRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  const htmlToImageConvert = () => {
-    toPng(elementRef.current, { cacheBust: false })
-      .then((dataUrl) => {
-        const link = document.createElement("a");
-        link.download = "my-image-name.png";
-        link.href = dataUrl;
-        link.click();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   async function fetchFlavoursAndSetState() {
     const requestOptions = {
@@ -108,7 +95,14 @@ export default function FlavoursTable() {
       </section>
       <section>
         <FlavoursMenu refe={elementRef} flavoursList={dbFlavoursArr} />
-        <button onClick={htmlToImageConvert}>Descargar</button>
+        <button
+          onClick={() => {
+            console.log("hoals");
+            htmlToImageConvert(elementRef);
+          }}
+        >
+          Descargar
+        </button>
       </section>
     </>
   );
