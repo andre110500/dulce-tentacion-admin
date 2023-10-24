@@ -365,6 +365,32 @@ section > button {
 button {
   height: 30px;
   width: 80px;
+  &:disabled {
+    opacity: 0.66;
+  }
+}
+
+.loadingDots {
+  outline: 2px red solid;
+  &::after {
+    content: " ";
+    animation: loadingDots 3s infinite steps(3);
+  }
+}
+
+@keyframes loadingDots {
+  0% {
+    content: " ";
+  }
+  33.36% {
+    content: " .";
+  }
+  66.66% {
+    content: " . .";
+  }
+  100% {
+    content: " . . .";
+  }
 }
 
 section.as {

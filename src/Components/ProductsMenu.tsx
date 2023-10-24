@@ -25,7 +25,7 @@ export default function ProductsMenu({ productsList, refe }) {
             <span>2u 1 kg</span>
             <p>
               <span className="line-through">
-                ${getPriceByFlavoursQuantity(4)}
+                ${getPriceByFlavoursQuantity(4) * 2}
               </span>
               <span> ${getPriceByFlavoursQuantity(4) * 2 - 300}</span>
             </p>
@@ -34,7 +34,7 @@ export default function ProductsMenu({ productsList, refe }) {
             <span>2u 1/2 kg</span>
             <p>
               <span className="line-through">
-                ${getPriceByFlavoursQuantity(3)}
+                ${getPriceByFlavoursQuantity(3) * 2}
               </span>
               <span> ${getPriceByFlavoursQuantity(3) * 2 - 200}</span>
             </p>
@@ -43,7 +43,7 @@ export default function ProductsMenu({ productsList, refe }) {
             <span>2u 1/4 kg</span>
             <p>
               <span className="line-through">
-                ${getPriceByFlavoursQuantity(2)}
+                ${getPriceByFlavoursQuantity(2) * 2}
               </span>
               <span> ${getPriceByFlavoursQuantity(2) * 2 - 200}</span>
             </p>

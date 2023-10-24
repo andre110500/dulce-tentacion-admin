@@ -125,11 +125,15 @@ function SectionAs() {
   return (
     <section className="as">
       <ProductsMenu refe={targetElementRef} productsList={dbProductsArr} />
-      {!shareData && (
-        <button onClick={getDataToShare} disabled={isLoading}>
-          {isLoading ? "CARGANDO" : "GENERAR IMAGEN"}
+      {!shareData && !isLoading && (
+        <button onClick={getDataToShare}>GENERAR IMAGEN</button>
+      )}
+      {isLoading && (
+        <button className="loadingDots" disabled>
+          CARGANDO
         </button>
       )}
+
       {shareData && <button onClick={sendShare}>COMPARTIR IMAGEN</button>}
     </section>
   );
