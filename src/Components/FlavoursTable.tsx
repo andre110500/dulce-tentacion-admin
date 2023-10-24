@@ -8,12 +8,13 @@ import FlavoursMenu from "./FlavoursMenu";
 import { FlavourDialog } from "./FlavourDialog";
 
 import spinner from "../assets/spinner.svg";
+import ShareMenuSection from "./ShareMenuSection";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function FlavoursTable() {
   const [dbFlavoursArr, setDbFlavoursArr] = useState();
   const [virtualFlavoursArr, setVirtualFlavoursArr] = useState();
-  const elementRef = useRef(null);
+  const flavoursMenuRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
 
   async function fetchFlavoursAndSetState() {
@@ -73,36 +74,33 @@ export default function FlavoursTable() {
   );
 
   return (
-    <>
+    <ListContext.Provider
+      value={{
+        virtualFlavoursArr,
+        setVirtualFlavoursArr,
+        fetchFlavoursAndSetState,
+        dbFlavoursArr,
+      }}
+    >
       <section>
         <h1>Sabores</h1>
 
         {isLoading ? (
           <img src={spinner} className="spinner" alt="spinner" />
         ) : (
-          <ListContext.Provider
-            value={{
-              virtualFlavoursArr,
-              setVirtualFlavoursArr,
-              fetchFlavoursAndSetState,
-              dbFlavoursArr,
-            }}
-          >
+          <>
             <div className="table-container">{table}</div>
             <FlavourDialog virtualFlavour={undefined} />
-          </ListContext.Provider>
+          </>
         )}
       </section>
-      <section>
-        <FlavoursMenu refe={elementRef} flavoursList={dbFlavoursArr} />
-        <button
-          onClick={() => {
-            console.log("sup");
-          }}
-        >
-          Descargar
-        </button>
-      </section>
-    </>
+      {isLoading ? (
+        "Loading"
+      ) : (
+        <ShareMenuSection targetElementRef={flavoursMenuRef}>
+          <FlavoursMenu refe={flavoursMenuRef} flavoursList={dbFlavoursArr} />
+        </ShareMenuSection>
+      )}
+    </ListContext.Provider>
   );
 }
