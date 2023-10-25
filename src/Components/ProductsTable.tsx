@@ -6,7 +6,7 @@ import html2canvas from "html2canvas";
 import { ProductDialog } from "./ProductDialog";
 import ShareMenuSection from "./ShareMenuSection";
 const apiUrl = import.meta.env.VITE_API_URL;
-
+import gear from "../assets/gear.svg";
 export default function ProductsTable() {
   const [virtualProductsArr, setVirtualProductsArr] = useState();
   const [dbProductsArr, setDbProductsArr] = useState();
@@ -54,6 +54,10 @@ export default function ProductsTable() {
           {productKeys.map((key) => (
             <th key={`product-hcell-${key}`}>{key}</th>
           ))}
+          <th>
+            {" "}
+            <img src={gear} alt="" />
+          </th>
         </tr>
       </thead>
       <tbody>

@@ -69,7 +69,7 @@ export function ProductDialog({ virtualProduct }) {
   return (
     <>
       <button onClick={openDialog}>
-        {virtualProduct ? "Edit" : "Agregar"}
+        {virtualProduct ? "Editar" : "Agregar"}
       </button>
 
       <dialog className="edit-product" ref={dialogRef}>

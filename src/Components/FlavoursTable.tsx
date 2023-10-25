@@ -2,7 +2,7 @@ import React from "react";
 
 import { useState, useEffect, useContext, useRef } from "react";
 import ListContext from "../Contexts/FlavoursContext";
-
+import gear from "../assets/gear.svg";
 import FlavoursMenu from "./FlavoursMenu";
 
 import { FlavourDialog } from "./FlavourDialog";
@@ -56,6 +56,9 @@ export default function FlavoursTable() {
         <tr>
           <th>Sabor</th>
           <th>OutOfStock</th>
+          <th>
+            <img src={gear} alt="" />
+          </th>
         </tr>
       </thead>
       <tbody>

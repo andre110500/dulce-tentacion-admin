@@ -210,23 +210,8 @@ main {
   table {
     margin: auto;
     border-collapse: collapse;
-    /*  border-spacing: $spacing-value; */
+
     text-align: center;
-    ////
-    td {
-      border: 0px solid transparent;
-      background-clip: padding-box;
-    }
-
-    tr > td + td {
-      border-left-width: $spacing-value;
-    }
-
-    tr > td {
-      border-top-width: $spacing-value;
-    }
-
-    ///
 
     th,
     td {
@@ -234,6 +219,16 @@ main {
       overflow: hidden; /* Optional: Hide content that overflows the maximum width */
       text-overflow: ellipsis; /* Optional: Add ellipsis (...) for text that overflows the maximum width */
       white-space: nowrap; /* Optional: Prevent text from wrapping to the next line */
+      border: 1px solid black;
+      padding: 0.2rem;
+    }
+
+    th {
+      img {
+        width: 1.5rem;
+        display: block;
+        margin: auto;
+      }
     }
 
     tbody {
@@ -365,6 +360,7 @@ section > button {
 button {
   height: 30px;
   width: 80px;
+  border-radius: 0.5rem;
   &:disabled {
     opacity: 0.66;
   }

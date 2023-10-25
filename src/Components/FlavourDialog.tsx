@@ -63,7 +63,7 @@ export function FlavourDialog({ virtualFlavour }) {
   return (
     <>
       <button onClick={openDialog}>
-        {virtualFlavour ? "Edit" : "Agregar"}
+        {virtualFlavour ? "Editar" : "Agregar"}
       </button>
 
       <dialog className="edit-product" ref={dialogRef}>
