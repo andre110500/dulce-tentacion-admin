@@ -60,7 +60,7 @@ export default function FlavoursTable() {
       </thead>
       <tbody>
         {virtualFlavoursArr?.map((virtualFlavour) => (
-          <tr>
+          <tr key={`flavour-row-${virtualFlavour._id}`}>
             <td>{`${virtualFlavour.name}`}</td>
             <td>{`${virtualFlavour.outOfStock}`}</td>
 
