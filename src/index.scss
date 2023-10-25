@@ -29,6 +29,7 @@ $cool-shadow: 0 0 5px rgba(0, 0, 0, 0.502);
 #footer {
   background-color: $main-color;
   box-shadow: $cool-shadow;
+  font-weight: 500;
 }
 
 .spinner {
@@ -142,11 +143,13 @@ dialog.edit-product {
   position: sticky;
   top: 0;
   justify-content: space-between;
+  text-transform: uppercase;
 
   button {
     background-color: transparent;
     font-size: inherit;
     font-weight: inherit;
+    text-transform: inherit;
     cursor: pointer;
   }
 
@@ -169,6 +172,11 @@ dialog.edit-product {
     ul {
       display: flex;
       gap: 2rem;
+      li {
+        display: flex;
+        align-items: center;
+        justify-items: center;
+      }
     }
   }
   #checkbox {
@@ -251,9 +259,7 @@ main section {
   border-radius: 0.5rem;
   box-shadow: $cool-shadow;
   padding: 2rem 1rem;
-  button,
-  input[type="submit"] {
-    text-transform: uppercase;
+  button {
     color: white;
     background-color: black;
   }
@@ -361,6 +367,7 @@ button {
   height: 30px;
   width: 80px;
   border-radius: 0.5rem;
+  text-transform: uppercase;
   &:disabled {
     opacity: 0.66;
   }
