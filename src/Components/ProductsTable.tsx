@@ -52,7 +52,7 @@ export default function ProductsTable() {
       <thead>
         <tr>
           {productKeys.map((key) => (
-            <th key={`hcell-${key}`}>{key}</th>
+            <th key={`product-hcell-${key}`}>{key}</th>
           ))}
         </tr>
       </thead>
@@ -60,7 +60,10 @@ export default function ProductsTable() {
         {virtualProductsArr?.map((virtualProduct) => (
           //return a row per product
 
-          <TableRow virtualProduct={virtualProduct} />
+          <TableRow
+            key={`product-row-${virtualProduct._id}`}
+            virtualProduct={virtualProduct}
+          />
         ))}
       </tbody>
     </table>
@@ -105,7 +108,9 @@ function TableRow({ virtualProduct }) {
       <tr id={virtualProduct._id}>
         {productKeys.map((key) => (
           //return a cell per key
-          <td key={`cell-${key}`}>{`${virtualProduct[key]}`}</td>
+          <td
+            key={`product-cell-${virtualProduct._id}-${key}`}
+          >{`${virtualProduct[key]}`}</td>
         ))}
 
         <td>
