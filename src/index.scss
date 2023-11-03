@@ -54,7 +54,35 @@ dialog {
   position: fixed !important;
 }
 
-dialog.edit-product {
+dialog.user {
+  padding: 2rem;
+  color: black;
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    form {
+      display: flex;
+
+      gap: 2rem;
+
+      input {
+        text-align: center;
+        padding: 0.5rem;
+        border: solid black 1px;
+      }
+    }
+    .buttons-container {
+      display: flex;
+      justify-content: space-around;
+      button {
+        border: solid black 1px;
+      }
+    }
+  }
+}
+
+dialog.crud {
   background-color: black;
   box-shadow: $cool-shadow;
   border-radius: 0.5rem;
@@ -151,6 +179,10 @@ dialog.edit-product {
     font-weight: inherit;
     text-transform: inherit;
     cursor: pointer;
+  }
+
+  ul > li > button {
+    width: auto;
   }
 
   button:hover,

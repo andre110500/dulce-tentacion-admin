@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
-import { showWelcomeAlert } from "../alerts";
+import { showWelcomeAlert, show_Alert } from "../alerts";
 
 export default function Signin({ setIsUserOnline }) {
   const dialogRef = useRef(null);
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
-  const [error, setError] = useState({ password: false, username: false });
+
   const openDialog = () => {
     dialogRef.current.showModal();
   };
@@ -36,41 +36,42 @@ export default function Signin({ setIsUserOnline }) {
       // Save the JWT token string to local storage
       localStorage.setItem("jwtToken", tokenString);
       setIsUserOnline(true);
-      showWelcomeAlert();
-
       closeDialog();
+      showWelcomeAlert();
     } else {
       if (response.status === 404) {
-        console.log("usurario o contra incorrecta");
-        setError({ username: true, password: false });
+        closeDialog();
+        show_Alert("Usuario no encontrado");
+        // user not found
       }
       if (response.status === 401) {
-        setError({ password: true, username: false });
+        //user found but the password doesnt match
+        closeDialog();
+        show_Alert("Contrasenia incorrecta");
       }
     }
   }
 
   return (
-    <div id="signin">
-      <button onClick={openDialog}>Login</button>
+    <>
+      <button onClick={openDialog}>Inicia sesión</button>
 
-      <dialog ref={dialogRef}>
+      <dialog ref={dialogRef} className="user">
         <div className="content">
           <h2>Inicia sesión</h2>
           <form id="signin-form" onSubmit={handleSubmit}>
             <input ref={usernameRef} name="username" placeholder="username" />
-            {error.username ? "Usuario incorrecto" : ""}
+
             <input ref={passwordRef} name="password" placeholder="password" />
-            {error.password ? "Contrasenia incorrecta" : ""}
           </form>
           <div className="buttons-container">
             <button type="submit" form="signin-form">
-              Accept
+              Ok
             </button>
-            <button onClick={closeDialog}>Close</button>
+            <button onClick={closeDialog}>Salir</button>
           </div>
         </div>
       </dialog>
-    </div>
+    </>
   );
 }

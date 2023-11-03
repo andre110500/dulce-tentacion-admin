@@ -72,7 +72,7 @@ export function ProductDialog({ virtualProduct }) {
         {virtualProduct ? "Editar" : "Agregar"}
       </button>
 
-      <dialog className="edit-product" ref={dialogRef}>
+      <dialog className="crud" ref={dialogRef}>
         {showDeleConfirmation ? (
           <div className="delete-comfirmation">
             <h2>Estas seguro?</h2>

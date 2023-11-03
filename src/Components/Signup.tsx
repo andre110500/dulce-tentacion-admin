@@ -35,10 +35,10 @@ export default function Signup() {
   }
 
   return (
-    <div>
-      <button onClick={openDialog}>Signup</button>
+    <>
+      <button onClick={openDialog}>Crea una cuenta</button>
 
-      <dialog ref={dialogRef}>
+      <dialog ref={dialogRef} className="user">
         <div className="content">
           <h2>Sign up</h2>
           <form id="signup-form" onSubmit={handleSubmit}>
@@ -47,12 +47,12 @@ export default function Signup() {
           </form>
           <div className="buttons-container">
             <button type="submit" form="signup-form">
-              Accept
+              Ok
             </button>
-            <button onClick={closeDialog}>Close</button>
+            <button onClick={closeDialog}>Salir</button>
           </div>
         </div>
       </dialog>
-    </div>
+    </>
   );
 }

@@ -42,6 +42,15 @@ const showNotLoggedAlert = () => {
   });
 };
 
+const show_Alert = (string) => {
+  return Swal.fire({
+    title: "Error!",
+    text: string,
+    icon: "warning", // Displays a warning icon
+    confirmButtonText: "OK",
+  });
+};
+
 const showUnknownErrorAlert = (responseStatus) => {
   return Swal.fire({
     title: `Error ${responseStatus}`,
@@ -57,4 +66,5 @@ export {
   showUnknownErrorAlert,
   showWelcomeAlert,
   showConfirmAlert,
+  show_Alert,
 };
