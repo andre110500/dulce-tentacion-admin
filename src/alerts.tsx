@@ -42,7 +42,7 @@ const showNotLoggedAlert = () => {
   });
 };
 
-const show_Alert = (string) => {
+const show_ErrorAlert = (string) => {
   return Swal.fire({
     title: "Error!",
     text: string,
@@ -66,5 +66,5 @@ export {
   showUnknownErrorAlert,
   showWelcomeAlert,
   showConfirmAlert,
-  show_Alert,
+  show_ErrorAlert,
 };
