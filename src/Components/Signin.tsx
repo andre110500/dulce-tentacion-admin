@@ -60,9 +60,19 @@ export default function Signin({ setIsUserOnline }) {
         <div className="content">
           <h2>Inicia sesión</h2>
           <form id="signin-form" onSubmit={handleSubmit}>
-            <input ref={usernameRef} name="username" placeholder="username" />
+            <input
+              ref={usernameRef}
+              name="username"
+              placeholder="username"
+              required
+            />
 
-            <input ref={passwordRef} name="password" placeholder="password" />
+            <input
+              ref={passwordRef}
+              name="password"
+              placeholder="password"
+              required
+            />
           </form>
           <div className="buttons-container">
             <button type="submit" form="signin-form">
