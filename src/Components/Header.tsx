@@ -4,7 +4,7 @@ import { show_ErrorAlert, showWelcomeAlert } from "../alerts";
 import LogoutButton from "./LogoutButton";
 import UserContext from "../Contexts/UserContext";
 import logo from "../assets/logo-white.png";
-import UserDialog from "./userDialog";
+import UserDialog from "./UserDialog";
 
 export default function Header() {
   const { isUserOnline, setIsUserOnline } = useContext(UserContext);
