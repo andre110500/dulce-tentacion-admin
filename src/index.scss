@@ -261,7 +261,7 @@ main {
 
     th,
     td {
-      max-width: 100px; /* Set the maximum width for table cells in the specific column */
+      max-width: 150px; /* Set the maximum width for table cells in the specific column */
       overflow: hidden; /* Optional: Hide content that overflows the maximum width */
       text-overflow: ellipsis; /* Optional: Add ellipsis (...) for text that overflows the maximum width */
       white-space: nowrap; /* Optional: Prevent text from wrapping to the next line */
@@ -282,6 +282,9 @@ main {
 
     td {
       overflow: hidden;
+      &.flavour {
+        max-width: 200px;
+      }
     }
   }
 }
