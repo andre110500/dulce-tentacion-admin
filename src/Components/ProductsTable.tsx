@@ -55,7 +55,6 @@ export default function ProductsTable() {
             <th key={`product-hcell-${key}`}>{key}</th>
           ))}
           <th>
-            {" "}
             <img src={gear} alt="" />
           </th>
         </tr>

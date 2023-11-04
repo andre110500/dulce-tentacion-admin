@@ -252,8 +252,12 @@ main {
   table {
     margin: auto;
     border-collapse: collapse;
-
+    background-color: #c42a91;
     text-align: center;
+
+    tr:nth-of-type(2n) {
+      background-color: rgb(194, 112, 177);
+    }
 
     th,
     td {
@@ -262,23 +266,22 @@ main {
       text-overflow: ellipsis; /* Optional: Add ellipsis (...) for text that overflows the maximum width */
       white-space: nowrap; /* Optional: Prevent text from wrapping to the next line */
       border: 1px solid black;
-      padding: 0.2rem;
+      padding: 0.5rem;
     }
 
     th {
+      background-color: black;
+      color: white;
       img {
         width: 1.5rem;
         display: block;
+        filter: invert(100%);
         margin: auto;
       }
     }
 
-    tbody {
-      tr {
-        td {
-          overflow: hidden;
-        }
-      }
+    td {
+      overflow: hidden;
     }
   }
 }
