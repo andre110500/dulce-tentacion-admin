@@ -112,11 +112,12 @@ function TableRow({ virtualProduct }) {
         {productKeys.map((key) => (
           //return a cell per key
           <td
+            data-cell={key}
             key={`product-cell-${virtualProduct._id}-${key}`}
           >{`${virtualProduct[key]}`}</td>
         ))}
 
-        <td>
+        <td data-cell="edit">
           <ProductDialog virtualProduct={virtualProduct} />
         </td>
       </tr>
