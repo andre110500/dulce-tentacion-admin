@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useState, useEffect, useContext, useRef } from "react";
-import ListContext from "../Contexts/FlavoursContext";
+import FlavoursContext from "../Contexts/FlavoursContext";
 import gear from "../assets/gear.svg";
 import FlavoursMenu from "./FlavoursMenu";
 
@@ -13,7 +13,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function FlavoursTable() {
   const [dbFlavoursArr, setDbFlavoursArr] = useState();
-  const [virtualFlavoursArr, setVirtualFlavoursArr] = useState();
+
   const flavoursMenuRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -32,7 +32,7 @@ export default function FlavoursTable() {
       const products = await response.json();
 
       setDbFlavoursArr(products);
-
+      setIsLoading(false);
       // Process the data or perform other operations
     } catch (error) {
       console.error("Error:", error);
@@ -42,13 +42,6 @@ export default function FlavoursTable() {
   useEffect(() => {
     fetchFlavoursAndSetState();
   }, []);
-
-  useEffect(() => {
-    if (dbFlavoursArr) {
-      setVirtualFlavoursArr(dbFlavoursArr);
-      setIsLoading(false);
-    }
-  }, [dbFlavoursArr]);
 
   const table = (
     <table>
@@ -62,16 +55,13 @@ export default function FlavoursTable() {
         </tr>
       </thead>
       <tbody>
-        {virtualFlavoursArr?.map((virtualFlavour) => (
-          <tr key={`flavour-row-${virtualFlavour._id}`}>
-            <td
-              className="flavour"
-              data-cell="name"
-            >{`${virtualFlavour.name}`}</td>
-            <td data-cell="outOfStock">{`${virtualFlavour.outOfStock}`}</td>
+        {dbFlavoursArr?.map((flavour) => (
+          <tr key={`flavour-row-${flavour._id}`}>
+            <td className="flavour" data-cell="name">{`${flavour.name}`}</td>
+            <td data-cell="outOfStock">{`${flavour.outOfStock}`}</td>
 
             <td data-cell="Edit">
-              <FlavourDialog virtualFlavour={virtualFlavour} />
+              <FlavourDialog flavour={flavour} />
             </td>
           </tr>
         ))}
@@ -80,10 +70,8 @@ export default function FlavoursTable() {
   );
 
   return (
-    <ListContext.Provider
+    <FlavoursContext.Provider
       value={{
-        virtualFlavoursArr,
-        setVirtualFlavoursArr,
         fetchFlavoursAndSetState,
         dbFlavoursArr,
       }}
@@ -96,7 +84,7 @@ export default function FlavoursTable() {
         ) : (
           <>
             <div className="table-container">{table}</div>
-            <FlavourDialog virtualFlavour={undefined} />
+            <FlavourDialog />
           </>
         )}
       </section>
@@ -107,6 +95,6 @@ export default function FlavoursTable() {
           <FlavoursMenu refe={flavoursMenuRef} flavoursList={dbFlavoursArr} />
         </ShareMenuSection>
       )}
-    </ListContext.Provider>
+    </FlavoursContext.Provider>
   );
 }

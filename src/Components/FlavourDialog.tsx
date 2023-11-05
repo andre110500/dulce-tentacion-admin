@@ -1,13 +1,13 @@
 import React, { useRef, useContext, useState } from "react";
-import ListContext from "../Contexts/FlavoursContext";
+import FlavoursContext from "../Contexts/FlavoursContext";
 import callToApi from "../functions/callToApi";
-export function FlavourDialog({ virtualFlavour }) {
+export function FlavourDialog({ flavour }) {
   const dialogRef = useRef(null);
   const nameRef = useRef(null);
 
   const outOfStockRef = useRef(null);
 
-  const { fetchFlavoursAndSetState } = useContext(ListContext);
+  const { fetchFlavoursAndSetState } = useContext(FlavoursContext);
 
   const [showDeleConfirmation, setShowDeleteConfirmation] = useState(false);
 
@@ -30,25 +30,27 @@ export function FlavourDialog({ virtualFlavour }) {
     const settings = {
       route: "flavours",
 
-      method: virtualFlavour ? "PUT" : "POST",
+      method: flavour ? "PUT" : "POST",
       callback: () => {
         closeDialog();
         fetchFlavoursAndSetState();
+        e.target.reset();
       },
       body: JSON.stringify(body),
     };
 
-    if (virtualFlavour) {
-      settings.id = virtualFlavour._id;
+    if (flavour) {
+      settings.id = flavour._id;
     }
 
     callToApi(settings);
+    //reset form
   }
 
   function deleteFlavour() {
     const settings = {
       route: "flavours",
-      id: `${virtualFlavour._id}`,
+      id: `${flavour._id}`,
       method: "DELETE",
 
       callback: () => {
@@ -60,33 +62,31 @@ export function FlavourDialog({ virtualFlavour }) {
     callToApi(settings);
   }
 
+  const deleteConfirmation = (
+    <div className="delete-comfirmation">
+      <h2>Estas seguro?</h2>
+      <div className="buttons-container">
+        <button onClick={deleteFlavour}>Aceptar</button>
+        <button onClick={() => setShowDeleteConfirmation(false)}>
+          cancelar
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <>
-      <button onClick={openDialog}>
-        {virtualFlavour ? "Editar" : "Agregar"}
-      </button>
+      <button onClick={openDialog}>{flavour ? "Editar" : "Agregar"}</button>
 
       <dialog className="crud" ref={dialogRef}>
-        {showDeleConfirmation ? (
-          <div className="delete-comfirmation">
-            <h2>Estas seguro?</h2>
-            <div className="buttons-container">
-              <button onClick={deleteFlavour}>Aceptar</button>
-              <button onClick={() => setShowDeleteConfirmation(false)}>
-                cancelar
-              </button>
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
+        {showDeleConfirmation && deleteConfirmation}
         <form onSubmit={handleSubmit}>
           <label>
             Nombre
             <input
               ref={nameRef}
               name="name"
-              defaultValue={virtualFlavour?.name}
+              defaultValue={flavour?.name}
               placeholder="name"
               required
             />
@@ -96,13 +96,13 @@ export function FlavourDialog({ virtualFlavour }) {
             No hay stock ?
             <input
               type="checkbox"
-              defaultChecked={virtualFlavour?.outOfStock}
+              defaultChecked={flavour?.outOfStock}
               ref={outOfStockRef}
               name="outOfStock"
             />
           </label>
           <div className="buttons-container">
-            {virtualFlavour ? (
+            {flavour && (
               <button
                 type="button"
                 className="delete"
@@ -112,8 +112,6 @@ export function FlavourDialog({ virtualFlavour }) {
               >
                 borrar
               </button>
-            ) : (
-              ""
             )}
             <button type="submit">Aceptar</button>
 

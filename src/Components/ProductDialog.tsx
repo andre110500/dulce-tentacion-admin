@@ -40,6 +40,7 @@ export function ProductDialog({ virtualProduct }) {
       callback: () => {
         closeDialog();
         fetchProductsAndSetState();
+        e.target.reset();
       },
       body: JSON.stringify(body),
     };
