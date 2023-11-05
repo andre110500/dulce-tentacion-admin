@@ -3,6 +3,7 @@ import template from "../assets/products-template.png";
 
 export default function ProductsMenu({ productsList, refe }) {
   const sortedProductsList = productsList.sort((a, b) => b.price - a.price);
+
   function getPriceByFlavoursQuantity(number) {
     return sortedProductsList.find((obj) => obj.flavours === number).price;
   }

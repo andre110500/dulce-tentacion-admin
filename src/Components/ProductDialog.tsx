@@ -1,14 +1,14 @@
 import React, { useRef, useContext, useState } from "react";
 import TableContext from "../Contexts/ProductsContext";
 import callToApi from "../functions/callToApi";
-export function ProductDialog({ virtualProduct }) {
+export function ProductDialog({ product }) {
   const dialogRef = useRef(null);
   const nameRef = useRef(null);
   const priceRef = useRef(null);
   const imgUrlRef = useRef(null);
   const outOfStockRef = useRef(null);
   const flavoursRef = useRef(null);
-  const { fetchProductsAndSetState, productKeys } = useContext(TableContext);
+  const { fetchProductsAndSetState } = useContext(TableContext);
 
   const [showDeleConfirmation, setShowDeleteConfirmation] = useState(false);
 
@@ -36,7 +36,7 @@ export function ProductDialog({ virtualProduct }) {
     const settings = {
       route: "products",
 
-      method: virtualProduct ? "PUT" : "POST",
+      method: product ? "PUT" : "POST",
       callback: () => {
         closeDialog();
         fetchProductsAndSetState();
@@ -45,8 +45,8 @@ export function ProductDialog({ virtualProduct }) {
       body: JSON.stringify(body),
     };
 
-    if (virtualProduct) {
-      settings.id = virtualProduct._id;
+    if (product) {
+      settings.id = product._id;
     }
 
     callToApi(settings);
@@ -55,7 +55,7 @@ export function ProductDialog({ virtualProduct }) {
   function deleteProduct() {
     const settings = {
       route: "products",
-      id: `${virtualProduct._id}`,
+      id: `${product._id}`,
       method: "DELETE",
 
       callback: () => {
@@ -69,9 +69,7 @@ export function ProductDialog({ virtualProduct }) {
 
   return (
     <>
-      <button onClick={openDialog}>
-        {virtualProduct ? "Editar" : "Agregar"}
-      </button>
+      <button onClick={openDialog}>{product ? "Editar" : "Agregar"}</button>
 
       <dialog className="crud" ref={dialogRef}>
         {showDeleConfirmation ? (
@@ -93,7 +91,7 @@ export function ProductDialog({ virtualProduct }) {
             <input
               ref={nameRef}
               name="name"
-              defaultValue={virtualProduct?.name}
+              defaultValue={product?.name}
               placeholder="name"
               required
             />
@@ -101,7 +99,7 @@ export function ProductDialog({ virtualProduct }) {
           <label>
             Precio
             <input
-              defaultValue={virtualProduct?.price}
+              defaultValue={product?.price}
               ref={priceRef}
               name="price"
               type="number"
@@ -112,7 +110,7 @@ export function ProductDialog({ virtualProduct }) {
           <label>
             Sabores
             <input
-              defaultValue={virtualProduct?.flavours}
+              defaultValue={product?.flavours}
               ref={flavoursRef}
               type="number"
               name="flavours"
@@ -122,7 +120,7 @@ export function ProductDialog({ virtualProduct }) {
           <label>
             url de la imagen
             <input
-              defaultValue={virtualProduct?.imgUrl}
+              defaultValue={product?.imgUrl}
               ref={imgUrlRef}
               name="imgUrl"
               placeholder="imgUrl"
@@ -133,13 +131,13 @@ export function ProductDialog({ virtualProduct }) {
             No hay stock ?
             <input
               type="checkbox"
-              defaultChecked={virtualProduct?.outOfStock}
+              defaultChecked={product?.outOfStock}
               ref={outOfStockRef}
               name="outOfStock"
             />
           </label>
           <div className="buttons-container">
-            {virtualProduct ? (
+            {product ? (
               <button
                 type="button"
                 className="delete"

@@ -2,13 +2,12 @@ import { useEffect, useState, useContext, useRef } from "react";
 import TableContext from "../Contexts/ProductsContext";
 import ProductsMenu from "./ProductsMenu";
 import spinner from "../assets/spinner.svg";
-import html2canvas from "html2canvas";
+
 import { ProductDialog } from "./ProductDialog";
 import ShareMenuSection from "./ShareMenuSection";
 const apiUrl = import.meta.env.VITE_API_URL;
 import gear from "../assets/gear.svg";
 export default function ProductsTable() {
-  const [virtualProductsArr, setVirtualProductsArr] = useState();
   const [dbProductsArr, setDbProductsArr] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const productMenuRef = useRef(null);
@@ -27,19 +26,12 @@ export default function ProductsTable() {
       const products = await response.json();
 
       setDbProductsArr(products);
-
+      setIsLoading(false);
       // Process the data or perform other operations
     } catch (error) {
       console.error("Error:", error);
     }
   }
-
-  useEffect(() => {
-    if (dbProductsArr) {
-      setVirtualProductsArr(dbProductsArr);
-      setIsLoading(false);
-    }
-  }, [dbProductsArr]);
 
   useEffect(() => {
     fetchProductsAndSetState();
@@ -60,13 +52,10 @@ export default function ProductsTable() {
         </tr>
       </thead>
       <tbody>
-        {virtualProductsArr?.map((virtualProduct) => (
+        {dbProductsArr?.map((product) => (
           //return a row per product
 
-          <TableRow
-            key={`product-row-${virtualProduct._id}`}
-            virtualProduct={virtualProduct}
-          />
+          <TableRow key={`product-row-${product._id}`} product={product} />
         ))}
       </tbody>
     </table>
@@ -76,8 +65,7 @@ export default function ProductsTable() {
       value={{
         productKeys,
         fetchProductsAndSetState,
-        virtualProductsArr,
-        setVirtualProductsArr,
+
         dbProductsArr,
         setDbProductsArr,
       }}
@@ -89,7 +77,7 @@ export default function ProductsTable() {
         ) : (
           <>
             <div className="table-container">{table}</div>
-            <ProductDialog virtualProduct={undefined} />
+            <ProductDialog />
           </>
         )}
       </section>
@@ -104,21 +92,21 @@ export default function ProductsTable() {
   );
 }
 
-function TableRow({ virtualProduct }) {
+function TableRow({ product }) {
   const { productKeys } = useContext(TableContext);
   return (
     <>
-      <tr id={virtualProduct._id}>
+      <tr id={product._id}>
         {productKeys.map((key) => (
           //return a cell per key
           <td
             data-cell={key}
-            key={`product-cell-${virtualProduct._id}-${key}`}
-          >{`${virtualProduct[key]}`}</td>
+            key={`product-cell-${product._id}-${key}`}
+          >{`${product[key]}`}</td>
         ))}
 
         <td data-cell="edit">
-          <ProductDialog virtualProduct={virtualProduct} />
+          <ProductDialog product={product} />
         </td>
       </tr>
     </>
