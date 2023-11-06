@@ -7,7 +7,7 @@ export function FlavourDialog({ flavour }) {
 
   const outOfStockRef = useRef(null);
 
-  const { fetchFlavoursAndSetState } = useContext(FlavoursContext);
+  const { fetch_And_ } = useContext(FlavoursContext);
 
   const [showDeleConfirmation, setShowDeleteConfirmation] = useState(false);
 
@@ -33,7 +33,7 @@ export function FlavourDialog({ flavour }) {
       method: flavour ? "PUT" : "POST",
       callback: () => {
         closeDialog();
-        fetchFlavoursAndSetState();
+        fetch_And_();
         e.target.reset();
       },
       body: JSON.stringify(body),
@@ -55,7 +55,7 @@ export function FlavourDialog({ flavour }) {
 
       callback: () => {
         closeDialog();
-        fetchFlavoursAndSetState();
+        fetch_And_();
       },
     };
 

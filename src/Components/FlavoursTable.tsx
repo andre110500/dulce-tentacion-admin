@@ -4,7 +4,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import FlavoursContext from "../Contexts/FlavoursContext";
 import gear from "../assets/gear.svg";
 import FlavoursMenu from "./FlavoursMenu";
-
+import fetch_And_ from "../functions/fetch_And_";
 import { FlavourDialog } from "./FlavourDialog";
 
 import spinner from "../assets/spinner.svg";
@@ -17,30 +17,12 @@ export default function FlavoursTable() {
   const flavoursMenuRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  async function fetchFlavoursAndSetState() {
-    const requestOptions = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    try {
-      const response = await fetch(`${apiUrl}/flavours`, requestOptions);
-      if (!response.ok) {
-        throw new Error("Request failed");
-      }
-
-      const products = await response.json();
-
-      setDbFlavoursArr(products);
-      setIsLoading(false);
-      // Process the data or perform other operations
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
-
   useEffect(() => {
-    fetchFlavoursAndSetState();
+    function handleResponse_(response) {
+      setDbFlavoursArr(response.data);
+      setIsLoading(false);
+    }
+    fetch_And_("flavours", handleResponse_);
   }, []);
 
   const table = (
@@ -72,7 +54,7 @@ export default function FlavoursTable() {
   return (
     <FlavoursContext.Provider
       value={{
-        fetchFlavoursAndSetState,
+        fetch_And_,
         dbFlavoursArr,
       }}
     >

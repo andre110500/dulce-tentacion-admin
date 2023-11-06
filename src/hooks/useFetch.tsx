@@ -45,7 +45,7 @@ const useFetch = (method: string, id: string, route: string) => {
       } finally {
         setLoading(false);
       }
-      /* fetchFlavoursAndSetState(); */
+      /* fetch_And_(); */
     }
 
     fetchData();

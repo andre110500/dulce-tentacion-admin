@@ -5,36 +5,22 @@ import spinner from "../assets/spinner.svg";
 
 import { ProductDialog } from "./ProductDialog";
 import ShareMenuSection from "./ShareMenuSection";
-const apiUrl = import.meta.env.VITE_API_URL;
+import fetch_And_ from "../functions/fetch_And_";
+
 import gear from "../assets/gear.svg";
 export default function ProductsTable() {
   const [dbProductsArr, setDbProductsArr] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const productMenuRef = useRef(null);
-  async function fetchProductsAndSetState() {
-    const requestOptions = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    try {
-      const response = await fetch(`${apiUrl}/products`, requestOptions);
-      if (!response.ok) {
-        throw new Error("Request failed");
-      }
 
-      const products = await response.json();
-
-      setDbProductsArr(products);
-      setIsLoading(false);
-      // Process the data or perform other operations
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
+  //////////////////////////////
 
   useEffect(() => {
-    fetchProductsAndSetState();
+    function handleResponse_(response) {
+      setDbProductsArr(response.data);
+      setIsLoading(false);
+    }
+    fetch_And_("products", handleResponse_);
   }, []);
 
   const productKeys = ["name", "price", "imgUrl", "outOfStock", "flavours"];
@@ -64,7 +50,7 @@ export default function ProductsTable() {
     <TableContext.Provider
       value={{
         productKeys,
-        fetchProductsAndSetState,
+        fetch_And_,
 
         dbProductsArr,
         setDbProductsArr,

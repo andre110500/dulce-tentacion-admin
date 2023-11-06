@@ -3,12 +3,8 @@ import TableContext from "../Contexts/ProductsContext";
 import callToApi from "../functions/callToApi";
 export function ProductDialog({ product }) {
   const dialogRef = useRef(null);
-  const nameRef = useRef(null);
-  const priceRef = useRef(null);
-  const imgUrlRef = useRef(null);
-  const outOfStockRef = useRef(null);
-  const flavoursRef = useRef(null);
-  const { fetchProductsAndSetState } = useContext(TableContext);
+  const formRef = useRef(null);
+  const { fetch_And_, setDbProductsArr } = useContext(TableContext);
 
   const [showDeleConfirmation, setShowDeleteConfirmation] = useState(false);
 
@@ -22,14 +18,17 @@ export function ProductDialog({ product }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    const formElements = formRef.current.elements;
+
     const body = {
-      name: nameRef.current.value,
-      price: priceRef.current.value,
-      imgUrl: imgUrlRef.current.value,
-      outOfStock: outOfStockRef.current.checked,
+      name: formElements.name.value,
+      price: formElements.price.value,
+      imgUrl: formElements.imgUrl.value,
+      outOfStock: formElements.outOfStock.checked,
     };
-    if (flavoursRef.current.value !== "") {
-      body.flavours = flavoursRef.current.value;
+    if (formElements.flavours.value !== "") {
+      body.flavours = formElements.flavours.value;
     } else {
       body.flavours = undefined;
     }
@@ -39,7 +38,10 @@ export function ProductDialog({ product }) {
       method: product ? "PUT" : "POST",
       callback: () => {
         closeDialog();
-        fetchProductsAndSetState();
+
+        fetch_And_("products", (response) => {
+          setDbProductsArr(response.data);
+        });
         e.target.reset();
       },
       body: JSON.stringify(body),
@@ -60,7 +62,9 @@ export function ProductDialog({ product }) {
 
       callback: () => {
         closeDialog();
-        fetchProductsAndSetState();
+        fetch_And_("produtcs", (response) => {
+          setDbProductsArr(response.data);
+        });
       },
     };
 
@@ -72,7 +76,7 @@ export function ProductDialog({ product }) {
       <button onClick={openDialog}>{product ? "Editar" : "Agregar"}</button>
 
       <dialog className="crud" ref={dialogRef}>
-        {showDeleConfirmation ? (
+        {showDeleConfirmation && (
           <div className="delete-comfirmation">
             <h2>Estas seguro?</h2>
             <div className="buttons-container">
@@ -82,14 +86,11 @@ export function ProductDialog({ product }) {
               </button>
             </div>
           </div>
-        ) : (
-          ""
         )}
-        <form onSubmit={handleSubmit}>
+        <form ref={formRef} onSubmit={handleSubmit}>
           <label>
             Nombre
             <input
-              ref={nameRef}
               name="name"
               defaultValue={product?.name}
               placeholder="name"
@@ -100,7 +101,6 @@ export function ProductDialog({ product }) {
             Precio
             <input
               defaultValue={product?.price}
-              ref={priceRef}
               name="price"
               type="number"
               placeholder="price"
@@ -111,7 +111,6 @@ export function ProductDialog({ product }) {
             Sabores
             <input
               defaultValue={product?.flavours}
-              ref={flavoursRef}
               type="number"
               name="flavours"
               placeholder="flavours"
@@ -121,7 +120,6 @@ export function ProductDialog({ product }) {
             url de la imagen
             <input
               defaultValue={product?.imgUrl}
-              ref={imgUrlRef}
               name="imgUrl"
               placeholder="imgUrl"
               required
@@ -132,12 +130,11 @@ export function ProductDialog({ product }) {
             <input
               type="checkbox"
               defaultChecked={product?.outOfStock}
-              ref={outOfStockRef}
               name="outOfStock"
             />
           </label>
           <div className="buttons-container">
-            {product ? (
+            {product && (
               <button
                 type="button"
                 className="delete"
@@ -147,8 +144,6 @@ export function ProductDialog({ product }) {
               >
                 borrar
               </button>
-            ) : (
-              ""
             )}
             <button type="submit">Aceptar</button>
 
