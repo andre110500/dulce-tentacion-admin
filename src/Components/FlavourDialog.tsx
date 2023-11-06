@@ -1,13 +1,13 @@
 import React, { useRef, useContext, useState } from "react";
 import FlavoursContext from "../Contexts/FlavoursContext";
-import callToApi from "../functions/callToApi";
+import performApiRequest from "../functions/performApiRequest";
 export function FlavourDialog({ flavour }) {
   const dialogRef = useRef(null);
   const nameRef = useRef(null);
 
   const outOfStockRef = useRef(null);
 
-  const { fetch_And_ } = useContext(FlavoursContext);
+  const { fetch_And_, setDbFlavoursArr } = useContext(FlavoursContext);
 
   const [showDeleConfirmation, setShowDeleteConfirmation] = useState(false);
 
@@ -33,7 +33,9 @@ export function FlavourDialog({ flavour }) {
       method: flavour ? "PUT" : "POST",
       callback: () => {
         closeDialog();
-        fetch_And_();
+        fetch_And_("flavours", (response) => {
+          setDbFlavoursArr(response.data);
+        });
         e.target.reset();
       },
       body: JSON.stringify(body),
@@ -43,7 +45,7 @@ export function FlavourDialog({ flavour }) {
       settings.id = flavour._id;
     }
 
-    callToApi(settings);
+    performApiRequest(settings);
     //reset form
   }
 
@@ -55,11 +57,13 @@ export function FlavourDialog({ flavour }) {
 
       callback: () => {
         closeDialog();
-        fetch_And_();
+        fetch_And_("flavours", (response) => {
+          setDbFlavoursArr(response.data);
+        });
       },
     };
 
-    callToApi(settings);
+    performApiRequest(settings);
   }
 
   const deleteConfirmation = (

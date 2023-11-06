@@ -56,6 +56,7 @@ export default function FlavoursTable() {
       value={{
         fetch_And_,
         dbFlavoursArr,
+        setDbFlavoursArr,
       }}
     >
       <section>

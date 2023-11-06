@@ -1,6 +1,6 @@
 import React, { useRef, useContext, useState } from "react";
 import TableContext from "../Contexts/ProductsContext";
-import callToApi from "../functions/callToApi";
+import performApiRequest from "../functions/performApiRequest";
 export function ProductDialog({ product }) {
   const dialogRef = useRef(null);
   const formRef = useRef(null);
@@ -51,7 +51,7 @@ export function ProductDialog({ product }) {
       settings.id = product._id;
     }
 
-    callToApi(settings);
+    performApiRequest(settings);
   }
 
   function deleteProduct() {
@@ -62,13 +62,13 @@ export function ProductDialog({ product }) {
 
       callback: () => {
         closeDialog();
-        fetch_And_("produtcs", (response) => {
+        fetch_And_("products", (response) => {
           setDbProductsArr(response.data);
         });
       },
     };
 
-    callToApi(settings);
+    performApiRequest(settings);
   }
 
   return (
