@@ -23,7 +23,14 @@ export default function ProductsTable() {
     fetch_And_("products", handleResponse_);
   }, []);
 
-  const productKeys = ["name", "price", "imgUrl", "outOfStock", "flavours"];
+  const productKeys = [
+    "name",
+    "price",
+    "imgUrl",
+    "outOfStock",
+    "flavours",
+    "description",
+  ];
 
   const table = (
     <table>

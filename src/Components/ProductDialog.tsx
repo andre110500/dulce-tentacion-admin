@@ -23,15 +23,17 @@ export function ProductDialog({ product }) {
 
     const body = {
       name: formElements.name.value,
+      flavours: formElements.flavours.value
+        ? formElements.flavours.value
+        : undefined,
+      description: formElements.description.value
+        ? formElements.description.value
+        : undefined,
       price: formElements.price.value,
       imgUrl: formElements.imgUrl.value,
       outOfStock: formElements.outOfStock.checked,
     };
-    if (formElements.flavours.value !== "") {
-      body.flavours = formElements.flavours.value;
-    } else {
-      body.flavours = undefined;
-    }
+
     const settings = {
       route: "products",
 
@@ -95,6 +97,14 @@ export function ProductDialog({ product }) {
               defaultValue={product?.name}
               placeholder="name"
               required
+            />
+          </label>
+          <label>
+            Descripcion
+            <input
+              name="description"
+              defaultValue={product?.description}
+              placeholder="description"
             />
           </label>
           <label>
