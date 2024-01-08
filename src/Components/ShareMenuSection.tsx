@@ -1,13 +1,14 @@
 import html2canvas from "html2canvas";
 import { useEffect, useState, useContext, useRef } from "react";
-
-export default function ShareMenuSection({ children, targetElementRef }) {
+import TimeStamp from "./TimeStamp";
+import { child } from "firebase/database";
+export default function ShareMenuSection({ children }) {
   const [shareData, setShareData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const ref = useRef(null);
   async function getDataToShare() {
     setIsLoading(true);
-    const canvas = await html2canvas(targetElementRef.current);
+    const canvas = await html2canvas(ref.current);
     canvas.toBlob(async (blob) => {
       const files = [new File([blob], "image.png", { type: blob.type })];
       const shareData = {
@@ -30,8 +31,11 @@ export default function ShareMenuSection({ children, targetElementRef }) {
     }
   }
   return (
-    <section className="as">
-      {children}
+    <section className="share">
+      <div ref={ref} className="container">
+        <TimeStamp />
+        {children}
+      </div>
       {!shareData && !isLoading && (
         <button onClick={getDataToShare}>GENERAR IMAGEN</button>
       )}

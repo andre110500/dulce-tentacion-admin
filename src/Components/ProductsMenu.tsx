@@ -1,7 +1,7 @@
 import React from "react";
 import template from "../assets/products-template.png";
-
-export default function ProductsMenu({ productsList, refe }) {
+import TimeStamp from "./TimeStamp";
+export default function ProductsMenu({ productsList }) {
   const sortedProductsList = productsList.sort((a, b) => b.price - a.price);
 
   function getPriceByFlavoursQuantity(number) {
@@ -9,7 +9,7 @@ export default function ProductsMenu({ productsList, refe }) {
   }
 
   return (
-    <div ref={refe} id="products-menu" className="menu">
+    <div id="products-menu" className="menu">
       <img src={template} alt="" style={{ width: "100%" }} />
 
       <div className="uls-container">

@@ -1,13 +1,13 @@
 import React from "react";
 import template from "../assets/flavours-template.png";
 
-export default function FlavoursMenu({ flavoursList, refe }) {
+export default function FlavoursMenu({ flavoursList }) {
   const ulStyle = {
     display: "flex",
     flexDirection: "column",
   };
   return (
-    <div ref={refe} className="menu" id="flavours-menu">
+    <div className="menu" id="flavours-menu">
       <img src={template} alt="" style={{ width: "100%" }} />
       <div className="uls-container">
         <ul className="first" style={ulStyle}>

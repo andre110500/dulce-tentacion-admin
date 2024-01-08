@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DotGothic16&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap");
 $google-font: "Roboto", sans-serif;
 $purpple: #100b35;
 $main-color: #e8547e;
@@ -308,57 +310,6 @@ main section {
   }
 }
 
-ul.flavours {
-  width: 100%;
-  max-width: min-content;
-
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-
-  overflow-x: auto;
-  li {
-    display: grid;
-    margin: auto;
-    grid-template-columns: 60px min-content min-content;
-    width: 100%;
-    align-items: center;
-    gap: 2rem;
-
-    label {
-      display: flex;
-
-      gap: 2rem;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 0.5rem;
-    }
-  }
-}
-
-.menu {
-  width: 100%;
-  margin: auto;
-  max-width: 400px;
-  position: relative;
-  container-type: inline-size;
-
-  img {
-    vertical-align: middle;
-  }
-}
-
-#products-menu {
-  container-name: products-menu;
-}
-
-#flavours-menu {
-  container-name: flavours-menu;
-}
-
 @keyframes slide {
   from {
     transform: translateX(0);
@@ -436,18 +387,43 @@ button {
   }
 }
 
-section.as {
-  position: relative;
-  .downloadable {
-    position: absolute;
-    width: 100%;
+section.share {
+  .container {
+    position: relative;
 
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin: auto;
+  }
+  #products-menu {
+    container-name: products-menu;
+  }
+
+  #flavours-menu {
+    container-name: flavours-menu;
+  }
+
+  .menu {
+    max-width: 100%;
+
+    width: 400px;
+    position: relative;
+    container-type: inline-size;
+
+    img {
+      vertical-align: middle;
+    }
+  }
+  .timestamp {
+    position: absolute;
     z-index: 2;
-    max-width: 400px;
-    outline: 1px solid black;
+    color: rgb(0, 0, 0);
+    p {
+      font-family: "DotGothic16", sans-serif;
+      letter-spacing: 1px;
+    }
+
+    top: 5px;
+    right: 5px;
+    font-size: 0.85rem;
   }
 }
 

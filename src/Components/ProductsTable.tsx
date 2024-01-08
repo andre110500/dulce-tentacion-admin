@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext } from "react";
 import TableContext from "../Contexts/ProductsContext";
 import ProductsMenu from "./ProductsMenu";
 import spinner from "../assets/spinner.svg";
@@ -11,7 +11,6 @@ import gear from "../assets/gear.svg";
 export default function ProductsTable() {
   const [dbProductsArr, setDbProductsArr] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const productMenuRef = useRef(null);
 
   //////////////////////////////
 
@@ -77,8 +76,8 @@ export default function ProductsTable() {
       {isLoading ? (
         "Loading"
       ) : (
-        <ShareMenuSection targetElementRef={productMenuRef}>
-          <ProductsMenu productsList={dbProductsArr} refe={productMenuRef} />
+        <ShareMenuSection>
+          <ProductsMenu productsList={dbProductsArr} />
         </ShareMenuSection>
       )}
     </TableContext.Provider>

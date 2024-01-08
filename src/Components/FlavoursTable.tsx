@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect } from "react";
 import FlavoursContext from "../Contexts/FlavoursContext";
 import gear from "../assets/gear.svg";
 import FlavoursMenu from "./FlavoursMenu";
@@ -14,7 +14,6 @@ const apiUrl = import.meta.env.VITE_API_URL;
 export default function FlavoursTable() {
   const [dbFlavoursArr, setDbFlavoursArr] = useState();
 
-  const flavoursMenuRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -74,8 +73,8 @@ export default function FlavoursTable() {
       {isLoading ? (
         "Loading"
       ) : (
-        <ShareMenuSection targetElementRef={flavoursMenuRef}>
-          <FlavoursMenu refe={flavoursMenuRef} flavoursList={dbFlavoursArr} />
+        <ShareMenuSection>
+          <FlavoursMenu flavoursList={dbFlavoursArr} />
         </ShareMenuSection>
       )}
     </FlavoursContext.Provider>
