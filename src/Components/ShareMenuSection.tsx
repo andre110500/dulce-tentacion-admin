@@ -8,7 +8,8 @@ export default function ShareMenuSection({ children }) {
   const ref = useRef(null);
   async function getDataToShare() {
     setIsLoading(true);
-    const canvas = await html2canvas(ref.current);
+    const scale = 2;
+    const canvas = await html2canvas(ref.current, { scale });
     canvas.toBlob(async (blob) => {
       const files = [new File([blob], "image.png", { type: blob.type })];
       const shareData = {
