@@ -390,8 +390,32 @@ button {
 section.share {
   .container {
     position: relative;
-
+    max-width: 100%;
     margin: auto;
+    .menu {
+      max-width: 100%;
+
+      width: 400px;
+      position: relative;
+      container-type: inline-size;
+
+      img {
+        vertical-align: middle;
+      }
+    }
+    .timestamp {
+      position: absolute;
+      z-index: 2;
+      color: rgb(0, 0, 0);
+      p {
+        font-family: "DotGothic16", sans-serif;
+        letter-spacing: 1px;
+      }
+
+      top: 5px;
+      right: 5px;
+      font-size: 0.85rem;
+    }
   }
   #products-menu {
     container-name: products-menu;
@@ -399,31 +423,6 @@ section.share {
 
   #flavours-menu {
     container-name: flavours-menu;
-  }
-
-  .menu {
-    max-width: 100%;
-
-    width: 400px;
-    position: relative;
-    container-type: inline-size;
-
-    img {
-      vertical-align: middle;
-    }
-  }
-  .timestamp {
-    position: absolute;
-    z-index: 2;
-    color: rgb(0, 0, 0);
-    p {
-      font-family: "DotGothic16", sans-serif;
-      letter-spacing: 1px;
-    }
-
-    top: 5px;
-    right: 5px;
-    font-size: 0.85rem;
   }
 }
 
