@@ -6,7 +6,7 @@ declare module "../Contexts/FlavoursContext" {
   }
 
   interface FlavoursContextType {
-    fetch_And_: () => void;
+    get_AndDo_: () => void;
     dbFlavoursArr: Flavour[];
   }
 }

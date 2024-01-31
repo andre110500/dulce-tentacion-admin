@@ -1,6 +1,6 @@
 import client from "../client";
 
-async function fetch_And_(route, handleResponse_) {
+async function get_AndDo_(route, handleResponse_) {
   try {
     const response = await client({
       method: "get",
@@ -13,4 +13,4 @@ async function fetch_And_(route, handleResponse_) {
   }
 }
 
-export default fetch_And_;
+export default get_AndDo_;

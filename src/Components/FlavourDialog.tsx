@@ -1,13 +1,13 @@
 import React, { useRef, useContext, useState } from "react";
 import FlavoursContext from "../Contexts/FlavoursContext";
-import performApiRequest from "../functions/performApiRequest";
+import tryToModifyDbWithAuth from "../functions/tryToModifyDbWithAuth";
 export function FlavourDialog({ flavour }) {
   const dialogRef = useRef(null);
   const nameRef = useRef(null);
 
   const outOfStockRef = useRef(null);
 
-  const { fetch_And_, setDbFlavoursArr } = useContext(FlavoursContext);
+  const { get_AndDo_, setDbFlavoursArr } = useContext(FlavoursContext);
 
   const [showDeleConfirmation, setShowDeleteConfirmation] = useState(false);
 
@@ -33,7 +33,7 @@ export function FlavourDialog({ flavour }) {
       method: flavour ? "PUT" : "POST",
       callback: () => {
         closeDialog();
-        fetch_And_("flavours", (response) => {
+        get_AndDo_("flavours", (response) => {
           setDbFlavoursArr(response.data);
         });
         e.target.reset();
@@ -45,7 +45,7 @@ export function FlavourDialog({ flavour }) {
       settings.id = flavour._id;
     }
 
-    performApiRequest(settings);
+    tryToModifyDbWithAuth(settings);
     //reset form
   }
 
@@ -57,13 +57,13 @@ export function FlavourDialog({ flavour }) {
 
       callback: () => {
         closeDialog();
-        fetch_And_("flavours", (response) => {
+        get_AndDo_("flavours", (response) => {
           setDbFlavoursArr(response.data);
         });
       },
     };
 
-    performApiRequest(settings);
+    tryToModifyDbWithAuth(settings);
   }
 
   const deleteConfirmation = (

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import FlavoursContext from "../Contexts/FlavoursContext";
 import gear from "../assets/gear.svg";
 import FlavoursMenu from "./FlavoursMenu";
-import fetch_And_ from "../functions/fetch_And_";
+import get_AndDo_ from "../functions/get_AndDo_";
 import { FlavourDialog } from "./FlavourDialog";
 
 import spinner from "../assets/spinner.svg";
@@ -21,7 +21,7 @@ export default function FlavoursTable() {
       setDbFlavoursArr(response.data);
       setIsLoading(false);
     }
-    fetch_And_("flavours", handleResponse_);
+    get_AndDo_("flavours", handleResponse_);
   }, []);
 
   const table = (
@@ -53,7 +53,7 @@ export default function FlavoursTable() {
   return (
     <FlavoursContext.Provider
       value={{
-        fetch_And_,
+        get_AndDo_,
         dbFlavoursArr,
         setDbFlavoursArr,
       }}

@@ -1,10 +1,10 @@
 import React, { useRef, useContext, useState } from "react";
 import TableContext from "../Contexts/ProductsContext";
-import performApiRequest from "../functions/performApiRequest";
+import tryToModifyDbWithAuth from "../functions/tryToModifyDbWithAuth";
 export function ProductDialog({ product }) {
   const dialogRef = useRef(null);
   const formRef = useRef(null);
-  const { fetch_And_, setDbProductsArr } = useContext(TableContext);
+  const { get_AndDo_, setDbProductsArr } = useContext(TableContext);
 
   const [showDeleConfirmation, setShowDeleteConfirmation] = useState(false);
 
@@ -41,7 +41,7 @@ export function ProductDialog({ product }) {
       callback: () => {
         closeDialog();
 
-        fetch_And_("products", (response) => {
+        get_AndDo_("products", (response) => {
           setDbProductsArr(response.data);
         });
         e.target.reset();
@@ -53,7 +53,7 @@ export function ProductDialog({ product }) {
       settings.id = product._id;
     }
 
-    performApiRequest(settings);
+    tryToModifyDbWithAuth(settings);
   }
 
   function deleteProduct() {
@@ -64,13 +64,13 @@ export function ProductDialog({ product }) {
 
       callback: () => {
         closeDialog();
-        fetch_And_("products", (response) => {
+        get_AndDo_("products", (response) => {
           setDbProductsArr(response.data);
         });
       },
     };
 
-    performApiRequest(settings);
+    tryToModifyDbWithAuth(settings);
   }
 
   return (

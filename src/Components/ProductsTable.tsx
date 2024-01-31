@@ -5,7 +5,7 @@ import spinner from "../assets/spinner.svg";
 
 import { ProductDialog } from "./ProductDialog";
 import ShareMenuSection from "./ShareMenuSection";
-import fetch_And_ from "../functions/fetch_And_";
+import get_AndDo_ from "../functions/get_AndDo_";
 
 import gear from "../assets/gear.svg";
 export default function ProductsTable() {
@@ -19,7 +19,7 @@ export default function ProductsTable() {
       setDbProductsArr(response.data);
       setIsLoading(false);
     }
-    fetch_And_("products", handleResponse_);
+    get_AndDo_("products", handleResponse_);
   }, []);
 
   const productKeys = [
@@ -56,7 +56,7 @@ export default function ProductsTable() {
     <TableContext.Provider
       value={{
         productKeys,
-        fetch_And_,
+        get_AndDo_,
 
         dbProductsArr,
         setDbProductsArr,

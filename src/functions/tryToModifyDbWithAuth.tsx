@@ -15,7 +15,7 @@ interface Settings {
   callback: () => void;
 }
 
-async function performApiRequest(settings: Settings) {
+async function tryToModifyDbWithAuth(settings: Settings) {
   const { route, id, method, body, callback } = settings;
 
   try {
@@ -45,4 +45,4 @@ async function performApiRequest(settings: Settings) {
   callback();
 }
 
-export default performApiRequest;
+export default tryToModifyDbWithAuth;
