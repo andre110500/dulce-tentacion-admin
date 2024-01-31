@@ -6,6 +6,7 @@ import {
   showUnknownErrorAlert,
 } from "../alerts";
 import client from "../client";
+import runBuild from "./runBuild";
 
 interface Settings {
   route: string;
@@ -33,6 +34,10 @@ async function tryToModifyDbWithAuth(settings: Settings) {
       showUnknownErrorAlert(response.status);
     } else {
       showSuccessAlert();
+      //run build
+      if (process.env.NODE_ENV == "production") {
+        runBuild();
+      }
     }
   } catch (error) {
     console.log(`error ms is:${error.message}`);
