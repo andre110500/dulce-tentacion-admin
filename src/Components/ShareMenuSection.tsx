@@ -35,7 +35,8 @@ export default function ShareMenuSection({
   }
 
   const captureImage = async () => {
-    const canvas = await html2canvas(ref.current, { useCORS: true });
+    const scale = 2;
+    const canvas = await html2canvas(ref.current, { scale });
     const dataURL = canvas.toDataURL("image/png");
     setImageSrc(dataURL);
   };
@@ -61,11 +62,7 @@ export default function ShareMenuSection({
         {children}
       </div>
       {imageSrc && (
-        <img
-          src={imageSrc}
-          alt="Captured content"
-          style={{ width: "400px", margin: "auto" }}
-        />
+        <img className="promotional" src={imageSrc} alt="Captured content" />
       )}
       {!shareData && !isLoading && (
         <button onClick={getDataToShare}>GENERAR IMAGEN</button>
