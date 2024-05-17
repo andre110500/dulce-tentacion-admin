@@ -44,11 +44,16 @@ export default function ShareMenuSection({
 
   async function sendShare() {
     try {
-      await navigator.share(shareData);
-      console.log("File was shared successfully");
-      setShareData(null);
+      if (navigator.share && navigator.canShare(shareData)) {
+        await navigator.share(shareData);
+        console.log("File was shared successfully");
+        setShareData(null);
+      } else {
+        throw new Error("Funcion no compatible en tu dispositivo");
+      }
     } catch (err) {
       console.error(err.name, err.message);
+      alert(err.message);
     }
   }
   return (
