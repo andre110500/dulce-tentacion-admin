@@ -1,11 +1,19 @@
 import html2canvas from "html2canvas";
 import { useEffect, useState, useContext, useRef } from "react";
 import TimeStamp from "./TimeStamp";
-import { child } from "firebase/database";
-export default function ShareMenuSection({ children }) {
+
+export default function ShareMenuSection({ children, productsList }) {
   const [shareData, setShareData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const ref = useRef(null);
+  const [imageSrc, setImageSrc] = useState(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      captureImage();
+    }
+  }, [ref.current, productsList]);
+
   async function getDataToShare() {
     setIsLoading(true);
     const scale = 2;
@@ -22,6 +30,12 @@ export default function ShareMenuSection({ children }) {
     });
   }
 
+  const captureImage = async () => {
+    const canvas = await html2canvas(ref.current, { useCORS: true });
+    const dataURL = canvas.toDataURL("image/png");
+    setImageSrc(dataURL);
+  };
+
   async function sendShare() {
     try {
       await navigator.share(shareData);
@@ -35,6 +49,7 @@ export default function ShareMenuSection({ children }) {
     <section className="share">
       <div ref={ref} className="container">
         <TimeStamp />
+
         {children}
       </div>
       {!shareData && !isLoading && (
@@ -46,7 +61,12 @@ export default function ShareMenuSection({ children }) {
         </button>
       )}
 
-      {shareData && <button onClick={sendShare}>COMPARTIR IMAGEN</button>}
+      {shareData && (
+        <div>
+          <button onClick={sendShare}>COMPARTIR IMAGEN</button>
+        </div>
+      )}
+      {imageSrc && <img src={imageSrc} alt="Captured content" />}
     </section>
   );
 }
