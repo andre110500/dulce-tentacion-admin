@@ -15,6 +15,7 @@ export default function ShareMenuSection({
   useEffect(() => {
     if (ref.current) {
       captureImage();
+      getDataToShare();
     }
   }, [ref.current, productsList, flavoursList]);
 
@@ -64,20 +65,14 @@ export default function ShareMenuSection({
       {imageSrc && (
         <img className="promotional" src={imageSrc} alt="Captured content" />
       )}
-      {!shareData && !isLoading && (
-        <button onClick={getDataToShare}>GENERAR IMAGEN</button>
-      )}
+
       {isLoading && (
         <button className="loadingDots" disabled>
           CARGANDO
         </button>
       )}
 
-      {shareData && (
-        <div>
-          <button onClick={sendShare}>COMPARTIR IMAGEN</button>
-        </div>
-      )}
+      {shareData && <button onClick={sendShare}>COMPARTIR IMAGEN</button>}
     </section>
   );
 }
