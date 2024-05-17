@@ -76,7 +76,7 @@ export default function ProductsTable() {
       {isLoading ? (
         "Loading"
       ) : (
-        <ShareMenuSection>
+        <ShareMenuSection productsList={dbProductsArr}>
           <ProductsMenu productsList={dbProductsArr} />
         </ShareMenuSection>
       )}
