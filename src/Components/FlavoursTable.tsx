@@ -73,7 +73,7 @@ export default function FlavoursTable() {
       {isLoading ? (
         "Loading"
       ) : (
-        <ShareMenuSection>
+        <ShareMenuSection flavoursList={dbFlavoursArr}>
           <FlavoursMenu flavoursList={dbFlavoursArr} />
         </ShareMenuSection>
       )}

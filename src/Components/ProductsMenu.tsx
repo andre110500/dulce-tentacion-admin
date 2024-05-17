@@ -1,6 +1,6 @@
 import React from "react";
 import template from "../assets/products-template.png";
-import TimeStamp from "./TimeStamp";
+
 export default function ProductsMenu({ productsList }) {
   const sortedProductsList = productsList.sort((a, b) => b.price - a.price);
 
