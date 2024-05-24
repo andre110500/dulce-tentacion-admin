@@ -57,7 +57,7 @@ export default function ProductsTable() {
             <div className="table-container">
               <Table keys={productKeys} data={dbProductsArr} />
             </div>
-            <ProductDialog productSchema={productSchema} />
+            <ProductDialog />
           </>
         )}
       </section>

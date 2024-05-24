@@ -1,10 +1,12 @@
 import React, { useRef, useContext, useState } from "react";
 import TableContext from "../Contexts/ProductsContext";
 import tryToModifyDbWithAuth from "../functions/tryToModifyDbWithAuth";
+
 export function ProductDialog({ product }) {
   const dialogRef = useRef(null);
   const formRef = useRef(null);
-  const { get_AndDo_, setDbProductsArr } = useContext(TableContext);
+  const { get_AndDo_, setDbProductsArr, productSchema, productKeys } =
+    useContext(TableContext);
 
   const [showDeleConfirmation, setShowDeleteConfirmation] = useState(false);
 
@@ -21,18 +23,19 @@ export function ProductDialog({ product }) {
 
     const formElements = formRef.current.elements;
 
-    const body = {
-      name: formElements.name.value,
-      flavours: formElements.flavours.value
-        ? formElements.flavours.value
-        : undefined,
-      description: formElements.description.value
-        ? formElements.description.value
-        : undefined,
-      price: formElements.price.value,
-      imgUrl: formElements.imgUrl.value,
-      outOfStock: formElements.outOfStock.checked,
-    };
+    const body = {}; // Initialize an empty object to hold the body data
+
+    productKeys.forEach((key) => {
+      let value;
+      if (formElements[key].type !== "checkbox") {
+        value = formElements[key].value ? formElements[key].value : undefined;
+      } else {
+        value = formElements[key].checked;
+      }
+      body[key] = value;
+    });
+
+    console.log(`body is :${JSON.stringify(body)}`);
 
     const settings = {
       route: "products",
@@ -90,59 +93,48 @@ export function ProductDialog({ product }) {
           </div>
         )}
         <form ref={formRef} onSubmit={handleSubmit}>
-          <label>
-            Nombre
-            <input
-              name="name"
-              defaultValue={product?.name}
-              placeholder="name"
-              required
-            />
-          </label>
-          <label>
-            Descripcion
-            <input
-              name="description"
-              defaultValue={product?.description}
-              placeholder="description"
-            />
-          </label>
-          <label>
-            Precio
-            <input
-              defaultValue={product?.price}
-              name="price"
-              type="number"
-              placeholder="price"
-              required
-            />
-          </label>
-          <label>
-            Sabores
-            <input
-              defaultValue={product?.flavours}
-              type="number"
-              name="flavours"
-              placeholder="flavours"
-            />
-          </label>
-          <label>
-            url de la imagen
-            <input
-              defaultValue={product?.imgUrl}
-              name="imgUrl"
-              placeholder="imgUrl"
-              required
-            />
-          </label>
-          <label className="outOfStock">
-            No hay stock ?
-            <input
-              type="checkbox"
-              defaultChecked={product?.outOfStock}
-              name="outOfStock"
-            />
-          </label>
+          {productSchema?.map((keySchema) => {
+            console.log(`sape`);
+            function getInputType(schemaType) {
+              switch (schemaType) {
+                case "String":
+                  return "text";
+                case "Number":
+                  return "number";
+                case "Boolean":
+                  return "checkbox";
+                case "Date":
+                  return "date";
+                case "Email":
+                  return "email";
+                // Add more cases as needed
+                default:
+                  return "text";
+              }
+            }
+            return (
+              <label>
+                {keySchema.key}
+                <input
+                  name={keySchema.key}
+                  type={getInputType(keySchema.type)}
+                  placeholder={keySchema.key}
+                  defaultValue={
+                    keySchema.type !== "Boolean"
+                      ? product?.[keySchema.key]
+                      : undefined
+                  }
+                  defaultChecked={
+                    keySchema.type === "Boolean"
+                      ? product?.[keySchema.key]
+                      : undefined
+                  }
+                  required={keySchema.required}
+                />
+              </label>
+            );
+          })}
+
           <div className="buttons-container">
             {product && (
               <button
