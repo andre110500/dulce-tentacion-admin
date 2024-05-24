@@ -11,53 +11,39 @@ import gear from "../assets/gear.svg";
 export default function ProductsTable() {
   const [dbProductsArr, setDbProductsArr] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [productSchema, setProductSchema] = useState();
+  const [productKeys, setProductKeys] = useState();
 
   //////////////////////////////
 
   useEffect(() => {
-    function handleResponse_(response) {
+    function handleProductsResponse_(response) {
       setDbProductsArr(response.data);
-      setIsLoading(false);
     }
-    get_AndDo_("products", handleResponse_);
+    function handleProductsSchemaResponse_(response) {
+      setProductSchema(response.data);
+    }
+    get_AndDo_("products", handleProductsResponse_);
+    get_AndDo_("products/schema", handleProductsSchemaResponse_);
   }, []);
 
-  const productKeys = [
-    "name",
-    "price",
-    "imgUrl",
-    "outOfStock",
-    "flavours",
-    "description",
-  ];
+  useEffect(() => {
+    if (productSchema && dbProductsArr) {
+      setIsLoading(false);
+      if (productSchema) {
+        // Ensure productSchema is an array and map to extract keys
+        const keys = productSchema.map((keySchema) => keySchema.key);
+        setProductKeys(keys);
+      }
+    }
+  }, [productSchema, dbProductsArr]);
 
-  const table = (
-    <table>
-      <thead>
-        <tr>
-          {productKeys.map((key) => (
-            <th key={`product-hcell-${key}`}>{key}</th>
-          ))}
-          <th>
-            <img src={gear} alt="" />
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {dbProductsArr?.map((product) => (
-          //return a row per product
-
-          <TableRow key={`product-row-${product._id}`} product={product} />
-        ))}
-      </tbody>
-    </table>
-  );
   return (
     <TableContext.Provider
       value={{
         productKeys,
         get_AndDo_,
-
+        productSchema,
         dbProductsArr,
         setDbProductsArr,
       }}
@@ -68,8 +54,10 @@ export default function ProductsTable() {
           <img className="spinner" src={spinner} alt="" />
         ) : (
           <>
-            <div className="table-container">{table}</div>
-            <ProductDialog />
+            <div className="table-container">
+              <Table keys={productKeys} data={dbProductsArr} />
+            </div>
+            <ProductDialog productSchema={productSchema} />
           </>
         )}
       </section>
@@ -81,6 +69,30 @@ export default function ProductsTable() {
         </ShareMenuSection>
       )}
     </TableContext.Provider>
+  );
+}
+
+function Table({ keys, data }) {
+  return (
+    <table>
+      <thead>
+        <tr>
+          {keys.map((key) => (
+            <th key={`product-hcell-${key}`}>{key}</th>
+          ))}
+          <th>
+            <img src={gear} alt="" />
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((product) => (
+          //return a row per product
+
+          <TableRow key={`product-row-${product._id}`} product={product} />
+        ))}
+      </tbody>
+    </table>
   );
 }
 
