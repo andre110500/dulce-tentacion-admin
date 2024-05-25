@@ -1,7 +1,7 @@
 import React from "react";
 import template from "../assets/flavours-template.png";
 
-export default function FlavoursMenu({ flavoursList }) {
+export default function FlavoursMenu({ data }) {
   const ulStyle = {
     display: "flex",
     flexDirection: "column",
@@ -11,11 +11,8 @@ export default function FlavoursMenu({ flavoursList }) {
       <img src={template} alt="" style={{ width: "100%" }} />
       <div className="uls-container">
         <ul className="first" style={ulStyle}>
-          {flavoursList?.map((flavour, index) => {
-            if (
-              index < Math.floor(flavoursList.length / 2) &&
-              !flavour.outOfStock
-            ) {
+          {data?.map((flavour, index) => {
+            if (index < Math.floor(data.length / 2) && !flavour.outOfStock) {
               return (
                 <li key={flavour._id}>
                   <span>.</span>
@@ -26,11 +23,8 @@ export default function FlavoursMenu({ flavoursList }) {
           })}
         </ul>
         <ul className="second" style={{ ...ulStyle }}>
-          {flavoursList?.map((flavour, index) => {
-            if (
-              index >= Math.floor(flavoursList.length / 2) &&
-              !flavour.outOfStock
-            ) {
+          {data?.map((flavour, index) => {
+            if (index >= Math.floor(data.length / 2) && !flavour.outOfStock) {
               return (
                 <li key={flavour._id}>
                   <span>.</span>

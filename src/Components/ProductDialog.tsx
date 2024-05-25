@@ -5,7 +5,7 @@ import tryToModifyDbWithAuth from "../functions/tryToModifyDbWithAuth";
 export function ProductDialog({ product }) {
   const dialogRef = useRef(null);
   const formRef = useRef(null);
-  const { get_AndDo_, setDbProductsArr, productSchema, productKeys } =
+  const { get_AndDo_, route, setDbProductsArr, productSchema, productKeys } =
     useContext(TableContext);
 
   const [showDeleConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -38,13 +38,13 @@ export function ProductDialog({ product }) {
     console.log(`body is :${JSON.stringify(body)}`);
 
     const settings = {
-      route: "products",
+      route: route,
 
       method: product ? "PUT" : "POST",
       callback: () => {
         closeDialog();
 
-        get_AndDo_("products", (response) => {
+        get_AndDo_(route, (response) => {
           setDbProductsArr(response.data);
         });
         e.target.reset();
@@ -61,13 +61,13 @@ export function ProductDialog({ product }) {
 
   function deleteProduct() {
     const settings = {
-      route: "products",
+      route: route,
       id: `${product._id}`,
       method: "DELETE",
 
       callback: () => {
         closeDialog();
-        get_AndDo_("products", (response) => {
+        get_AndDo_(route, (response) => {
           setDbProductsArr(response.data);
         });
       },
@@ -94,7 +94,6 @@ export function ProductDialog({ product }) {
         )}
         <form ref={formRef} onSubmit={handleSubmit}>
           {productSchema?.map((keySchema) => {
-            console.log(`sape`);
             function getInputType(schemaType) {
               switch (schemaType) {
                 case "String":

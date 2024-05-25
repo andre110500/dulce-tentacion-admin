@@ -1,8 +1,8 @@
 import React from "react";
 import template from "../assets/products-template.png";
 
-export default function ProductsMenu({ productsList }) {
-  const sortedProductsList = productsList.sort((a, b) => b.price - a.price);
+export default function ProductsMenu({ data }) {
+  const sortedProductsList = data.sort((a, b) => b.price - a.price);
 
   function getPriceByFlavoursQuantity(number) {
     return sortedProductsList.find((obj) => obj.flavours === number)?.price;

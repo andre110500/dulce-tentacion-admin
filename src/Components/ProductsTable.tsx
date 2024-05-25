@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import TableContext from "../Contexts/ProductsContext";
-import ProductsMenu from "./ProductsMenu";
+
 import spinner from "../assets/spinner.svg";
 
 import { ProductDialog } from "./ProductDialog";
@@ -8,7 +8,7 @@ import ShareMenuSection from "./ShareMenuSection";
 import get_AndDo_ from "../functions/get_AndDo_";
 
 import gear from "../assets/gear.svg";
-export default function ProductsTable() {
+export default function ProductsTable({ h1, route, schemaRoute, Menu }) {
   const [dbProductsArr, setDbProductsArr] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [productSchema, setProductSchema] = useState();
@@ -23,8 +23,8 @@ export default function ProductsTable() {
     function handleProductsSchemaResponse_(response) {
       setProductSchema(response.data);
     }
-    get_AndDo_("products", handleProductsResponse_);
-    get_AndDo_("products/schema", handleProductsSchemaResponse_);
+    get_AndDo_(route, handleProductsResponse_);
+    get_AndDo_(schemaRoute, handleProductsSchemaResponse_);
   }, []);
 
   useEffect(() => {
@@ -41,6 +41,7 @@ export default function ProductsTable() {
   return (
     <TableContext.Provider
       value={{
+        route,
         productKeys,
         get_AndDo_,
         productSchema,
@@ -49,7 +50,7 @@ export default function ProductsTable() {
       }}
     >
       <section id="products">
-        <h1>Productos</h1>
+        <h1>{h1}</h1>
         {isLoading ? (
           <img className="spinner" src={spinner} alt="" />
         ) : (
@@ -65,7 +66,7 @@ export default function ProductsTable() {
         "Loading"
       ) : (
         <ShareMenuSection productsList={dbProductsArr}>
-          <ProductsMenu productsList={dbProductsArr} />
+          <Menu data={dbProductsArr} />
         </ShareMenuSection>
       )}
     </TableContext.Provider>
