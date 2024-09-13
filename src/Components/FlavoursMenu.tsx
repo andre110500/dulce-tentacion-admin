@@ -6,13 +6,14 @@ export default function FlavoursMenu({ data }) {
     display: "flex",
     flexDirection: "column",
   };
+  const flavoursInStock = data.filter((flavour) => !flavour.outOfStock);
   return (
     <div className="menu" id="flavours-menu">
       <img src={template} alt="" style={{ width: "100%" }} />
       <div className="uls-container">
         <ul className="first" style={ulStyle}>
-          {data?.map((flavour, index) => {
-            if (index < Math.floor(data.length / 2) && !flavour.outOfStock) {
+          {flavoursInStock?.map((flavour, index) => {
+            if (index < 14) {
               return (
                 <li key={flavour._id}>
                   <span>.</span>
@@ -23,8 +24,8 @@ export default function FlavoursMenu({ data }) {
           })}
         </ul>
         <ul className="second" style={{ ...ulStyle }}>
-          {data?.map((flavour, index) => {
-            if (index >= Math.floor(data.length / 2) && !flavour.outOfStock) {
+          {flavoursInStock?.map((flavour, index) => {
+            if (index >= 14) {
               return (
                 <li key={flavour._id}>
                   <span>.</span>

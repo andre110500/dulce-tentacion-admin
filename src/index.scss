@@ -499,11 +499,14 @@ section.share {
     font-size: 3.276cqw;
 
     ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5cqw;
       li {
         white-space: nowrap;
-      }
-      span {
-        font-size: 5cqw;
+        span {
+          font-size: 4cqw;
+        }
       }
     }
     ul.second {
