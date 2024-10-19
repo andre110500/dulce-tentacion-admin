@@ -25,6 +25,13 @@ export default function Home() {
         schemaRoute="generic/sauce/schema"
         Menu={FlavoursMenu}
       />
+
+      <Section
+        h1="Crocks"
+        route="generic/crock"
+        schemaRoute="generic/crock/schema"
+        Menu={FlavoursMenu}
+      />
     </>
   );
 }
