@@ -1,22 +1,21 @@
 import React from "react";
 import ProductsMenu from "./ProductsMenu";
 import FlavoursMenu from "./FlavoursMenu";
-import ProductsTable from "./ProductsTable";
+import Section from "./Section";
 
-import FlavoursTable from "./FlavoursTable";
 export default function Home() {
   return (
     <>
-      <ProductsTable
+      <Section
         h1="Productos"
         route="products"
         schemaRoute="products/schema"
         Menu={ProductsMenu}
       />
-      <ProductsTable
+      <Section
         h1="Sabores"
-        route="flavours"
-        schemaRoute="flavours/schema"
+        route="generic/flavour"
+        schemaRoute="generic/flavour/schema"
         Menu={FlavoursMenu}
       />
     </>
