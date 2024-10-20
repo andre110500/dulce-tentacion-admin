@@ -406,15 +406,17 @@ section.share {
     .timestamp {
       position: absolute;
       z-index: 2;
+      transform: rotate(90deg);
+      transform-origin: right top;
       color: rgb(0, 0, 0);
-      p {
-        font-family: "DotGothic16", sans-serif;
-        letter-spacing: 1px;
-      }
 
-      top: 5px;
+      bottom: 150px;
       right: 5px;
       font-size: 0.85rem;
+      p {
+        font-family: "DotGothic16", sans-serif;
+        letter-spacing: 3px;
+      }
     }
   }
   .promotional {
