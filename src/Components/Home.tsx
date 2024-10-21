@@ -32,6 +32,12 @@ export default function Home() {
         schemaRoute="generic/crock/schema"
         Menu={FlavoursMenu}
       />
+      <Section
+        h1="Palitos de crema"
+        route="generic/cream"
+        schemaRoute="generic/crock/schema"
+        Menu={FlavoursMenu}
+      />
     </>
   );
 }
