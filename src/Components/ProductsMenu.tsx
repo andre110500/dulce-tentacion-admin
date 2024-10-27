@@ -2,27 +2,36 @@ import React from "react";
 import template from "../assets/products-template.png";
 
 export default function ProductsMenu({ data }) {
-  const sortedProductsList = data.sort((a, b) => b.price - a.price);
+  const sortedProductsByPriceDescending = data.sort(
+    (a, b) => b.price - a.price
+  );
+
+  const availableProductsSortedByPriceDescending =
+    sortedProductsByPriceDescending.filter((product) => {
+      return !product.outOfStock;
+    });
 
   function getPriceByFlavoursQuantity(number) {
-    return sortedProductsList.find((obj) => obj.flavours === number)?.price;
+    return sortedProductsByPriceDescending.find(
+      (obj) => obj.flavours === number
+    )?.price;
   }
 
+  const availableIceCreamSortedByPriceDescending =
+    availableProductsSortedByPriceDescending.filter((product) => {
+      return product.type === "ice-cream";
+    });
+
+  const availableAddOnsSortedByPriceDescending =
+    availableProductsSortedByPriceDescending.filter((product) => {
+      return product.type === "add-ons";
+    });
   return (
     <div id="products-menu" className="menu">
       <img src={template} alt="" style={{ width: "100%" }} />
 
       <div className="uls-container">
-        <ul className="first">
-          {sortedProductsList.map(
-            (product) =>
-              !product.outOfStock && (
-                <li key={product._id}>
-                  <span>{product.name}</span> <span>${product.price}</span>
-                </li>
-              )
-          )}
-        </ul>
+        <List items={availableIceCreamSortedByPriceDescending} />
         <h2>Combos con descuento:</h2>
         <ul>
           <li>
@@ -56,7 +65,21 @@ export default function ProductsMenu({ data }) {
             </p>
           </li>
         </ul>
+        <h2>Adicionales</h2>
+        <List items={availableAddOnsSortedByPriceDescending} />
       </div>
     </div>
+  );
+}
+
+function List({ items }) {
+  return (
+    <ul className="first">
+      {items.map((item) => (
+        <li key={item._id}>
+          <span>{item.name}</span> <span>${item.price}</span>
+        </li>
+      ))}
+    </ul>
   );
 }
