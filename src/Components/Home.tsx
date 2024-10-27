@@ -23,20 +23,17 @@ export default function Home() {
         h1="Salsas"
         route="generic/sauce"
         schemaRoute="generic/sauce/schema"
-        Menu={FlavoursMenu}
       />
 
       <Section
         h1="Crocks"
         route="generic/crock"
         schemaRoute="generic/crock/schema"
-        Menu={FlavoursMenu}
       />
       <Section
         h1="Palitos de crema"
         route="generic/cream"
         schemaRoute="generic/crock/schema"
-        Menu={FlavoursMenu}
       />
     </>
   );
