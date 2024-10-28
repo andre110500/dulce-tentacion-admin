@@ -8,7 +8,13 @@ import ShareMenuSection from "./ShareMenuSection";
 import get_AndDo_ from "../functions/get_AndDo_";
 
 import gear from "../assets/gear.svg";
-export default function Section({ h1, route, schemaRoute, Menu }) {
+export default function Section({
+  h1,
+  route,
+  schemaRoute,
+  Menu,
+  SecondaryMenu,
+}) {
   const [dbItemsArr, setDbItemsArr] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [itemSchemaProperties, setItemSchemaProperties] = useState([]);
@@ -62,6 +68,11 @@ export default function Section({ h1, route, schemaRoute, Menu }) {
             {Menu && (
               <ShareMenuSection productsList={dbItemsArr}>
                 <Menu data={dbItemsArr} />
+              </ShareMenuSection>
+            )}
+            {SecondaryMenu && (
+              <ShareMenuSection productsList={dbItemsArr}>
+                <SecondaryMenu data={dbItemsArr} />
               </ShareMenuSection>
             )}
           </>

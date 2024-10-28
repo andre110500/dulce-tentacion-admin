@@ -2,6 +2,7 @@ import React from "react";
 import IceCreamMenu from "./IceCreamMenu";
 import FlavoursMenu from "./FlavoursMenu";
 import Section from "./Section";
+import FrozenTreatsMenu from "./FrozenTreatsMenu";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
         route="products"
         schemaRoute="products/schema"
         Menu={IceCreamMenu}
+        SecondaryMenu={FrozenTreatsMenu}
       />
       <Section
         h1="Sabores"
