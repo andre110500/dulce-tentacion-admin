@@ -19,11 +19,12 @@ export default function IceCreamMenu({ data }) {
       <img src={template} alt="" style={{ width: "100%" }} />
 
       <div className="uls-container">
+        <h2>Helado artesanal</h2>
         <List items={iceCream} />
         <h2>Combos con descuento:</h2>
         <ul>
           <li>
-            <span>2u 1 kg</span>
+            <span>2 X 1 kg</span>
             <p>
               <span className="line-through">
                 ${getPriceByFlavoursQuantity(4) * 2}
@@ -32,7 +33,7 @@ export default function IceCreamMenu({ data }) {
             </p>
           </li>
           <li>
-            <span>2u 1/2 kg</span>
+            <span>2 X 1/2 kg</span>
             <p>
               <span className="line-through">
                 ${getPriceByFlavoursQuantity(3) * 2}
@@ -41,13 +42,12 @@ export default function IceCreamMenu({ data }) {
             </p>
           </li>
           <li>
-            <span>2u 1/4 kg</span>
+            <span>2 X 1/4 kg</span>
             <p>
               <span className="line-through">
                 ${getPriceByFlavoursQuantity(2) * 2 || "undefined"}
               </span>
               <span>
-                {" "}
                 ${getPriceByFlavoursQuantity(2) * 2 - 200 || "undefined"}
               </span>
             </p>

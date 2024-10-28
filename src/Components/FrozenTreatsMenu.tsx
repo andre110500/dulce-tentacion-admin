@@ -11,6 +11,7 @@ export default function FrozenTreatsMenu({ data }) {
       <img src={template} alt="" style={{ width: "100%" }} />
 
       <div className="uls-container">
+        <h2>Heladitos</h2>
         <List items={frozenTreats} />
       </div>
     </div>
