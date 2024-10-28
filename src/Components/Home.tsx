@@ -1,5 +1,5 @@
 import React from "react";
-import ProductsMenu from "./ProductsMenu";
+import IceCreamMenu from "./IceCreamMenu";
 import FlavoursMenu from "./FlavoursMenu";
 import Section from "./Section";
 
@@ -10,7 +10,7 @@ export default function Home() {
         h1="Productos"
         route="products"
         schemaRoute="products/schema"
-        Menu={ProductsMenu}
+        Menu={IceCreamMenu}
       />
       <Section
         h1="Sabores"
