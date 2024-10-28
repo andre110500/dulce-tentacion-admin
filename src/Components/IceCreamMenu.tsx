@@ -1,37 +1,25 @@
 import React from "react";
 import template from "../assets/products-template.png";
+import List from "./List";
 
 export default function IceCreamMenu({ data }) {
-  const sortedProductsByPriceDescending = data.sort(
-    (a, b) => b.price - a.price
-  );
-
-  const availableProductsSortedByPriceDescending =
-    sortedProductsByPriceDescending.filter((product) => {
-      return !product.outOfStock;
-    });
-
   function getPriceByFlavoursQuantity(number) {
-    return sortedProductsByPriceDescending.find(
-      (obj) => obj.flavours === number
-    )?.price;
+    return data.find((obj) => obj.flavours === number)?.price;
   }
 
-  const availableIceCreamSortedByPriceDescending =
-    availableProductsSortedByPriceDescending.filter((product) => {
-      return product.type === "ice-cream";
-    });
+  const iceCream = data.filter((product) => {
+    return product.type === "ice-cream";
+  });
 
-  const availableAddOnSortedByPriceDescending =
-    availableProductsSortedByPriceDescending.filter((product) => {
-      return product.type === "add-on";
-    });
+  const addOns = data.filter((product) => {
+    return product.type === "add-on";
+  });
   return (
     <div id="products-menu" className="menu">
       <img src={template} alt="" style={{ width: "100%" }} />
 
       <div className="uls-container">
-        <List items={availableIceCreamSortedByPriceDescending} />
+        <List items={iceCream} />
         <h2>Combos con descuento:</h2>
         <ul>
           <li>
@@ -66,20 +54,8 @@ export default function IceCreamMenu({ data }) {
           </li>
         </ul>
         <h2>Adicionales</h2>
-        <List items={availableAddOnSortedByPriceDescending} />
+        <List items={addOns} />
       </div>
     </div>
-  );
-}
-
-function List({ items }) {
-  return (
-    <ul className="first">
-      {items.map((item) => (
-        <li key={item._id}>
-          <span>{item.name}</span> <span>${item.price}</span>
-        </li>
-      ))}
-    </ul>
   );
 }
