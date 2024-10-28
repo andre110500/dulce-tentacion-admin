@@ -22,9 +22,9 @@ export default function IceCreamMenu({ data }) {
       return product.type === "ice-cream";
     });
 
-  const availableAddOnsSortedByPriceDescending =
+  const availableAddOnSortedByPriceDescending =
     availableProductsSortedByPriceDescending.filter((product) => {
-      return product.type === "add-ons";
+      return product.type === "add-on";
     });
   return (
     <div id="products-menu" className="menu">
@@ -66,7 +66,7 @@ export default function IceCreamMenu({ data }) {
           </li>
         </ul>
         <h2>Adicionales</h2>
-        <List items={availableAddOnsSortedByPriceDescending} />
+        <List items={availableAddOnSortedByPriceDescending} />
       </div>
     </div>
   );

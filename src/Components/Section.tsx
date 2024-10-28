@@ -11,35 +11,34 @@ import gear from "../assets/gear.svg";
 export default function Section({ h1, route, schemaRoute, Menu }) {
   const [dbItemsArr, setDbItemsArr] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [itemSchema, setItemSchema] = useState();
-  const [itemKeys, setPItemKeys] = useState();
+  const [itemSchemaProperties, setItemSchemaProperties] = useState([]);
+  const [itemKeys, setItemKeys] = useState();
 
   //////////////////////////////
 
   useEffect(() => {
-    function handleProductsResponse_(response) {
-      setDbItemsArr(response.data);
-    }
-    function handleProductsSchemaResponse_(response) {
-      setItemSchema(response.data);
-    }
-    get_AndDo_(route, handleProductsResponse_);
-    get_AndDo_(schemaRoute, handleProductsSchemaResponse_);
+    get_AndDo_(route, (response) => setDbItemsArr(response.data));
+
+    get_AndDo_(schemaRoute, (response) =>
+      setItemSchemaProperties(response.data)
+    );
   }, []);
 
   useEffect(() => {
-    if (itemSchema && dbItemsArr) {
+    if (itemSchemaProperties && dbItemsArr) {
       setIsLoading(false);
-      if (itemSchema) {
-        // Ensure itemSchema is an array and map to extract keys
-        const keys = itemSchema.map((keySchema) => keySchema.key);
-        setPItemKeys(keys);
-      }
+
+      // Ensure itemSchema is an array and map to extract keys
+
+      const keys = itemSchemaProperties.map(
+        (itemSchemaProperty) => itemSchemaProperty.key
+      );
+      setItemKeys(keys);
     }
-  }, [itemSchema, dbItemsArr]);
+  }, [itemSchemaProperties, dbItemsArr]);
 
   // Define what to render in different states
-  const loadingMessage = "Loading";
+
   const menuContent = Menu ? <Menu data={dbItemsArr} /> : null;
 
   // Only create shareMenuSection if menuContent is not null
@@ -48,14 +47,14 @@ export default function Section({ h1, route, schemaRoute, Menu }) {
   ) : null;
 
   // Decide what to render based on isLoading
-  const content = isLoading ? loadingMessage : shareMenuSection;
+
   return (
     <ItemsContext.Provider
       value={{
         route,
         itemKeys: itemKeys,
         get_AndDo_,
-        itemSchema: itemSchema,
+        itemSchema: itemSchemaProperties,
         dbItemsArr: dbItemsArr,
         setDbItemsArr: setDbItemsArr,
       }}
@@ -70,10 +69,10 @@ export default function Section({ h1, route, schemaRoute, Menu }) {
               <Table keys={itemKeys} data={dbItemsArr} />
             </div>
             <Dialog />
+            {Menu && shareMenuSection}
           </>
         )}
       </section>
-      {Menu && content}
     </ItemsContext.Provider>
   );
 }
