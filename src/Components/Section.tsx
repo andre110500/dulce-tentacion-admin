@@ -37,17 +37,6 @@ export default function Section({ h1, route, schemaRoute, Menu }) {
     }
   }, [itemSchemaProperties, dbItemsArr]);
 
-  // Define what to render in different states
-
-  const menuContent = Menu ? <Menu data={dbItemsArr} /> : null;
-
-  // Only create shareMenuSection if menuContent is not null
-  const shareMenuSection = menuContent ? (
-    <ShareMenuSection productsList={dbItemsArr}>{menuContent}</ShareMenuSection>
-  ) : null;
-
-  // Decide what to render based on isLoading
-
   return (
     <ItemsContext.Provider
       value={{
@@ -69,7 +58,12 @@ export default function Section({ h1, route, schemaRoute, Menu }) {
               <Table keys={itemKeys} data={dbItemsArr} />
             </div>
             <Dialog />
-            {Menu && shareMenuSection}
+
+            {Menu && (
+              <ShareMenuSection productsList={dbItemsArr}>
+                <Menu data={dbItemsArr} />
+              </ShareMenuSection>
+            )}
           </>
         )}
       </section>
