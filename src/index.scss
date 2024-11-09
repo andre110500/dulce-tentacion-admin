@@ -247,10 +247,15 @@ main {
 }
 
 .table-container {
+  margin: auto;
   $spacing-value: 25px;
-  width: 100%;
+  max-width: 100%;
+  width: fit-content;
   overflow-x: auto;
-
+  & > button {
+    width: 100%;
+    border-radius: 0px;
+  }
   table {
     margin: auto;
     border-collapse: collapse;
@@ -387,64 +392,61 @@ button {
   }
 }
 
-section.share {
-  background-color: grey;
-  .container {
-    position: relative;
-    max-width: 100%;
-    margin: auto;
-    .menu {
-      max-width: 100%;
-
-      width: 400px;
-      position: relative;
-      container-type: inline-size;
-
-      img {
-        vertical-align: middle;
-      }
-    }
-    .timestamp {
-      position: absolute;
-      z-index: 2;
-      transform: rotate(90deg);
-      transform-origin: right top;
-      color: rgb(0, 0, 0);
-
-      bottom: 150px;
-      right: 5px;
-      font-size: 0.85rem;
-      p {
-        font-family: "DotGothic16", sans-serif;
-        letter-spacing: 3px;
-      }
-    }
-  }
-  .promotional {
-    max-width: 100%;
-    width: 400px;
-    margin: auto;
-  }
-  #products-menu {
-    container-name: products-menu;
-  }
-
-  #flavours-menu {
-    container-name: flavours-menu;
-  }
-}
-
 .menu-container {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
   gap: 2rem;
-  border: 2px solid green;
-  .share {
+
+  section.share {
     display: flex;
     flex-direction: column;
     button {
       width: 100%;
+      border-radius: 0px;
+    }
+    .container {
+      position: relative;
+      max-width: 100%;
+      margin: auto;
+      .menu {
+        max-width: 100%;
+
+        width: 400px;
+        position: relative;
+        container-type: inline-size;
+
+        img {
+          vertical-align: middle;
+        }
+      }
+      .timestamp {
+        position: absolute;
+        z-index: 2;
+        transform: rotate(90deg);
+        transform-origin: right top;
+        color: rgb(0, 0, 0);
+
+        bottom: 150px;
+        right: 5px;
+        font-size: 0.85rem;
+        p {
+          font-family: "DotGothic16", sans-serif;
+          letter-spacing: 3px;
+        }
+      }
+    }
+    .promotional {
+      max-width: 100%;
+      width: 400px;
+      margin: auto;
+    }
+    #products-menu {
+      container-name: products-menu;
+    }
+
+    #flavours-menu {
+      container-name: flavours-menu;
     }
   }
 }

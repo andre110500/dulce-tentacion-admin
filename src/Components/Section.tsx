@@ -62,8 +62,8 @@ export default function Section({
           <>
             <div className="table-container">
               <Table keys={itemKeys} data={dbItemsArr} />
+              <Dialog />
             </div>
-            <Dialog />
 
             <div className="menu-container">
               {Menu && (
@@ -88,25 +88,26 @@ export default function Section({
 
 function Table({ keys, data }) {
   return (
-    <table>
-      <thead>
-        <tr>
-          {keys.map((key) => (
-            <th key={`product-hcell-${key}`}>{key}</th>
+    <>
+      <table>
+        <thead>
+          <tr>
+            {keys.map((key) => (
+              <th key={`product-hcell-${key}`}>{key}</th>
+            ))}
+            <th>
+              <img src={gear} alt="" />
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((product) => (
+            //return a row per product
+            <TableRow key={`product-row-${product._id}`} product={product} />
           ))}
-          <th>
-            <img src={gear} alt="" />
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((product) => (
-          //return a row per product
-
-          <TableRow key={`product-row-${product._id}`} product={product} />
-        ))}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </>
   );
 }
 
