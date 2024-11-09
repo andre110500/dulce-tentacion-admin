@@ -65,18 +65,20 @@ export default function Section({
             </div>
             <Dialog />
 
-            {Menu && (
-              <ShareMenuSection productsList={dbItemsArr}>
-                <Menu data={dbItemsArr} />
-              </ShareMenuSection>
-            )}
-            {SecondaryMenu && (
-              <ShareMenuSection productsList={dbItemsArr}>
-                <SecondaryMenu
-                  data={dbItemsArr.filter((product) => !product.outOfStock)}
-                />
-              </ShareMenuSection>
-            )}
+            <div className="menu-container">
+              {Menu && (
+                <ShareMenuSection productsList={dbItemsArr}>
+                  <Menu data={dbItemsArr} />
+                </ShareMenuSection>
+              )}
+              {SecondaryMenu && (
+                <ShareMenuSection productsList={dbItemsArr}>
+                  <SecondaryMenu
+                    data={dbItemsArr.filter((product) => !product.outOfStock)}
+                  />
+                </ShareMenuSection>
+              )}
+            </div>
           </>
         )}
       </section>

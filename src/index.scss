@@ -230,7 +230,7 @@ main {
   background-size: cover;
   padding: 2rem 2rem;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1200px;
 
   display: flex;
   align-items: center;
@@ -291,7 +291,7 @@ main {
   }
 }
 
-main section {
+main > section {
   width: 100%;
 
   display: flex;
@@ -431,6 +431,21 @@ section.share {
 
   #flavours-menu {
     container-name: flavours-menu;
+  }
+}
+
+.menu-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 2rem;
+  border: 2px solid green;
+  .share {
+    display: flex;
+    flex-direction: column;
+    button {
+      width: 100%;
+    }
   }
 }
 
