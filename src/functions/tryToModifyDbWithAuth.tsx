@@ -11,9 +11,18 @@ import runBuild from "./runBuild";
 interface Settings {
   route: string;
   id?: string;
-  method: string;
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"; // Restrict method to CRUD operations
   body?: string;
   callback: () => void;
+}
+
+function shouldRunBuild(route: string): boolean {
+  if (process.env.NODE_ENV !== "production") {
+    return false;
+  }
+
+  const rebuildRoutes = process.env.REBUILD_ROUTES?.split(",") || [];
+  return rebuildRoutes.includes(route);
 }
 
 async function tryToModifyDbWithAuth(settings: Settings) {
@@ -34,8 +43,10 @@ async function tryToModifyDbWithAuth(settings: Settings) {
       showUnknownErrorAlert(response.status);
     } else {
       showSuccessAlert();
-      //run build
-      if (process.env.NODE_ENV == "production") {
+
+      // Run build only in production and when the route is in REBUILD_ROUTES
+
+      if (shouldRunBuild(route)) {
         runBuild();
       }
     }
