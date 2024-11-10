@@ -17,7 +17,9 @@ $cool-shadow: 0 0 5px rgba(0, 0, 0, 0.502);
   box-sizing: border-box;
   font-family: $google-font;
 }
-
+h1 {
+  text-align: center;
+}
 #root {
   min-height: 100vh;
   min-height: 100svh;
