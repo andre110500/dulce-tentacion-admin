@@ -113,16 +113,27 @@ function Table({ keys, data }) {
 
 function TableRow({ product }) {
   const { itemKeys } = useContext(ItemsContext);
+  const [showImagePreview, setShowImagePreview] = useState(false);
   return (
     <>
+      {showImagePreview && (
+        <img src={product.imgUrl} onClick={() => setShowImagePreview(false)} />
+      )}
       <tr id={product._id}>
-        {itemKeys.map((key) => (
+        {itemKeys.map((key) => {
           //return a cell per key
-          <td
-            data-cell={key}
-            key={`product-cell-${product._id}-${key}`}
-          >{`${product[key]}`}</td>
-        ))}
+          return (
+            <td
+              data-cell={key}
+              onClick={
+                key === "imgUrl" ? () => setShowImagePreview(true) : undefined
+              }
+              key={`product-cell-${product._id}-${key}`}
+            >
+              {`${product[key]}`}
+            </td>
+          );
+        })}
 
         <td data-cell="edit">
           <Dialog product={product} />
