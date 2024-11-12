@@ -125,22 +125,26 @@ function TableRow({ product }) {
       <tr id={product._id}>
         {itemKeys.map((key) => {
           //return a cell per key
-          return (
-            <td
-              data-cell={key}
-              onClick={
-                key === "imgUrl"
-                  ? () => {
-                      dialogRef.current.showModal();
-                      setPreviewImageUrl(product.imgUrl);
-                    }
-                  : undefined
-              }
-              key={`product-cell-${product._id}-${key}`}
-            >
-              {`${product[key]}`}
-            </td>
-          );
+          if (key === "imgUrl") {
+            return (
+              <td
+                data-cell={key}
+                className="activable"
+                onClick={() => {
+                  dialogRef.current.showModal();
+                  setPreviewImageUrl(product.imgUrl);
+                }}
+                key={`product-cell-${product._id}-${key}`}
+              >
+                {`${product[key]}`}
+              </td>
+            );
+          } else
+            return (
+              <td data-cell={key} key={`product-cell-${product._id}-${key}`}>
+                {`${product[key]}`}
+              </td>
+            );
         })}
 
         <td data-cell="edit">
