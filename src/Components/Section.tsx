@@ -114,10 +114,11 @@ function Table({ keys, data }) {
 function TableRow({ product }) {
   const { itemKeys } = useContext(ItemsContext);
   const dialogRef = useRef(null);
+  const [previewImageUrl, setPreviewImageUrl] = useState("");
   return (
     <>
       <dialog ref={dialogRef}>
-        <img className="image-preview" src={product.imgUrl} />
+        <img className="image-preview" src={previewImageUrl} />
       </dialog>
 
       <tr id={product._id}>
@@ -128,7 +129,10 @@ function TableRow({ product }) {
               data-cell={key}
               onClick={
                 key === "imgUrl"
-                  ? () => dialogRef.current.showModal()
+                  ? () => {
+                      dialogRef.current.showModal();
+                      setPreviewImageUrl(product.imgUrl);
+                    }
                   : undefined
               }
               key={`product-cell-${product._id}-${key}`}
