@@ -22,6 +22,11 @@ dialog.preview {
     max-width: 50vw;
     max-height: 50vh;
   }
+  button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
 }
 
 h1 {

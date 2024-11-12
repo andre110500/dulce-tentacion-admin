@@ -119,6 +119,7 @@ function TableRow({ product }) {
     <>
       <dialog className="preview" ref={dialogRef}>
         <img className="image-preview" src={previewImageUrl} />
+        <button onClick={() => dialogRef.current.close()}>X</button>
       </dialog>
 
       <tr id={product._id}>
