@@ -117,7 +117,7 @@ function TableRow({ product }) {
   const [previewImageUrl, setPreviewImageUrl] = useState("");
   return (
     <>
-      <dialog ref={dialogRef}>
+      <dialog className="preview" ref={dialogRef}>
         <img className="image-preview" src={previewImageUrl} />
       </dialog>
 
