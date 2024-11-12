@@ -18,6 +18,10 @@ $cool-shadow: 0 0 5px rgba(0, 0, 0, 0.502);
   font-family: $google-font;
 }
 
+.image-preview {
+  max-width: 100%;
+}
+
 #root {
   min-height: 100vh;
   min-height: 100svh;

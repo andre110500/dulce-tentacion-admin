@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import ItemsContext from "../Contexts/ItemsContext";
 
 import spinner from "../assets/spinner.svg";
@@ -113,12 +113,13 @@ function Table({ keys, data }) {
 
 function TableRow({ product }) {
   const { itemKeys } = useContext(ItemsContext);
-  const [showImagePreview, setShowImagePreview] = useState(false);
+  const dialogRef = useRef(null);
   return (
     <>
-      {showImagePreview && (
-        <img src={product.imgUrl} onClick={() => setShowImagePreview(false)} />
-      )}
+      <dialog ref={dialogRef}>
+        <img className="image-preview" src={product.imgUrl} />
+      </dialog>
+
       <tr id={product._id}>
         {itemKeys.map((key) => {
           //return a cell per key
@@ -126,7 +127,9 @@ function TableRow({ product }) {
             <td
               data-cell={key}
               onClick={
-                key === "imgUrl" ? () => setShowImagePreview(true) : undefined
+                key === "imgUrl"
+                  ? () => dialogRef.current.showModal()
+                  : undefined
               }
               key={`product-cell-${product._id}-${key}`}
             >
