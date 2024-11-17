@@ -37,6 +37,16 @@ export default function Home() {
         route="generic/cream"
         schemaRoute="generic/crock/schema"
       />
+      <Section
+        h1="Ositos"
+        route="generic/osito"
+        schemaRoute="generic/osito/schema"
+      />
+      <Section
+        h1="Alfamios"
+        route="generic/alfamio"
+        schemaRoute="generic/alfamio/schema"
+      />
     </>
   );
 }
