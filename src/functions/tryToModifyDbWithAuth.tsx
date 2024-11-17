@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+  show_ErrorAlert,
   showSuccessAlert,
   showNotLoggedAlert,
   showUnknownErrorAlert,
@@ -51,8 +52,10 @@ async function tryToModifyDbWithAuth(settings: Settings) {
       }
     }
   } catch (error) {
-    console.log(`error ms is:${error.message}`);
-
+    console.log(`----------------------------------------------------------`);
+    console.log(error.response.data.error);
+    console.log(`----------------------------------------------------------`);
+    show_ErrorAlert(error.response.data.error);
     if (error.message === "Cannot read properties of null (reading 'token')") {
       showNotLoggedAlert();
     }
