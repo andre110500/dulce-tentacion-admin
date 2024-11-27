@@ -19,10 +19,12 @@ interface Settings {
 
 function shouldRunBuild(route: string): boolean {
   if (process.env.NODE_ENV !== "production") {
+    console.log(`return false`);
     return false;
   }
 
-  const rebuildRoutes = process.env.REBUILD_ROUTES?.split(",") || [];
+  const rebuildRoutes = import.meta.env.VITE_REBUILD_ROUTES?.split(",") || [];
+
   return rebuildRoutes.includes(route);
 }
 
@@ -46,6 +48,9 @@ async function tryToModifyDbWithAuth(settings: Settings) {
       showSuccessAlert();
 
       // Run build only in production and when the route is in REBUILD_ROUTES
+      console.log(`-------------------------------------`);
+      console.log(shouldRunBuild(route));
+      console.log(`-------------------------------------`);
 
       if (shouldRunBuild(route)) {
         runBuild();
