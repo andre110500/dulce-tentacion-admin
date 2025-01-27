@@ -23,7 +23,7 @@ function shouldRunBuild(route: string): boolean {
     return false;
   }
 
-  const rebuildRoutes = import.meta.env.VITE_REBUILD_ROUTES?.split(",") || [];
+  const rebuildRoutes = process.env.REBUILD_ROUTES?.split(",") || [];
 
   return rebuildRoutes.includes(route);
 }
@@ -52,9 +52,12 @@ async function tryToModifyDbWithAuth(settings: Settings) {
       console.log(shouldRunBuild(route));
       console.log(`-------------------------------------`);
 
-      if (shouldRunBuild(route)) {
+      /*  if (shouldRunBuild(route)) {
         runBuild();
-      }
+      } */
+
+      //ALWAYS RUNBUILD BECAUSE OF NEW FORM IMPLEMENTATION IN GATSBY APP
+      runBuild();
     }
   } catch (error) {
     console.log(`----------------------------------------------------------`);
