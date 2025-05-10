@@ -24,15 +24,6 @@ export default function IceCreamMenu({ data }) {
         <h2>Combos con descuento:</h2>
         <ul>
           <li>
-            <span>2 de 1 kg</span>
-            <p>
-              <span className="line-through">
-                ${getPriceByFlavoursQuantity(4) * 2}
-              </span>
-              <span> ${getPriceByFlavoursQuantity(4) * 2 - 300}</span>
-            </p>
-          </li>
-          <li>
             <span>2 de 1/2 kg</span>
             <p>
               <span className="line-through">
