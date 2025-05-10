@@ -29,7 +29,7 @@ export default function IceCreamMenu({ data }) {
               <span className="line-through">
                 ${getPriceByFlavoursQuantity(3) * 2}
               </span>
-              <span> ${getPriceByFlavoursQuantity(3) * 2 - 200}</span>
+              <span> ${getPriceByFlavoursQuantity(3) * 2 - 500}</span>
             </p>
           </li>
           <li>
@@ -39,7 +39,7 @@ export default function IceCreamMenu({ data }) {
                 ${getPriceByFlavoursQuantity(2) * 2 || "undefined"}
               </span>
               <span>
-                ${getPriceByFlavoursQuantity(2) * 2 - 200 || "undefined"}
+                ${getPriceByFlavoursQuantity(2) * 2 - 300 || "undefined"}
               </span>
             </p>
           </li>
