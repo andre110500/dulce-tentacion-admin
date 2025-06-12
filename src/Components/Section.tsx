@@ -187,13 +187,13 @@ function TableRow({ product }) {
                 }}
                 key={`product-cell-${product._id}-${key}`}
               >
-                {`${product[key]}`}
+                <span>{`${product[key]}`}</span>
               </td>
             );
           } else
             return (
               <td data-cell={key} key={`product-cell-${product._id}-${key}`}>
-                {`${product[key]}`}
+                <span>{`${product[key]}`}</span>
               </td>
             );
         })}

@@ -318,7 +318,7 @@ main {
       }
 
       .page-info {
-        order: -1; // Move page info to top
+        order: -1;
         margin-bottom: 0.5rem;
       }
     }
@@ -360,6 +360,54 @@ main {
       overflow: hidden;
       &.flavour {
         max-width: 200px;
+      }
+    }
+  }
+
+  @media (max-width: 650px) {
+    table {
+      display: block;
+      width: 100%;
+
+      thead {
+        display: none;
+      }
+
+      tbody {
+        display: block;
+        width: 100%;
+      }
+
+      tr {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border: 1px solid black;
+        margin-bottom: 0.5rem;
+      }
+
+      td {
+        display: grid;
+        grid-template-columns: minmax(100px, 1fr) 2fr;
+        gap: 0.5rem;
+        max-width: none !important;
+        border: none;
+        padding: 0;
+        text-align: left;
+
+        &::before {
+          content: attr(data-cell);
+          font-weight: 700;
+          text-transform: capitalize;
+          white-space: nowrap;
+        }
+
+        > span {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
       }
     }
   }
@@ -676,47 +724,4 @@ input:checked + aside {
 
 input:checked ~ .burger-menu {
   background-image: url("./assets/x.svg") !important;
-}
-
-@media (max-width: 650px) {
-  .table-container {
-    table {
-      display: block;
-      width: 100%;
-
-      thead {
-        display: none;
-      }
-
-      tbody {
-        display: block;
-        width: 100%;
-      }
-
-      tr {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-        padding: 0.5rem;
-        border: 1px solid black;
-        margin-bottom: 0.5rem;
-      }
-
-      td {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap: 0.5rem;
-        max-width: none !important;
-        border: none;
-        padding: 0;
-        text-align: left;
-
-        &::before {
-          content: attr(data-cell);
-          font-weight: 700;
-          text-transform: capitalize;
-        }
-      }
-    }
-  }
 }
