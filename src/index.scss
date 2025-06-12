@@ -276,6 +276,54 @@ main {
     width: 100%;
     border-radius: 0px;
   }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 0.5rem;
+
+    button {
+      min-width: 100px;
+      background-color: $main-color;
+      color: white;
+      border: 1px solid white;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      &:not(:disabled):hover {
+        background-color: darken($main-color, 10%);
+      }
+    }
+
+    .page-info {
+      color: white;
+      font-weight: 500;
+    }
+  }
+
+  @media (max-width: 650px) {
+    .pagination {
+      flex-direction: column;
+      gap: 0.5rem;
+
+      button {
+        width: 100%;
+        max-width: 200px;
+      }
+
+      .page-info {
+        order: -1; // Move page info to top
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+
   table {
     margin: auto;
     border-collapse: collapse;

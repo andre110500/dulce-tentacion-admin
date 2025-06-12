@@ -8,6 +8,9 @@ import ShareMenuSection from "./ShareMenuSection";
 import get_AndDo_ from "../functions/get_AndDo_";
 
 import gear from "../assets/gear.svg";
+
+const ITEMS_PER_PAGE = 10;
+
 export default function Section({
   h1,
   route,
@@ -19,6 +22,8 @@ export default function Section({
   const [isLoading, setIsLoading] = useState(true);
   const [itemSchemaProperties, setItemSchemaProperties] = useState([]);
   const [itemKeys, setItemKeys] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const tableContainerRef = useRef(null);
 
   //////////////////////////////
 
@@ -35,13 +40,34 @@ export default function Section({
       setIsLoading(false);
 
       // Ensure itemSchema is an array and map to extract keys
-
       const keys = itemSchemaProperties.map(
         (itemSchemaProperty) => itemSchemaProperty.key
       );
       setItemKeys(keys);
     }
   }, [itemSchemaProperties, dbItemsArr]);
+
+  // Calculate pagination
+  const totalPages = dbItemsArr
+    ? Math.ceil(dbItemsArr.length / ITEMS_PER_PAGE)
+    : 0;
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentItems = dbItemsArr ? dbItemsArr.slice(startIndex, endIndex) : [];
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    // Scroll to the table container with offset for sticky header
+    const headerHeight = document.querySelector("#header")?.offsetHeight || 0;
+    const tableTop =
+      tableContainerRef.current?.getBoundingClientRect().top || 0;
+    const scrollPosition = window.scrollY + tableTop - headerHeight;
+
+    window.scrollTo({
+      top: scrollPosition,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <ItemsContext.Provider
@@ -60,8 +86,14 @@ export default function Section({
           <img className="spinner" src={spinner} alt="" />
         ) : (
           <>
-            <div className="table-container">
-              <Table keys={itemKeys} data={dbItemsArr} />
+            <div className="table-container" ref={tableContainerRef}>
+              <Table
+                keys={itemKeys}
+                data={currentItems}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
               <Dialog />
             </div>
 
@@ -86,7 +118,7 @@ export default function Section({
   );
 }
 
-function Table({ keys, data }) {
+function Table({ keys, data, currentPage, totalPages, onPageChange }) {
   return (
     <>
       <table>
@@ -102,11 +134,30 @@ function Table({ keys, data }) {
         </thead>
         <tbody>
           {data.map((product) => (
-            //return a row per product
             <TableRow key={`product-row-${product._id}`} product={product} />
           ))}
         </tbody>
       </table>
+
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span className="page-info">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </>
   );
 }
