@@ -1,21 +1,11 @@
-import React from "react";
-
 import {
   show_ErrorAlert,
-  showSuccessAlert,
   showNotLoggedAlert,
+  showSuccessAlert,
   showUnknownErrorAlert,
 } from "../alerts";
 import client from "../client";
 import runBuild from "./runBuild";
-
-interface Settings {
-  route: string;
-  id?: string;
-  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"; // Restrict method to CRUD operations
-  body?: string;
-  callback: () => void;
-}
 
 function shouldRunBuild(route: string): boolean {
   if (process.env.NODE_ENV !== "production") {
@@ -28,11 +18,23 @@ function shouldRunBuild(route: string): boolean {
   return rebuildRoutes.includes(route);
 }
 
-async function tryToModifyDbWithAuth(settings: Settings) {
+interface Settings {
+  route: string;
+  id?: string;
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"; // Restrict method to CRUD operations
+  body?: string;
+  callback: () => void;
+}
+
+export default async function tryToModifyDbWithAuth(settings: Settings) {
   const { route, id, method, body, callback } = settings;
 
   try {
-    const token = JSON.parse(localStorage.getItem("jwtToken")).token;
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Cannot read properties of null (reading 'token')");
+    }
+
     const response = await client({
       method: method,
       url: `${route}${id ? `/${id}` : ""}`,
@@ -58,18 +60,44 @@ async function tryToModifyDbWithAuth(settings: Settings) {
 
       //ALWAYS RUNBUILD BECAUSE OF NEW FORM IMPLEMENTATION IN GATSBY APP
       runBuild();
+      callback();
     }
-  } catch (error) {
-    console.log(`----------------------------------------------------------`);
-    console.log(error.response.data.error);
-    console.log(`----------------------------------------------------------`);
-    show_ErrorAlert(error.response.data.error);
-    if (error.message === "Cannot read properties of null (reading 'token')") {
-      showNotLoggedAlert();
+
+    return response.data;
+  } catch (error: any) {
+    console.log("Error details:", {
+      error,
+      type: typeof error,
+      message: error?.message,
+      response: error?.response,
+      data: error?.response?.data,
+    });
+
+    // Check if it's an Axios error
+    if (error?.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      const errorMessage =
+        error.response.data?.error || "Server error occurred";
+      console.log("Server response error:", errorMessage);
+      show_ErrorAlert(errorMessage);
+    } else if (error?.request) {
+      // The request was made but no response was received
+      console.log("No response received from server");
+      show_ErrorAlert("No response from server");
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Request setup error:", error?.message);
+      if (
+        error?.message === "Cannot read properties of null (reading 'token')"
+      ) {
+        showNotLoggedAlert();
+      } else if (error?.message?.includes("JSON.parse")) {
+        show_ErrorAlert("Invalid server response format");
+      } else {
+        show_ErrorAlert(error?.message || "An error occurred");
+      }
     }
   }
-
   callback();
 }
-
-export default tryToModifyDbWithAuth;
