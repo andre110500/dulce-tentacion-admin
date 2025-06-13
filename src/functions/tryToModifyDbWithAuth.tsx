@@ -30,9 +30,15 @@ export default async function tryToModifyDbWithAuth(settings: Settings) {
   const { route, id, method, body, callback } = settings;
 
   try {
-    const token = localStorage.getItem("token");
-    if (!token) {
+    const jwtToken = localStorage.getItem("jwtToken");
+    console.log(jwtToken);
+    if (!jwtToken || jwtToken === "null") {
+      console.log("if");
       throw new Error("Cannot read properties of null (reading 'token')");
+    }
+    const token = JSON.parse(jwtToken).token;
+    if (!token) {
+      throw new Error("Token not found in JWT data");
     }
 
     const response = await client({
