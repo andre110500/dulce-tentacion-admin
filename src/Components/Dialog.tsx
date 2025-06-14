@@ -18,10 +18,84 @@ export function Dialog({ product }) {
     dialogRef.current.close();
   };
 
+  function checkInputChanges(formElements) {
+    console.log("Checking for input changes...");
+    console.log("Original product:", product);
+
+    if (!product) {
+      console.log("No product provided - this is a new item");
+      return true;
+    }
+
+    let hasChanges = false;
+
+    itemKeys.forEach((key) => {
+      const input = formElements[key];
+      const originalValue = product[key];
+      let currentValue;
+
+      if (input.type === "checkbox") {
+        currentValue = input.checked;
+        console.log(`Field: ${key}`);
+        console.log(`- Type: Checkbox`);
+        console.log(`- Original value: ${originalValue}`);
+        console.log(`- Current value: ${currentValue}`);
+      } else {
+        currentValue = input.value;
+        console.log(`Field: ${key}`);
+        console.log(`- Type: ${input.type}`);
+        console.log(`- Original value: ${originalValue}`);
+        console.log(`- Current value: ${currentValue}`);
+      }
+
+      // Handle different types of comparisons
+      let isChanged = false;
+
+      if (input.type === "number") {
+        // For numbers, convert to numbers and compare
+        const originalNum =
+          originalValue !== undefined ? Number(originalValue) : 0;
+        const currentNum = currentValue !== "" ? Number(currentValue) : 0;
+        isChanged = originalNum !== currentNum;
+      } else if (input.type === "checkbox") {
+        // For checkboxes, compare booleans
+        isChanged = originalValue !== currentValue;
+      } else {
+        // For text inputs, handle undefined and empty string cases
+        const originalStr =
+          originalValue !== undefined ? String(originalValue) : "";
+        const currentStr =
+          currentValue !== undefined ? String(currentValue) : "";
+        isChanged = originalStr !== currentStr;
+      }
+
+      if (isChanged) {
+        console.log(`- CHANGE DETECTED in ${key}!`);
+        hasChanges = true;
+      } else {
+        console.log(`- No change in ${key}`);
+      }
+      console.log("-------------------");
+    });
+
+    console.log(
+      "Final result:",
+      hasChanges ? "Changes detected" : "No changes"
+    );
+    return hasChanges;
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
 
     const formElements = formRef.current.elements;
+
+    // Check for changes before proceeding
+    if (product && !checkInputChanges(formElements)) {
+      console.log("No changes detected, closing dialog without submission");
+      closeDialog();
+      return;
+    }
 
     const body = {}; // Initialize an empty object to hold the body data
 
@@ -39,7 +113,6 @@ export function Dialog({ product }) {
 
     const settings = {
       route: route,
-
       method: product ? "PUT" : "POST",
       callback: () => {
         closeDialog();
