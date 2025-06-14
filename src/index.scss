@@ -6,6 +6,48 @@ $purpple: #100b35;
 $main-color: #e8547e;
 $cool-shadow: 0 0 5px rgba(0, 0, 0, 0.502);
 
+/* SweetAlert2 Custom Styles */
+.swal2-popup {
+  .swal2-confirm,
+  .swal2-cancel {
+    /* Reset any inherited styles */
+    all: unset;
+
+    /* Base styles */
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    /* Specific styles */
+    &.swal2-confirm {
+      background-color: #3085d6 !important;
+      color: white !important;
+      border: none !important;
+      box-shadow: none !important;
+
+      &:hover {
+        background-color: #2778c4 !important;
+      }
+    }
+
+    &.swal2-cancel {
+      background-color: #d33 !important;
+      color: white !important;
+      border: none !important;
+      box-shadow: none !important;
+
+      &:hover {
+        background-color: #c22 !important;
+      }
+    }
+  }
+}
+
 * {
   padding: 0px;
   margin: 0px;
