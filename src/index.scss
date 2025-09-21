@@ -622,15 +622,18 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+
     gap: 5cqw;
     font-weight: bold;
     letter-spacing: 0.3cqw;
     word-spacing: 0.5cqw;
-    padding: 1cqw 12cqw;
-    font-size: 3.276cqw;
+    padding: 1cqw 8cqw;
+
     color: #dc1537;
     h2 {
       text-align: center;
+      font-size: 4cqw;
     }
     ul {
       display: flex;
@@ -650,7 +653,7 @@ button {
         }
       }
       span {
-        font-size: 4cqw;
+        font-size: 3.5cqw;
       }
     }
     ul.second {
