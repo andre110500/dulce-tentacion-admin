@@ -100,7 +100,9 @@ export default function Section({
             <div className="menu-container">
               {Menu && (
                 <ShareMenuSection productsList={dbItemsArr}>
-                  <Menu data={dbItemsArr} />
+                  <Menu
+                    data={dbItemsArr?.filter((product) => !product.outOfStock)}
+                  />
                 </ShareMenuSection>
               )}
               {SecondaryMenu && (
