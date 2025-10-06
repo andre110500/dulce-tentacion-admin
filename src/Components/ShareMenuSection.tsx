@@ -1,50 +1,55 @@
 import html2canvas from "html2canvas";
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import TimeStamp from "./TimeStamp";
 
 export default function ShareMenuSection({
   children,
   productsList,
   flavoursList,
+}: {
+  children: React.ReactNode;
+  productsList: unknown;
+  flavoursList: unknown;
 }) {
-  const [shareData, setShareData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const ref = useRef(null);
-  const [imageSrc, setImageSrc] = useState(null);
+  type SharePayload = ShareData & { files: File[] };
+  const [shareData, setShareData] = useState<SharePayload | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   useEffect(() => {
-    if (ref.current) {
-      captureImage();
-      getDataToShare();
-    }
-  }, [ref.current, productsList, flavoursList]);
+    if (!ref.current) return;
+    (async () => {
+      setIsLoading(true);
+      const scale = 2;
+      const canvas = await html2canvas(ref.current as HTMLElement, { scale });
 
-  async function getDataToShare() {
-    setIsLoading(true);
-    const scale = 2;
-    const canvas = await html2canvas(ref.current, { scale });
-    canvas.toBlob(async (blob) => {
-      const files = [new File([blob], "image.png", { type: blob.type })];
-      const shareData = {
-        text: "Some text",
-        title: "Some title",
-        files,
-      };
-      setShareData(shareData);
+      // Preview image
+      const dataURL = canvas.toDataURL("image/png");
+      setImageSrc(dataURL);
+
+      // Share payload
+      await new Promise<void>((resolve) => {
+        canvas.toBlob((blob) => {
+          if (!blob) return resolve();
+          const files = [new File([blob], "image.png", { type: blob.type })];
+          const nextShareData = {
+            text: "Some text",
+            title: "Some title",
+            files,
+          };
+          setShareData(nextShareData);
+          resolve();
+        });
+      });
+
       setIsLoading(false);
-    });
-  }
-
-  const captureImage = async () => {
-    const scale = 2;
-    const canvas = await html2canvas(ref.current, { scale });
-    const dataURL = canvas.toDataURL("image/png");
-    setImageSrc(dataURL);
-  };
+    })();
+  }, [productsList, flavoursList]);
 
   async function sendShare() {
     try {
-      if (navigator.share && navigator.canShare(shareData)) {
+      if (navigator.share && shareData && navigator.canShare(shareData)) {
         await navigator.share(shareData);
         console.log("File was shared successfully");
         setShareData(null);
@@ -52,8 +57,13 @@ export default function ShareMenuSection({
         throw new Error("Funcion no compatible en tu dispositivo");
       }
     } catch (err) {
-      console.error(err.name, err.message);
-      alert(err.message);
+      if (err instanceof Error) {
+        console.error(err.name, err.message);
+        alert(err.message);
+      } else {
+        console.error("Unknown error", err);
+        alert("Ocurrió un error desconocido");
+      }
     }
   }
   return (
