@@ -95,7 +95,7 @@ export default function Section({
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
               />
-              <Dialog />
+
             </div>
 
             <div className="menu-container">
@@ -141,24 +141,19 @@ function Table({ keys, data, currentPage, totalPages, onPageChange }) {
           ))}
         </tbody>
       </table>
-
+      <Dialog />
       {totalPages > 1 && (
         <div className="pagination">
-          <button
-            onClick={() => onPageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
-          <span className="page-info">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={() => onPageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
+          {/* Generate page numbers */}
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={`page-${page}`}
+              className={`page-number ${currentPage === page ? "active" : ""}`}
+              onClick={() => onPageChange(page)}
+            >
+              {page}
+            </button>
+          ))}
         </div>
       )}
     </>

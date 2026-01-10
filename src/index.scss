@@ -8,6 +8,7 @@ $cool-shadow: 0 0 5px rgba(0, 0, 0, 0.502);
 
 /* SweetAlert2 Custom Styles */
 .swal2-popup {
+
   .swal2-confirm,
   .swal2-cancel {
     /* Reset any inherited styles */
@@ -59,17 +60,20 @@ $cool-shadow: 0 0 5px rgba(0, 0, 0, 0.502);
   box-sizing: border-box;
   font-family: $google-font;
 }
+
 dialog.preview {
   .image-preview {
     max-width: 50vw;
     max-height: 50vh;
   }
+
   button {
     position: absolute;
     top: 5px;
     right: 5px;
   }
 }
+
 .activable {
   color: blue;
   cursor: pointer;
@@ -78,6 +82,7 @@ dialog.preview {
 h1 {
   text-align: center;
 }
+
 #root {
   min-height: 100vh;
   min-height: 100svh;
@@ -100,14 +105,20 @@ h1 {
 
   max-width: 200px;
 
-  animation: spin 2s linear infinite; /* Using the spin animation */
+  animation: spin 2s linear infinite;
+
+  /* Using the spin animation */
   @keyframes spin {
     0% {
       transform: rotate(0deg);
-    } /* Start from 0 degrees */
+    }
+
+    /* Start from 0 degrees */
     100% {
       transform: rotate(360deg);
-    } /* End at 360 degrees (a full rotation) */
+    }
+
+    /* End at 360 degrees (a full rotation) */
   }
 }
 
@@ -119,10 +130,12 @@ dialog {
 dialog.user {
   padding: 2rem;
   color: black;
+
   .content {
     display: flex;
     flex-direction: column;
     gap: 4rem;
+
     form {
       display: flex;
 
@@ -136,9 +149,11 @@ dialog.user {
         border: solid black 1px;
       }
     }
+
     .buttons-container {
       display: flex;
       justify-content: space-around;
+
       button {
         border: solid black 1px;
       }
@@ -152,6 +167,7 @@ dialog.crud {
   border-radius: 0.5rem;
   color: white;
   position: relative;
+
   .delete-comfirmation {
     width: 100%;
     height: 100%;
@@ -164,35 +180,42 @@ dialog.crud {
     justify-content: space-evenly;
 
     background-color: black;
+
     .buttons-container {
       display: flex;
       flex-direction: column;
 
       align-items: center;
       gap: 2rem;
+
       button {
         background-color: white;
         color: black;
       }
     }
   }
+
   form {
     display: flex;
     padding: 2rem;
     flex-direction: column;
     gap: 1.8rem;
+
     .delete {
       width: 100%;
     }
+
     label {
       font-size: 0.8rem;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+
       &.outOfStock {
         flex-direction: row;
         justify-content: center;
         align-items: center;
+
         input {
           width: 1.3rem;
           height: 1.3rem;
@@ -206,14 +229,17 @@ dialog.crud {
       text-align: center;
       color: black;
     }
+
     .buttons-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.8rem;
       justify-content: space-between;
+
       .delete {
         grid-column: 1/3;
       }
+
       button {
         background-color: white !important;
         color: black;
@@ -245,7 +271,7 @@ dialog.crud {
     cursor: pointer;
   }
 
-  ul > li > button {
+  ul>li>button {
     width: auto;
   }
 
@@ -257,6 +283,7 @@ dialog.crud {
   .logo {
     width: 6rem;
     cursor: pointer;
+
     &:hover {
       filter: invert(100%);
     }
@@ -265,9 +292,11 @@ dialog.crud {
   nav {
     display: flex;
     align-items: center;
+
     ul {
       display: flex;
       gap: 2rem;
+
       li {
         display: flex;
         align-items: center;
@@ -275,9 +304,11 @@ dialog.crud {
       }
     }
   }
+
   #checkbox {
     display: none;
   }
+
   .burger-menu {
     width: 3rem;
     filter: invert(100%);
@@ -314,7 +345,7 @@ main {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 
-  & > button {
+  &>button {
     width: 100%;
     border-radius: 0px;
   }
@@ -333,6 +364,23 @@ main {
       color: white;
       border: 1px solid white;
 
+      &.page-number {
+        min-width: 40px;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+
+        &.active {
+          background-color: white;
+          color: $main-color;
+          border-color: $main-color;
+        }
+      }
+
       &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
@@ -344,14 +392,13 @@ main {
     }
 
     .page-info {
-      color: white;
-      font-weight: 500;
+      display: none; // Hide the old text info
     }
   }
 
   @media (max-width: 650px) {
     .pagination {
-      flex-direction: column;
+
       gap: 0.5rem;
 
       button {
@@ -390,6 +437,7 @@ main {
     th {
       background-color: black;
       color: white;
+
       img {
         width: 1.5rem;
         display: block;
@@ -400,6 +448,7 @@ main {
 
     td {
       overflow: hidden;
+
       &.flavour {
         max-width: 200px;
       }
@@ -445,7 +494,7 @@ main {
           white-space: nowrap;
         }
 
-        > span {
+        >span {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -455,7 +504,7 @@ main {
   }
 }
 
-main > section {
+main>section {
   width: 100%;
 
   display: flex;
@@ -465,11 +514,13 @@ main > section {
   border-radius: 0.5rem;
   box-shadow: $cool-shadow;
   padding: 2rem 1rem;
+
   button {
     color: white;
     background-color: black;
   }
-  & > button {
+
+  &>button {
     width: 100%;
   }
 }
@@ -478,24 +529,30 @@ main > section {
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-100%);
   }
 }
+
 #footer {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2rem;
   padding: 2rem;
+
   .social {
     display: flex;
     gap: 2rem;
+
     img {
       width: 3rem;
     }
+
     display: flex;
   }
+
   .join,
   .donate {
     font-weight: 900;
@@ -507,14 +564,16 @@ main > section {
     display: none !important;
   }
 }
+
 @container header (min-width:421px) {
+
   .burger-menu,
   aside {
     display: none !important;
   }
 }
 
-section > button {
+section>button {
   margin: auto;
 }
 
@@ -523,6 +582,7 @@ button {
   width: 80px;
   border-radius: 0.5rem;
   text-transform: uppercase;
+
   &:disabled {
     opacity: 0.66;
   }
@@ -530,6 +590,7 @@ button {
 
 .loadingDots {
   outline: 2px red solid;
+
   &::after {
     content: " ";
     animation: loadingDots 3s infinite steps(3);
@@ -540,12 +601,15 @@ button {
   0% {
     content: " ";
   }
+
   33.36% {
     content: " .";
   }
+
   66.66% {
     content: " . .";
   }
+
   100% {
     content: " . . .";
   }
@@ -560,14 +624,17 @@ button {
   section.share {
     display: flex;
     flex-direction: column;
+
     button {
       width: 100%;
       border-radius: 0px;
     }
+
     .container {
       position: relative;
       max-width: 100%;
       margin: auto;
+
       .menu {
         max-width: 100%;
 
@@ -579,6 +646,7 @@ button {
           vertical-align: middle;
         }
       }
+
       .timestamp {
         position: absolute;
         z-index: 2;
@@ -589,17 +657,20 @@ button {
         bottom: 150px;
         right: 5px;
         font-size: 0.85rem;
+
         p {
           font-family: "DotGothic16", sans-serif;
           letter-spacing: 3px;
         }
       }
     }
+
     .promotional {
       max-width: 100%;
       width: 400px;
       margin: auto;
     }
+
     #products-menu {
       container-name: products-menu;
     }
@@ -633,15 +704,18 @@ button {
     padding: 1cqw 10cqw;
 
     color: #dc1537;
+
     h2 {
       text-align: center;
       font-size: 4cqw;
       font-size: 4cqw;
     }
+
     ul {
       display: flex;
       flex-direction: column;
       gap: 3cqw;
+
       li {
         display: grid;
         align-items: center;
@@ -651,22 +725,25 @@ button {
         span.line-through {
           text-decoration: line-through;
         }
+
         & span:first-child {
           text-align: right;
         }
       }
+
       span {
         font-size: 3.5cqw;
         font-size: 3.5cqw;
       }
     }
+
     ul.second {
       padding-left: 5cqw;
     }
   }
 }
 
-@container flavours-menu  (min-width:0px) {
+@container flavours-menu (min-width:0px) {
   .uls-container {
     position: absolute;
     top: 50%;
@@ -688,13 +765,16 @@ button {
       display: flex;
       flex-direction: column;
       gap: 0.5cqw;
+
       li {
         white-space: nowrap;
+
         span {
           font-size: 4cqw;
         }
       }
     }
+
     ul.second {
       padding-left: 5cqw;
     }
@@ -715,6 +795,7 @@ form.flavour {
   flex-wrap: wrap;
 
   padding: 2rem;
+
   .buttons-container {
     width: 180px;
 
@@ -722,15 +803,18 @@ form.flavour {
 
     justify-content: space-between;
   }
+
   .input-container {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     gap: 1.2rem;
-    & > input {
+
+    &>input {
       text-align: center;
     }
+
     label {
       display: flex;
       gap: 0.3rem;
@@ -756,6 +840,7 @@ aside {
   box-shadow: 0px 3px 8px rgb(100, 100, 100);
 
   text-align: left;
+
   button {
     text-align: inherit;
   }
@@ -767,10 +852,10 @@ aside {
   }
 }
 
-input:checked + aside {
+input:checked+aside {
   display: block;
 }
 
-input:checked ~ .burger-menu {
+input:checked~.burger-menu {
   background-image: url("./assets/x.svg") !important;
 }
