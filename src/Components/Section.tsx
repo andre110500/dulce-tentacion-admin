@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import ItemsContext from "../Contexts/ItemsContext";
+import Swal from "sweetalert2";
 
 import spinner from "../assets/spinner.svg";
 
@@ -213,9 +214,13 @@ function TableRow({ product }) {
 const OverflowCell = ({ content, dataCell }: { content: any; dataCell: string }) => {
   const cellRef = useRef<HTMLTableCellElement>(null);
 
-  const checkOverflow = (e: React.MouseEvent<HTMLTableCellElement>) => {
-    const el = e.currentTarget;
-    const isOverflowing = el.scrollWidth > el.clientWidth;
+  const checkOverflow = () => {
+    const el = cellRef.current;
+    if (!el) return;
+
+    // Check the span inside the td because on mobile the td is a grid and the span has the truncation
+    const target = el.querySelector("span") || el;
+    const isOverflowing = target.scrollWidth > target.clientWidth;
 
     if (isOverflowing) {
       el.setAttribute("title", content);
@@ -224,11 +229,33 @@ const OverflowCell = ({ content, dataCell }: { content: any; dataCell: string })
     }
   };
 
+  const handleClick = () => {
+    // Only allow click on devices that DO NOT support hover (touch devices)
+    // If the device supports hover, we assume the user can simple hover to see the tooltip
+    const canHover = window.matchMedia("(hover: hover)").matches;
+    if (canHover) return;
+
+    const el = cellRef.current;
+    if (!el) return;
+
+    const target = el.querySelector("span") || el;
+    const isOverflowing = target.scrollWidth > target.clientWidth;
+
+    if (isOverflowing) {
+      Swal.fire({
+        text: content,
+        confirmButtonText: "Cerrar",
+        confirmButtonColor: "#e8547e",
+      });
+    }
+  };
+
   return (
     <td
       data-cell={dataCell}
       ref={cellRef}
       onMouseEnter={checkOverflow}
+      onClick={handleClick}
     >
       <span>{`${content}`}</span>
     </td>
