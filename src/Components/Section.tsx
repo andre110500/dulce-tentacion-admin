@@ -194,9 +194,11 @@ function TableRow({ product }) {
             );
           } else
             return (
-              <td data-cell={key} key={`product-cell-${product._id}-${key}`}>
-                <span>{`${product[key]}`}</span>
-              </td>
+              <OverflowCell
+                key={`product-cell-${product._id}-${key}`}
+                content={product[key]}
+                dataCell={key}
+              />
             );
         })}
 
@@ -207,3 +209,28 @@ function TableRow({ product }) {
     </>
   );
 }
+
+const OverflowCell = ({ content, dataCell }: { content: any; dataCell: string }) => {
+  const cellRef = useRef<HTMLTableCellElement>(null);
+
+  const checkOverflow = (e: React.MouseEvent<HTMLTableCellElement>) => {
+    const el = e.currentTarget;
+    const isOverflowing = el.scrollWidth > el.clientWidth;
+
+    if (isOverflowing) {
+      el.setAttribute("title", content);
+    } else {
+      el.removeAttribute("title");
+    }
+  };
+
+  return (
+    <td
+      data-cell={dataCell}
+      ref={cellRef}
+      onMouseEnter={checkOverflow}
+    >
+      <span>{`${content}`}</span>
+    </td>
+  );
+};
