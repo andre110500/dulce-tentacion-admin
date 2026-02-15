@@ -19,33 +19,44 @@ export default function ShareMenuSection({
 
   useEffect(() => {
     if (!ref.current) return;
+
     (async () => {
       setIsLoading(true);
+
       const scale = 2;
       const canvas = await html2canvas(ref.current as HTMLElement, { scale });
 
-      // Preview image
-      const dataURL = canvas.toDataURL("image/png");
-      setImageSrc(dataURL);
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          setIsLoading(false);
+          return;
+        }
 
-      // Share payload
-      await new Promise<void>((resolve) => {
-        canvas.toBlob((blob) => {
-          if (!blob) return resolve();
-          const files = [new File([blob], "image.png", { type: blob.type })];
-          const nextShareData = {
-            text: "Some text",
-            title: "Some title",
-            files,
-          };
-          setShareData(nextShareData);
-          resolve();
+        // 🔥 Crear URL para preview (sin base64)
+        const objectUrl = URL.createObjectURL(blob);
+        setImageSrc(objectUrl);
+
+        // 🔥 Crear archivo para compartir
+        const files = [new File([blob], "image.png", { type: blob.type })];
+
+        setShareData({
+          text: "Some text",
+          title: "Some title",
+          files,
         });
-      });
 
-      setIsLoading(false);
+        setIsLoading(false);
+      }, "image/png");
     })();
+
+    // 🔥 Limpieza importante para evitar memory leaks
+    return () => {
+      if (imageSrc) {
+        URL.revokeObjectURL(imageSrc);
+      }
+    };
   }, [productsList, flavoursList]);
+
 
   async function sendShare() {
     try {
