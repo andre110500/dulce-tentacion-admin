@@ -1,7 +1,7 @@
 import React, { useRef, useContext, useState } from "react";
 import ItemsContext from "../Contexts/ItemsContext";
 import tryToModifyDbWithAuth from "../functions/tryToModifyDbWithAuth";
-
+import { generateAndUploadMenu } from "../functions/generateAndUploadMenu";
 export function Dialog({ product }) {
   const dialogRef = useRef(null);
   const formRef = useRef(null);
@@ -114,9 +114,9 @@ export function Dialog({ product }) {
     const settings = {
       route: route,
       method: product ? "PUT" : "POST",
-      callback: () => {
+      callback: async () => {
         closeDialog();
-
+        await generateAndUploadMenu(); // 🔥 genera y sube imagen
         get_AndDo_(route, (response) => {
           setDbItemsArr(response.data);
         });
@@ -138,8 +138,9 @@ export function Dialog({ product }) {
       id: `${product._id}`,
       method: "DELETE",
 
-      callback: () => {
+      callback: async () => {
         closeDialog();
+        await generateAndUploadMenu(); // 🔥 genera y sube imagen
         get_AndDo_(route, (response) => {
           setDbItemsArr(response.data);
         });

@@ -23,7 +23,7 @@ interface Settings {
   id?: string;
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"; // Restrict method to CRUD operations
   body?: string;
-  callback: () => void;
+  callback: () => Promise<void>; // 🔥 ahora async
 }
 
 export default async function tryToModifyDbWithAuth(settings: Settings) {
@@ -65,8 +65,8 @@ export default async function tryToModifyDbWithAuth(settings: Settings) {
       } */
 
       //ALWAYS RUNBUILD BECAUSE OF NEW FORM IMPLEMENTATION IN GATSBY APP
+      await callback();
       runBuild();
-      callback();
     }
 
     return response.data;
@@ -105,5 +105,5 @@ export default async function tryToModifyDbWithAuth(settings: Settings) {
       }
     }
   }
-  callback();
+
 }
