@@ -116,10 +116,10 @@ export function Dialog({ product }) {
       method: product ? "PUT" : "POST",
       callback: async () => {
         closeDialog();
+        const response = await get_AndDo_(route)
+        setDbItemsArr(response.data);
+
         await generateAndUploadMenu(); // 🔥 genera y sube imagen
-        get_AndDo_(route, (response) => {
-          setDbItemsArr(response.data);
-        });
         e.target.reset();
       },
       body: JSON.stringify(body),
