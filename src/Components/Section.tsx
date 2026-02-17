@@ -29,11 +29,50 @@ export default function Section({
   //////////////////////////////
 
   useEffect(() => {
-    get_AndDo_(route, (response) => setDbItemsArr(response.data));
 
-    get_AndDo_(schemaRoute, (response) =>
-      setItemSchemaProperties(response.data)
-    );
+
+    const fetchData = async () => {
+      try {
+        console.log("📡 Fetching fresh data from DB...");
+        const response = await get_AndDo_(route)
+        console.log("📥 get_AndDo_ response:", response);
+        if (!response) {
+          console.error("❌ get_AndDo_ returned undefined!");
+          return;
+        }
+        console.log("📊 Response data:", response.data);
+        setDbItemsArr(response.data);
+        console.log("✅ State updated");
+
+
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    const fetchData2 = async () => {
+      try {
+        console.log("📡 Fetching fresh data from DB...");
+        const response = await get_AndDo_(schemaRoute)
+        console.log("📥 get_AndDo_ response:", response);
+        if (!response) {
+          console.error("❌ get_AndDo_ returned undefined!");
+          return;
+        }
+        console.log("📊 Response data:", response.data);
+        setItemSchemaProperties(response.data);
+        console.log("✅ State updated");
+
+
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+    fetchData2();
+
+
   }, []);
 
   useEffect(() => {
