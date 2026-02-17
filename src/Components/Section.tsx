@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useContext } from "react";
 import ItemsContext from "../Contexts/ItemsContext";
 import Swal from "sweetalert2";
 import { generateAndUploadMenu } from "../functions/generateAndUploadMenu";
@@ -28,25 +28,11 @@ export default function Section({
 
   //////////////////////////////
   const changeCount = useRef(0);
-  useEffect(() => {
+  useLayoutEffect(() => {
     changeCount.current += 1;
-    // Saltamos:
-    // 1 → mount
-    // 2 → primer set del fetch
     if (changeCount.current <= 2) return;
-    if (route === "products") {
-      console.log(route)
-      console.log("route is products");
-    } else {
-      console.log(route)
-      console.log("route is not products");
-      return
-    }
-
+    if (route !== "products") return;
     if (!dbItemsArr) return;
-    console.log("d99999999999999999999999999999999999999999999999999999999999");
-    console.log("dbItemsArr fue modificada de forma manual");
-    console.log("99999999999999999999999999999999999999999999999999999999999");
 
     const run = async () => {
       console.log("🖼 Generating and uploading menu...");
@@ -56,7 +42,6 @@ export default function Section({
 
     run();
   }, [dbItemsArr]);
-
   useEffect(() => {
 
 
