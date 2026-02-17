@@ -1,12 +1,12 @@
 import client from "../client";
 
-async function get_AndDo_(route) {
+async function get_AndDo_(route, handleResponse_) {
   try {
-    await client({
+    const response = await client({
       method: "get",
       url: route,
     });
-
+    handleResponse_(response);
   } catch (error) {
     console.log(error);
   }
