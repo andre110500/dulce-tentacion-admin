@@ -116,8 +116,9 @@ export function Dialog({ product }) {
       method: product ? "PUT" : "POST",
       callback: async () => {
         closeDialog();
-        const response = await get_AndDo_(route)
-        setDbItemsArr(response.data);
+        get_AndDo_(route, (response) => {
+          setDbItemsArr(response.data);
+        });
 
         await generateAndUploadMenu(); // 🔥 genera y sube imagen
         e.target.reset();
@@ -140,8 +141,9 @@ export function Dialog({ product }) {
 
       callback: async () => {
         closeDialog();
-        const response = await get_AndDo_(route)
-        setDbItemsArr(response.data);
+        get_AndDo_(route, (response) => {
+          setDbItemsArr(response.data);
+        });
         await generateAndUploadMenu(); // 🔥 genera y sube imagen
 
       },
