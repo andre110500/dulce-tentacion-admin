@@ -6,7 +6,7 @@ async function get_AndDo_(route) {
       method: "get",
       url: route,
     });
-    return res
+    return response
   } catch (error) {
     console.log(error);
   }
