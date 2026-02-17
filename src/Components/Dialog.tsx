@@ -140,10 +140,10 @@ export function Dialog({ product }) {
 
       callback: async () => {
         closeDialog();
+        const response = await get_AndDo_(route)
+        setDbItemsArr(response.data);
         await generateAndUploadMenu(); // 🔥 genera y sube imagen
-        get_AndDo_(route, (response) => {
-          setDbItemsArr(response.data);
-        });
+
       },
     };
 
