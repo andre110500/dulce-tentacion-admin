@@ -130,9 +130,7 @@ export function Dialog({ product }) {
           console.log("📊 Response data:", response.data);
           setDbItemsArr(response.data);
           console.log("✅ State updated");
-          console.log("🖼 Generating and uploading menu...");
-          await generateAndUploadMenu(); // 🔥 genera y sube imagen
-          console.log("✅ Image generation finished");
+
           e.target.reset();
           console.log("🔄 Form reset");
           console.log("🟢 SUBMIT CALLBACK FINISHED SUCCESSFULLY");
@@ -172,9 +170,7 @@ export function Dialog({ product }) {
           console.log("📊 Response data:", response.data);
           setDbItemsArr(response.data);
           console.log("✅ State updated");
-          console.log("🖼 Generating and uploading menu...");
-          await generateAndUploadMenu(); // 🔥 genera y sube imagen
-          console.log("✅ Image generation finished");
+
 
           console.log("🔄 Form reset");
           console.log("🟢 SUBMIT CALLBACK FINISHED SUCCESSFULLY");

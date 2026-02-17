@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import ItemsContext from "../Contexts/ItemsContext";
 import Swal from "sweetalert2";
-
+import { generateAndUploadMenu } from "../functions/generateAndUploadMenu";
 import spinner from "../assets/spinner.svg";
 
 import { Dialog } from "./Dialog";
@@ -46,8 +46,15 @@ export default function Section({
     if (!dbItemsArr) return;
     console.log("d99999999999999999999999999999999999999999999999999999999999");
     console.log("dbItemsArr fue modificada de forma manual");
-
     console.log("99999999999999999999999999999999999999999999999999999999999");
+
+    const run = async () => {
+      console.log("🖼 Generating and uploading menu...");
+      await generateAndUploadMenu();
+      console.log("✅ Image generation finished");
+    };
+
+    run();
   }, [dbItemsArr]);
 
   useEffect(() => {
