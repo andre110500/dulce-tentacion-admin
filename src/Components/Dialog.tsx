@@ -115,13 +115,30 @@ export function Dialog({ product }) {
       route: route,
       method: product ? "PUT" : "POST",
       callback: async () => {
-        closeDialog();
-        get_AndDo_(route, (response) => {
-          setDbItemsArr(response.data);
-        });
+        console.log("🟢 SUBMIT CALLBACK STARTED");
+        try {
+          closeDialog();
+          console.log("📦 Dialog closed");
+          console.log("📡 Fetching fresh data from DB...");
+          const response = await get_AndDo_(route)
+          console.log("📥 get_AndDo_ response:", response);
+          if (!response) {
+            console.error("❌ get_AndDo_ returned undefined!");
+            return;
+          }
 
-        await generateAndUploadMenu(); // 🔥 genera y sube imagen
-        e.target.reset();
+          console.log("📊 Response data:", response.data);
+          setDbItemsArr(response.data);
+          console.log("✅ State updated");
+          console.log("🖼 Generating and uploading menu...");
+          await generateAndUploadMenu(); // 🔥 genera y sube imagen
+          console.log("✅ Image generation finished");
+          e.target.reset();
+          console.log("🔄 Form reset");
+          console.log("🟢 SUBMIT CALLBACK FINISHED SUCCESSFULLY");
+        } catch (error) {
+          console.error("❌ Error in submit callback:", error);
+        }
       },
       body: JSON.stringify(body),
     };
@@ -140,12 +157,30 @@ export function Dialog({ product }) {
       method: "DELETE",
 
       callback: async () => {
-        closeDialog();
-        get_AndDo_(route, (response) => {
-          setDbItemsArr(response.data);
-        });
-        await generateAndUploadMenu(); // 🔥 genera y sube imagen
+        console.log("🟢 SUBMIT CALLBACK STARTED");
+        try {
+          closeDialog();
+          console.log("📦 Dialog closed");
+          console.log("📡 Fetching fresh data from DB...");
+          const response = await get_AndDo_(route)
+          console.log("📥 get_AndDo_ response:", response);
+          if (!response) {
+            console.error("❌ get_AndDo_ returned undefined!");
+            return;
+          }
 
+          console.log("📊 Response data:", response.data);
+          setDbItemsArr(response.data);
+          console.log("✅ State updated");
+          console.log("🖼 Generating and uploading menu...");
+          await generateAndUploadMenu(); // 🔥 genera y sube imagen
+          console.log("✅ Image generation finished");
+
+          console.log("🔄 Form reset");
+          console.log("🟢 SUBMIT CALLBACK FINISHED SUCCESSFULLY");
+        } catch (error) {
+          console.error("❌ Error in submit callback:", error);
+        }
       },
     };
 
