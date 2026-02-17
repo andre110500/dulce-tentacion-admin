@@ -27,13 +27,35 @@ export default function Section({
   const tableContainerRef = useRef(null);
 
   //////////////////////////////
+  const changeCount = useRef(0);
+  useEffect(() => {
+    changeCount.current += 1;
+    // Saltamos:
+    // 1 → mount
+    // 2 → primer set del fetch
+    if (changeCount.current <= 2) return;
+    if (route === "products") {
+      console.log(route)
+      console.log("route is products");
+    } else {
+      console.log(route)
+      console.log("route is not products");
+      return
+    }
+
+    if (!dbItemsArr) return;
+    console.log("d99999999999999999999999999999999999999999999999999999999999");
+    console.log("dbItemsArr fue modificada de forma manual");
+
+    console.log("99999999999999999999999999999999999999999999999999999999999");
+  }, [dbItemsArr]);
 
   useEffect(() => {
 
 
     const fetchData = async () => {
       try {
-        console.log("📡 Fetching fresh data from DB...");
+        console.log("📡 Fetching fresh data from DB... fetchdata1");
         const response = await get_AndDo_(route)
         console.log("📥 get_AndDo_ response:", response);
         if (!response) {
@@ -52,7 +74,7 @@ export default function Section({
 
     const fetchData2 = async () => {
       try {
-        console.log("📡 Fetching fresh data from DB...");
+        console.log("📡 Fetching fresh data from DB...fetchdata2");
         const response = await get_AndDo_(schemaRoute)
         console.log("📥 get_AndDo_ response:", response);
         if (!response) {
@@ -77,6 +99,7 @@ export default function Section({
 
   useEffect(() => {
     if (itemSchemaProperties && dbItemsArr) {
+
       setIsLoading(false);
 
       // Ensure itemSchema is an array and map to extract keys
@@ -86,6 +109,8 @@ export default function Section({
       setItemKeys(keys);
     }
   }, [itemSchemaProperties, dbItemsArr]);
+
+
 
   // Calculate pagination
   const totalPages = dbItemsArr
