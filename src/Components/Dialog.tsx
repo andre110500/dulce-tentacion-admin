@@ -1,7 +1,7 @@
 import React, { useRef, useContext, useState } from "react";
 import ItemsContext from "../Contexts/ItemsContext";
 import tryToModifyDbWithAuth from "../functions/tryToModifyDbWithAuth";
-import { generateAndUploadMenu } from "../functions/generateAndUploadMenu";
+
 export function Dialog({ product }) {
   const dialogRef = useRef(null);
   const formRef = useRef(null);
