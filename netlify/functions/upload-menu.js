@@ -12,30 +12,33 @@ export const handler = async (event) => {
     console.log("🟢 Function invoked");
 
     try {
-        // 🔎 Verificar variables de entorno
         console.log("ENV CHECK:", {
             cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
             api_key_exists: !!process.env.CLOUDINARY_API_KEY,
             api_secret_exists: !!process.env.CLOUDINARY_API_SECRET,
         });
 
-        // 🔎 Verificar body
         console.log("Raw event.body:", event.body);
 
         const parsedBody = JSON.parse(event.body || "{}");
         console.log("Parsed body keys:", Object.keys(parsedBody));
 
-        const { image } = parsedBody;
+        const { image, id } = parsedBody;
 
         if (!image) {
             console.log("❌ No image received");
             throw new Error("No image provided");
         }
 
-        console.log("📤 Uploading to Cloudinary...");
+        if (!id) {
+            console.log("❌ No id received");
+            throw new Error("No id provided");
+        }
+
+        console.log(`📤 Uploading to Cloudinary for id: ${id}`);
 
         const result = await cloudinary.uploader.upload(image, {
-            public_id: "menu",
+            public_id: `menu-${id}`, // 🔥 dinámico por id
             overwrite: true,
             invalidate: true,
         });
@@ -65,3 +68,4 @@ export const handler = async (event) => {
         };
     }
 };
+

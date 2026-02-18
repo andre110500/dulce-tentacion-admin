@@ -31,15 +31,17 @@ export default function Section({
   useLayoutEffect(() => {
     changeCount.current += 1;
     if (changeCount.current <= 2) return;
-    if (route !== "products" && route !== "generic/flavour") return;
+    if (route !== "products?type=ice-cream&type=add-on" && route !== "generic/flavour" && route !== "products?type=frozen-treat") return;
     if (!dbItemsArr) return;
 
     var menuId = ""
     if (route === "generic/flavour") {
       menuId = "flavours-menu"
       return
-    } else {
-      menuId = "products-menu"
+    } else if (route === "products?type=ice-cream&type=add-on") {
+      menuId = "ice-cream-menu"
+    } else if (route === "products?type=frozen-treat") {
+      menuId = "frozen-treats-menu"
     }
     const run = async () => {
       console.log("🖼 Generating and uploading menu...");

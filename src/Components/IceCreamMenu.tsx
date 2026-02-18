@@ -15,7 +15,7 @@ export default function IceCreamMenu({ data }) {
     return product.type === "add-on";
   });
   return (
-    <div id="products-menu" className="menu">
+    <div id="ice-cream-menu" className="menu products-menu">
       <img src={template} alt="" style={{ width: "100%" }} />
 
       <div className="uls-container">

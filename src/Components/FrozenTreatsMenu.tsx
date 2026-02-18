@@ -7,7 +7,7 @@ export default function FrozenTreatsMenu({ data }) {
     return product.type === "frozen-treat";
   });
   return (
-    <div id="products-menu" className="menu">
+    <div id="frozen-treats-menu" className="menu products-menu">
       <img src={template} alt="" style={{ width: "100%" }} />
 
       <div className="uls-container">
