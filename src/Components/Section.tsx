@@ -17,7 +17,7 @@ export default function Section({
   route,
   schemaRoute,
   Menu,
-  SecondaryMenu,
+
 }) {
   const [dbItemsArr, setDbItemsArr] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -169,13 +169,7 @@ export default function Section({
                   />
                 </ShareMenuSection>
               )}
-              {SecondaryMenu && (
-                <ShareMenuSection productsList={dbItemsArr}>
-                  <SecondaryMenu
-                    data={dbItemsArr.filter((product) => !product.outOfStock)}
-                  />
-                </ShareMenuSection>
-              )}
+
             </div>
           </>
         )}

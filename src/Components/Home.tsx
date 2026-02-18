@@ -9,10 +9,17 @@ export default function Home() {
     <>
       <Section
         h1="Productos"
-        route="products"
+        route="products?type=ice-cream&type=add-on"
         schemaRoute="products/schema"
         Menu={IceCreamMenu}
-        SecondaryMenu={FrozenTreatsMenu}
+
+      />
+      <Section
+        h1="Productos"
+        route="products?type=frozen-treat"
+        schemaRoute="products/schema"
+        Menu={FrozenTreatsMenu}
+
       />
       <Section
         h1="Sabores"
