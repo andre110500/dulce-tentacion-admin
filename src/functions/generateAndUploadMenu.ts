@@ -1,7 +1,7 @@
 import html2canvas from "html2canvas";
 
-export async function generateAndUploadMenu() {
-    const element = document.getElementById("products-menu");
+export async function generateAndUploadMenu(menuId: string) {
+    const element = document.getElementById(menuId);
     if (!element) return;
 
     const canvas = await html2canvas(element, { scale: 2 });

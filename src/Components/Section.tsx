@@ -31,12 +31,19 @@ export default function Section({
   useLayoutEffect(() => {
     changeCount.current += 1;
     if (changeCount.current <= 2) return;
-    if (route !== "products") return;
+    if (route !== "products" && route !== "generic/flavour") return;
     if (!dbItemsArr) return;
 
+    var menuId = ""
+    if (route === "generic/flavour") {
+      menuId = "flavours-menu"
+      return
+    } else {
+      menuId = "products-menu"
+    }
     const run = async () => {
       console.log("🖼 Generating and uploading menu...");
-      await generateAndUploadMenu();
+      await generateAndUploadMenu(menuId);
       console.log("✅ Image generation finished");
     };
 
