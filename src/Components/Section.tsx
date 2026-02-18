@@ -29,20 +29,52 @@ export default function Section({
   //////////////////////////////
   const changeCount = useRef(0);
   useLayoutEffect(() => {
-    changeCount.current += 1;
-    if (changeCount.current <= 2) return;
-    if (route !== "products?type=ice-cream&type=add-on" && route !== "generic/flavour" && route !== "products?type=frozen-treat") return;
-    if (!dbItemsArr) return;
+    console.log("🔁 useLayoutEffect triggered");
+    console.log("Current route:", route);
+    console.log("dbItemsArr exists?", !!dbItemsArr);
+    console.log("dbItemsArr length:", dbItemsArr?.length);
+    console.log("changeCount BEFORE:", changeCount.current);
 
-    var menuId = ""
-    if (route === "generic/flavour") {
-      menuId = "flavours-menu"
-      return
-    } else if (route === "products?type=ice-cream&type=add-on") {
-      menuId = "ice-cream-menu"
-    } else if (route === "products?type=frozen-treat") {
-      menuId = "frozen-treats-menu"
+    changeCount.current += 1;
+
+    console.log("changeCount AFTER:", changeCount.current);
+
+    if (changeCount.current <= 2) {
+      console.log("⛔ Skipping because changeCount <= 2");
+      return;
     }
+
+    if (
+      route !== "products?type=ice-cream&type=add-on" &&
+      route !== "generic/flavour" &&
+      route !== "products?type=frozen-treat"
+    ) {
+      console.log("⛔ Route not allowed:", route);
+      return;
+    }
+
+    if (!dbItemsArr) {
+      console.log("⛔ dbItemsArr is null/undefined");
+      return;
+    }
+
+    let menuId = "";
+
+    if (route === "generic/flavour") {
+      menuId = "flavours-menu";
+      console.log("🍦 FLAVOURS route detected");
+      // ⚠️ OJO: acá tenías un return que cancelaba todo
+      // return; ❌ ESTO ESTABA MATANDO TU EJECUCIÓN
+    } else if (route === "products?type=ice-cream&type=add-on") {
+      menuId = "ice-cream-menu";
+      console.log("🍨 ICE CREAM route detected");
+    } else if (route === "products?type=frozen-treat") {
+      menuId = "frozen-treats-menu";
+      console.log("🧊 FROZEN TREATS route detected");
+    }
+
+    console.log("🎯 Final menuId:", menuId);
+
     const run = async () => {
       console.log("🖼 Generating and uploading menu...");
       await generateAndUploadMenu(menuId);
@@ -50,7 +82,9 @@ export default function Section({
     };
 
     run();
+
   }, [dbItemsArr]);
+
   useEffect(() => {
 
 
