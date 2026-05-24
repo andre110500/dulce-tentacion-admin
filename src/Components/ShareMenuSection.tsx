@@ -24,7 +24,7 @@ export default function ShareMenuSection({
       setIsLoading(true);
 
       const scale = 2;
-      const canvas = await html2canvas(ref.current as HTMLElement, { scale });
+      const canvas = await html2canvas(ref.current as HTMLElement, { scale, useCORS: true });
 
       canvas.toBlob((blob) => {
         if (!blob) {

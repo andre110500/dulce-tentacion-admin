@@ -1,6 +1,14 @@
 import React from "react";
 
-export default function List({ items }) {
+interface ListItem {
+  _id: string;
+  name: string;
+  price: number;
+  flavours?: number;
+  [key: string]: any;
+}
+
+export default function List({ items }: { items: ListItem[] }) {
   return (
     <ul>
       {items.map((item) => (

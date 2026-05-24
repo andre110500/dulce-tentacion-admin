@@ -58,26 +58,26 @@ export default function Section({
       return;
     }
 
-    let menuId = "";
+    let menuIds: string[] = [];
 
     if (route === "generic/flavour") {
-      menuId = "flavours-menu";
+      menuIds = ["flavours-menu-1", "flavours-menu-2"];
       console.log("🍦 FLAVOURS route detected");
-      // ⚠️ OJO: acá tenías un return que cancelaba todo
-      // return; ❌ ESTO ESTABA MATANDO TU EJECUCIÓN
     } else if (route === "products?type=ice-cream&type=add-on") {
-      menuId = "ice-cream-menu";
+      menuIds = ["ice-cream-menu"];
       console.log("🍨 ICE CREAM route detected");
     } else if (route === "products?type=frozen-treat") {
-      menuId = "frozen-treats-menu";
+      menuIds = ["frozen-treats-menu"];
       console.log("🧊 FROZEN TREATS route detected");
     }
 
-    console.log("🎯 Final menuId:", menuId);
+    console.log("🎯 Final menuIds:", menuIds);
 
     const run = async () => {
-      console.log("🖼 Generating and uploading menu...");
-      await generateAndUploadMenu(menuId);
+      console.log("🖼 Generating and uploading menus...");
+      for (const id of menuIds) {
+        await generateAndUploadMenu(id);
+      }
       console.log("✅ Image generation finished");
     };
 
@@ -199,11 +199,28 @@ export default function Section({
 
             <div className="menu-container">
               {Menu && (
-                <ShareMenuSection productsList={dbItemsArr}>
-                  <Menu
-                    data={dbItemsArr?.filter((product) => !product.outOfStock)}
-                  />
-                </ShareMenuSection>
+                route === "generic/flavour" ? (
+                  <>
+                    <ShareMenuSection productsList={dbItemsArr} flavoursList={dbItemsArr}>
+                      <Menu
+                        data={dbItemsArr?.filter((product) => !product.outOfStock)}
+                        page={1}
+                      />
+                    </ShareMenuSection>
+                    <ShareMenuSection productsList={dbItemsArr} flavoursList={dbItemsArr}>
+                      <Menu
+                        data={dbItemsArr?.filter((product) => !product.outOfStock)}
+                        page={2}
+                      />
+                    </ShareMenuSection>
+                  </>
+                ) : (
+                  <ShareMenuSection productsList={dbItemsArr}>
+                    <Menu
+                      data={dbItemsArr?.filter((product) => !product.outOfStock)}
+                    />
+                  </ShareMenuSection>
+                )
               )}
 
             </div>

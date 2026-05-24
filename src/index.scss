@@ -675,7 +675,7 @@ button {
       container-name: products-menu;
     }
 
-    #flavours-menu {
+    [id^="flavours-menu"] {
       container-name: flavours-menu;
     }
   }
@@ -754,11 +754,11 @@ button {
 @container flavours-menu (min-width:0px) {
   .uls-container {
     position: absolute;
-    top: 50%;
+    top: 54%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    height: 45%;
+    height: 50%;
     color: black;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -775,13 +775,43 @@ button {
       gap: 0.5cqw;
 
       li {
-        white-space: nowrap;
+        white-space: normal;
+        display: flex;
+        align-items: center;
+        gap: 2cqw;
+        margin-bottom: 0.6cqw;
+        line-height: 1.15;
 
         span {
-          font-size: 4cqw;
+          font-size: 3cqw;
+          letter-spacing: 0.1cqw;
+          flex: 1;
+        }
+
+        .flavour-img {
+          width: 8cqw;
+          height: 8cqw;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 1px solid rgba(0, 0, 0, 0.15);
+          flex-shrink: 0;
+        }
+
+        .flavour-img-placeholder {
+          width: 8cqw;
+          height: 8cqw;
+          border-radius: 50%;
+          background-color: rgba(220, 21, 55, 0.08);
+          border: 1px dashed rgba(220, 21, 55, 0.3);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1.5cqw;
+          flex-shrink: 0;
         }
       }
     }
+
 
     ul.second {
       padding-left: 5cqw;
