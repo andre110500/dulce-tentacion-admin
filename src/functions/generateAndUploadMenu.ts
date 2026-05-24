@@ -9,7 +9,7 @@ export async function generateAndUploadMenu(menuId: string) {
         return;
     }
 
-    const canvas = await html2canvas(element, { scale: 4, useCORS: true });
+    const canvas = await html2canvas(element, { scale: 1, useCORS: true });
 
     return new Promise<void>((resolve, reject) => {
         canvas.toBlob(async (blob) => {
