@@ -5,9 +5,18 @@ export default function List({ items }) {
     <ul>
       {items.map((item) => (
         <li key={item._id}>
-          <span>{item.name}</span> <span>${item.price}</span>
+          <span>
+            {item.name}
+            {item.flavours && (
+              <span className="flavours-label">
+                hasta {item.flavours} sabores
+              </span>
+            )}
+          </span>{" "}
+          <span>${item.price}</span>
         </li>
       ))}
     </ul>
   );
 }
+
