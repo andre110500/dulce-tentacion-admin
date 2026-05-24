@@ -743,6 +743,58 @@ button {
           margin-top: 0.5cqw;
         }
       }
+
+      &.frozen-treats-list {
+        li.frozen-treat-item {
+          display: flex;
+          align-items: center;
+          gap: 3cqw;
+          grid-template-columns: unset;
+
+          .frozen-treat-thumbnail {
+            width: 10cqw;
+            height: 10cqw;
+            flex-shrink: 0;
+            border-radius: 0.5cqw;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            object-fit: cover;
+            background-color: transparent;
+
+            &.frozen-treat-placeholder {
+              background-color: rgba(255, 255, 255, 0.8);
+              border: 1px solid rgba(0, 0, 0, 0.1);
+            }
+          }
+
+          .frozen-treat-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1cqw;
+            flex: 1;
+
+            .frozen-treat-name {
+              font-size: 3.5cqw;
+              text-align: left;
+
+              .flavours-label {
+                display: block;
+                font-size: 2.2cqw;
+                font-weight: 500;
+                opacity: 0.85;
+                margin-top: 0.5cqw;
+              }
+            }
+
+            .frozen-treat-price {
+              font-size: 3.5cqw;
+              font-weight: bold;
+            }
+          }
+        }
+      }
     }
 
     ul.second {
