@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import UserContext from "./Contexts/UserContext";
 import { showSuccessAlert } from "./alerts";
 import Swal from "sweetalert2";
+import BuildStatus from "./Components/BuildStatus";
 
 function App() {
   const [isUserOnline, setIsUserOnline] = useState(false);
@@ -67,6 +68,7 @@ function App() {
         <Header />
         <Main />
         <Footer />
+        <BuildStatus />
       </UserContext.Provider>
     </>
   );
