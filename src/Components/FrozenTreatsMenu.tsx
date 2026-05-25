@@ -28,7 +28,7 @@ export default function FrozenTreatsMenu({ data }) {
       <img src={template} alt="" style={{ width: "100%" }} />
 
       <div className="uls-container">
-        <h2>Heladitos</h2>
+        
         <ul className="frozen-treats-list">
           {frozenTreats.map((item) => (
             <li key={item._id} className="frozen-treat-item">

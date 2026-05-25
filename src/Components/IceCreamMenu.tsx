@@ -19,7 +19,7 @@ export default function IceCreamMenu({ data }) {
       <img src={template} alt="" style={{ width: "100%" }} />
 
       <div className="uls-container">
-        <h2>Helado artesanal</h2>
+       
         <List items={iceCream} />
         <h2>Combos con descuento:</h2>
         <ul>

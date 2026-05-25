@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=DotGothic16&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600&display=swap");
 $google-font: "Roboto", sans-serif;
+$products-font: "Barlow Condensed", sans-serif;
 $purpple: #100b35;
 $main-color: #e8547e;
 $cool-shadow: 0 0 5px rgba(0, 0, 0, 0.502);
@@ -684,7 +686,7 @@ button {
 @container products-menu (min-width:0px) {
   .uls-container {
     position: absolute;
-    top: 50%;
+    top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
@@ -698,17 +700,17 @@ button {
     align-items: center;
 
     gap: 5cqw;
-    font-weight: bold;
+   
     letter-spacing: 0.3cqw;
     word-spacing: 0.5cqw;
     padding: 1cqw 10cqw;
 
-    color: #dc1537;
+    color: #4A2C2A;
 
     h2 {
       text-align: center;
       font-size: 4cqw;
-      font-size: 4cqw;
+       
     }
 
     ul {
@@ -729,11 +731,21 @@ button {
         & span:first-child {
           text-align: right;
         }
+
+        & > span:last-child {
+          font-weight: 600;
+        }
+
+        p span {
+          font-weight: 600;
+        }
       }
 
       span {
+        font-family: $products-font;
         font-size: 3.5cqw;
-        font-size: 3.5cqw;
+        font-weight: 400;
+        
 
         .flavours-label {
           display: block;
@@ -772,7 +784,7 @@ button {
           .frozen-treat-info {
             display: flex;
             flex-direction: column;
-            gap: 1cqw;
+           
             flex: 1;
 
             .frozen-treat-name {
@@ -790,7 +802,7 @@ button {
 
             .frozen-treat-price {
               font-size: 3.5cqw;
-              font-weight: bold;
+              font-weight: 600;
             }
           }
         }
@@ -806,7 +818,7 @@ button {
 @container flavours-menu (min-width:0px) {
   .uls-container {
     position: absolute;
-    top: 54%;
+    top: 56%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
@@ -835,7 +847,9 @@ button {
         line-height: 1.15;
 
         span {
+          font-family: $products-font;
           font-size: 3cqw;
+          font-weight: 400;
           letter-spacing: 0.1cqw;
           flex: 1;
         }
