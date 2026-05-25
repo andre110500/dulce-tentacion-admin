@@ -24,10 +24,62 @@ export default function Section({
   const [itemSchemaProperties, setItemSchemaProperties] = useState([]);
   const [itemKeys, setItemKeys] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [isUploadingMenu, setIsUploadingMenu] = useState(false);
   const tableContainerRef = useRef(null);
 
   //////////////////////////////
   const changeCount = useRef(0);
+  const getMenuIds = () => {
+    if (route === "generic/flavour") {
+      return ["flavours-menu-1", "flavours-menu-2"];
+    }
+
+    if (route === "products?type=ice-cream&type=add-on") {
+      return ["ice-cream-menu"];
+    }
+
+    if (route === "products?type=frozen-treat") {
+      return ["frozen-treats-menu"];
+    }
+
+    return [];
+  };
+
+  const uploadMenus = async () => {
+    const menuIds = getMenuIds();
+
+    if (!menuIds.length) {
+      return;
+    }
+
+    for (const id of menuIds) {
+      await generateAndUploadMenu(id);
+    }
+  };
+
+  const handleManualMenuUpload = async () => {
+    try {
+      setIsUploadingMenu(true);
+      await uploadMenus();
+      await Swal.fire({
+        icon: "success",
+        text: "Menú subido correctamente",
+        confirmButtonText: "Cerrar",
+        confirmButtonColor: "#e8547e",
+      });
+    } catch (err) {
+      console.error(err);
+      await Swal.fire({
+        icon: "error",
+        text: "No se pudo subir el menú",
+        confirmButtonText: "Cerrar",
+        confirmButtonColor: "#e8547e",
+      });
+    } finally {
+      setIsUploadingMenu(false);
+    }
+  };
+
   useLayoutEffect(() => {
     console.log("🔁 useLayoutEffect triggered");
     console.log("Current route:", route);
@@ -58,26 +110,13 @@ export default function Section({
       return;
     }
 
-    let menuIds: string[] = [];
-
-    if (route === "generic/flavour") {
-      menuIds = ["flavours-menu-1", "flavours-menu-2"];
-      console.log("🍦 FLAVOURS route detected");
-    } else if (route === "products?type=ice-cream&type=add-on") {
-      menuIds = ["ice-cream-menu"];
-      console.log("🍨 ICE CREAM route detected");
-    } else if (route === "products?type=frozen-treat") {
-      menuIds = ["frozen-treats-menu"];
-      console.log("🧊 FROZEN TREATS route detected");
-    }
+    const menuIds = getMenuIds();
 
     console.log("🎯 Final menuIds:", menuIds);
 
     const run = async () => {
       console.log("🖼 Generating and uploading menus...");
-      for (const id of menuIds) {
-        await generateAndUploadMenu(id);
-      }
+      await uploadMenus();
       console.log("✅ Image generation finished");
     };
 
@@ -199,7 +238,13 @@ export default function Section({
 
             <div className="menu-container">
               {Menu && (
-                route === "generic/flavour" ? (
+                <>
+                  {!!getMenuIds().length && (
+                    <button onClick={handleManualMenuUpload} disabled={isUploadingMenu}>
+                      {isUploadingMenu ? "SUBIENDO MENÚ..." : "SUBIR MENÚ"}
+                    </button>
+                  )}
+                  {route === "generic/flavour" ? (
                   <>
                     <ShareMenuSection productsList={dbItemsArr} flavoursList={dbItemsArr}>
                       <Menu
@@ -215,12 +260,13 @@ export default function Section({
                     </ShareMenuSection>
                   </>
                 ) : (
-                  <ShareMenuSection productsList={dbItemsArr}>
+                  <ShareMenuSection productsList={dbItemsArr} flavoursList={dbItemsArr}>
                     <Menu
                       data={dbItemsArr?.filter((product) => !product.outOfStock)}
                     />
                   </ShareMenuSection>
-                )
+                )}
+                </>
               )}
 
             </div>
