@@ -2,17 +2,19 @@ import html2canvas from "html2canvas";
 import { useEffect, useState, useRef } from "react";
 import TimeStamp from "./TimeStamp";
 
-export default function ShareMenuSection({
+export default function MenuUploadSection({
   children,
   productsList,
   flavoursList,
+  onManualMenuUpload,
+  isUploadingMenu,
 }: {
   children: React.ReactNode;
   productsList: unknown;
   flavoursList: unknown;
+  onManualMenuUpload?: () => void;
+  isUploadingMenu?: boolean;
 }) {
-  type SharePayload = ShareData & { files: File[] };
-  const [shareData, setShareData] = useState<SharePayload | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -36,15 +38,6 @@ export default function ShareMenuSection({
         const objectUrl = URL.createObjectURL(blob);
         setImageSrc(objectUrl);
 
-        // 🔥 Crear archivo para compartir
-        const files = [new File([blob], "image.png", { type: blob.type })];
-
-        setShareData({
-          text: "Some text",
-          title: "Some title",
-          files,
-        });
-
         setIsLoading(false);
       }, "image/png");
     })();
@@ -57,26 +50,6 @@ export default function ShareMenuSection({
     };
   }, [productsList, flavoursList]);
 
-
-  async function sendShare() {
-    try {
-      if (navigator.share && shareData && navigator.canShare(shareData)) {
-        await navigator.share(shareData);
-        console.log("File was shared successfully");
-        setShareData(null);
-      } else {
-        throw new Error("Funcion no compatible en tu dispositivo");
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error(err.name, err.message);
-        alert(err.message);
-      } else {
-        console.error("Unknown error", err);
-        alert("Ocurrió un error desconocido");
-      }
-    }
-  }
   return (
     <section className="share">
       <div
@@ -98,7 +71,11 @@ export default function ShareMenuSection({
         </button>
       )}
 
-      {shareData && <button onClick={sendShare}>COMPARTIR IMAGEN</button>}
+      {imageSrc && onManualMenuUpload && (
+        <button onClick={onManualMenuUpload} disabled={isUploadingMenu}>
+          {isUploadingMenu ? "SUBIENDO MENÚ..." : "SUBIR MENÚ"}
+        </button>
+      )}
     </section>
   );
 }

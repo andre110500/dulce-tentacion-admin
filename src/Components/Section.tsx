@@ -5,7 +5,7 @@ import { generateAndUploadMenu } from "../functions/generateAndUploadMenu";
 import spinner from "../assets/spinner.svg";
 
 import { Dialog } from "./Dialog";
-import ShareMenuSection from "./ShareMenuSection";
+import MenuUploadSection from "./MenuUploadSection";
 import get_AndDo_ from "../functions/get_AndDo_";
 
 import gear from "../assets/gear.svg";
@@ -238,35 +238,43 @@ export default function Section({
 
             <div className="menu-container">
               {Menu && (
-                <>
-                  {!!getMenuIds().length && (
-                    <button onClick={handleManualMenuUpload} disabled={isUploadingMenu}>
-                      {isUploadingMenu ? "SUBIENDO MENÚ..." : "SUBIR MENÚ"}
-                    </button>
-                  )}
-                  {route === "generic/flavour" ? (
+                route === "generic/flavour" ? (
                   <>
-                    <ShareMenuSection productsList={dbItemsArr} flavoursList={dbItemsArr}>
+                    <MenuUploadSection
+                      productsList={dbItemsArr}
+                      flavoursList={dbItemsArr}
+                      onManualMenuUpload={handleManualMenuUpload}
+                      isUploadingMenu={isUploadingMenu}
+                    >
                       <Menu
                         data={dbItemsArr?.filter((product) => !product.outOfStock)}
                         page={1}
                       />
-                    </ShareMenuSection>
-                    <ShareMenuSection productsList={dbItemsArr} flavoursList={dbItemsArr}>
+                    </MenuUploadSection>
+                    <MenuUploadSection
+                      productsList={dbItemsArr}
+                      flavoursList={dbItemsArr}
+                      onManualMenuUpload={handleManualMenuUpload}
+                      isUploadingMenu={isUploadingMenu}
+                    >
                       <Menu
                         data={dbItemsArr?.filter((product) => !product.outOfStock)}
                         page={2}
                       />
-                    </ShareMenuSection>
+                    </MenuUploadSection>
                   </>
                 ) : (
-                  <ShareMenuSection productsList={dbItemsArr} flavoursList={dbItemsArr}>
+                  <MenuUploadSection
+                    productsList={dbItemsArr}
+                    flavoursList={dbItemsArr}
+                    onManualMenuUpload={handleManualMenuUpload}
+                    isUploadingMenu={isUploadingMenu}
+                  >
                     <Menu
                       data={dbItemsArr?.filter((product) => !product.outOfStock)}
                     />
-                  </ShareMenuSection>
-                )}
-                </>
+                  </MenuUploadSection>
+                )
               )}
 
             </div>
