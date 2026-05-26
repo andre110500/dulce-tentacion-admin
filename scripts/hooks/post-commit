@@ -1,0 +1,3 @@
+#!/bin/sh
+# Auto-regenerate buildInfo.ts after every commit
+node scripts/generateBuildInfo.cjs

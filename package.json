@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "prepare": "git config core.hooksPath scripts/hooks",
+    "predev": "node scripts/generateBuildInfo.cjs",
     "dev": "vite",
     "prebuild": "node scripts/generateBuildInfo.cjs",
     "build": "vite build",
