@@ -9,7 +9,7 @@ export async function generateAndUploadMenu(menuId: string) {
         return;
     }
 
-    const canvas = await html2canvas(element, { scale: 1, useCORS: true });
+    const canvas = await html2canvas(element, { scale: 2, useCORS: true });
 
     return new Promise<void>((resolve, reject) => {
         canvas.toBlob(async (blob) => {
@@ -32,6 +32,6 @@ export async function generateAndUploadMenu(menuId: string) {
                 console.log("✅ Upload finished for:", menuId);
                 resolve();
             };
-        }, "image/png");
+        }, "image/webp", 0.85);
     });
 }

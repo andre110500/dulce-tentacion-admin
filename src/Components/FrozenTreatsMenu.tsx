@@ -1,5 +1,5 @@
 import React from "react";
-import template from "../assets/products-template.png";
+import template from "../assets/products-template.webp";
 
 const PlaceholderIcon = () => (
   <svg
@@ -22,13 +22,13 @@ export default function FrozenTreatsMenu({ data }) {
   const frozenTreats = data.filter((product) => {
     return product.type === "frozen-treat";
   });
-  
+
   return (
     <div id="frozen-treats-menu" className="menu products-menu">
       <img src={template} alt="" style={{ width: "100%" }} />
 
       <div className="uls-container">
-        
+
         <ul className="frozen-treats-list">
           {frozenTreats.map((item) => (
             <li key={item._id} className="frozen-treat-item">

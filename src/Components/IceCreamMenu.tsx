@@ -1,5 +1,5 @@
 import React from "react";
-import template from "../assets/products-template.png";
+import template from "../assets/products-template.webp";
 import List from "./List";
 
 export default function IceCreamMenu({ data }) {
@@ -19,7 +19,7 @@ export default function IceCreamMenu({ data }) {
       <img src={template} alt="" style={{ width: "100%" }} />
 
       <div className="uls-container">
-       
+
         <List items={iceCream} />
         <h2>Combos con descuento:</h2>
         <ul>

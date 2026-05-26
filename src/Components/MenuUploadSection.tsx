@@ -25,7 +25,7 @@ export default function MenuUploadSection({
     (async () => {
       setIsLoading(true);
 
-      const scale = 2;
+      const scale = 1;
       const canvas = await html2canvas(ref.current as HTMLElement, { scale, useCORS: true });
 
       canvas.toBlob((blob) => {
@@ -39,7 +39,7 @@ export default function MenuUploadSection({
         setImageSrc(objectUrl);
 
         setIsLoading(false);
-      }, "image/png");
+      }, "image/webp", 0.85);
     })();
 
     // 🔥 Limpieza importante para evitar memory leaks

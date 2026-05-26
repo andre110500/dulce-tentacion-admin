@@ -1,5 +1,5 @@
 import React from "react";
-import template from "../assets/flavours-template.png";
+import template from "../assets/flavours-template.webp";
 
 interface FlavourItem {
   _id: string;
