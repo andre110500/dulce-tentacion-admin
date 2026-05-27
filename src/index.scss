@@ -1070,6 +1070,11 @@ button {
             grid-row: 2;
             text-align: left;
             line-height: 1;
+
+            span {
+              font-size: 2.5cqw;
+            }
+
           }
 
           .add-on-price {
@@ -1077,6 +1082,7 @@ button {
             grid-row: 4;
             text-align: left;
             font-weight: 600;
+            font-size: 3cqw;
           }
 
           &.add-on-with-icon {
