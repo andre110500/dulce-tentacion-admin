@@ -748,7 +748,7 @@ button {
         display: grid;
         align-items: center;
         grid-template-columns: 1fr 1fr;
-        gap: 5cqw;
+       
 
         span.line-through {
           text-decoration: line-through;
@@ -790,6 +790,60 @@ button {
           font-weight: 500;
           opacity: 0.85;
           margin-top: 0.5cqw;
+        }
+      }
+
+      &.add-ons-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 4cqw;
+        row-gap: 3cqw;
+
+        li {
+          grid-template-columns: 1fr;
+          
+
+          .add-on-icon {
+            text-align: center;
+            justify-self: end;
+
+            img {
+              width: 11.25cqw;
+              height: 11.25cqw;
+              object-fit: contain;
+            }
+          }
+
+          .add-on-name {
+            display: flex;
+            flex-direction: column;
+            grid-column: 1;
+            grid-row: 2;
+            text-align: left;
+            line-height: 1;
+          }
+
+          .add-on-price {
+            grid-column: 1;
+            grid-row: 4;
+            text-align: left;
+            font-weight: 600;
+          }
+
+          &.add-on-with-icon {
+            grid-template-columns: 1fr 12cqw;
+            grid-template-rows: 1fr auto 1fr auto 1fr;
+
+            & span:first-child {
+              text-align: left;
+            }
+
+            .add-on-icon {
+              grid-column: 2;
+              grid-row: 1 / 6;
+              align-self: center;
+            }
+          }
         }
       }
 
