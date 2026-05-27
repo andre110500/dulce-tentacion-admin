@@ -864,21 +864,19 @@ button {
       &__combo-info {
         width: 100%;
         min-width: 0;
-      }
-
-      &__combo-header {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
         align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        gap: 10px;
-        margin-bottom: 6px;
+        row-gap: 8px;
+        column-gap: 12px;
       }
 
       &__combo-title {
         margin: 0;
         line-height: 1;
         flex-shrink: 0;
+        justify-self: start;
       }
 
       &__combo-script {
@@ -908,15 +906,8 @@ button {
         letter-spacing: 0.2px;
         flex-shrink: 0;
         white-space: nowrap;
-      }
-
-      &__price-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        gap: 6px;
-        flex-wrap: nowrap;
+        justify-self: center;
+        text-align: center;
       }
 
       &__price-box {
@@ -930,6 +921,7 @@ button {
         line-height: 1.1;
         white-space: nowrap;
         flex-shrink: 0;
+        justify-self: start;
       }
 
       &__price-old {
@@ -954,6 +946,7 @@ button {
         width: 85.8px;
         height: 85.8px;
         flex-shrink: 0;
+        justify-self: center;
 
         svg {
           width: 100%;

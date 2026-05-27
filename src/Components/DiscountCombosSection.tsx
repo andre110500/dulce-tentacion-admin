@@ -133,20 +133,16 @@ function ComboCard({
         <IceCreamPlaceholder />
       )}
       <div className="discount-combos__combo-info">
-        <div className="discount-combos__combo-header">
-          <h3 className="discount-combos__combo-title">
-            <span className="discount-combos__combo-script">Combo</span>
-            <span className="discount-combos__combo-name">{title}</span>
-          </h3>
-          <p className="discount-combos__combo-qty">{quantity}</p>
+        <h3 className="discount-combos__combo-title">
+          <span className="discount-combos__combo-script">Combo</span>
+          <span className="discount-combos__combo-name">{title}</span>
+        </h3>
+        <p className="discount-combos__combo-qty">{quantity}</p>
+        <div className="discount-combos__price-box">
+          <span className="discount-combos__price-old">${originalPrice}</span>
+          <span className="discount-combos__price-new">${discountedPrice}</span>
         </div>
-        <div className="discount-combos__price-row">
-          <div className="discount-combos__price-box">
-            <span className="discount-combos__price-old">${originalPrice}</span>
-            <span className="discount-combos__price-new">${discountedPrice}</span>
-          </div>
-          <ScallopedBadge savings={savings} />
-        </div>
+        <ScallopedBadge savings={savings} />
       </div>
     </article>
   );
