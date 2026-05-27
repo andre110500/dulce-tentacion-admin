@@ -3,6 +3,7 @@ import template from "../assets/products-template.webp";
 import iceCreamTubIcon2 from "../assets/2.png";
 import iceCreamTubIcon3 from "../assets/3.png";
 import iceCreamTubIcon4 from "../assets/4.png";
+import DiscountCombosSection from "./DiscountCombosSection";
 
 export default function IceCreamMenu({ data }) {
   function getPriceByFlavoursQuantity(number) {
@@ -56,29 +57,12 @@ export default function IceCreamMenu({ data }) {
             </li>
           ))}
         </ul>
-        <h2>Combos con descuento:</h2>
-        <ul>
-          <li>
-            <span>2 de 1/2 kg</span>
-            <p>
-              <span className="line-through">
-                ${getPriceByFlavoursQuantity(3) * 2}
-              </span>
-              <span> ${getPriceByFlavoursQuantity(3) * 2 - 500}</span>
-            </p>
-          </li>
-          <li>
-            <span>2 de 1/4 kg</span>
-            <p>
-              <span className="line-through">
-                ${getPriceByFlavoursQuantity(2) * 2 || "undefined"}
-              </span>
-              <span>
-                ${getPriceByFlavoursQuantity(2) * 2 - 300 || "undefined"}
-              </span>
-            </p>
-          </li>
-        </ul>
+        <DiscountCombosSection
+          familiarOriginal={getPriceByFlavoursQuantity(3) * 2}
+          familiarDiscounted={getPriceByFlavoursQuantity(3) * 2 - 500}
+          amigosOriginal={getPriceByFlavoursQuantity(2) * 2}
+          amigosDiscounted={getPriceByFlavoursQuantity(2) * 2 - 300}
+        />
         <h2>Adicionales</h2>
         <ul className="add-ons-list">
           {addOns.map((item) => {

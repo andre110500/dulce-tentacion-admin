@@ -2,6 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=DotGothic16&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600;700&display=swap");
 $google-font: "Roboto", sans-serif;
 $products-font: "Barlow Condensed", sans-serif;
 $purpple: #100b35;
@@ -729,7 +730,7 @@ button {
    
     letter-spacing: 0.3cqw;
     word-spacing: 0.5cqw;
-    padding: 1cqw 10cqw;
+    padding: 1cqw 2cqw;
 
     color: #4A2C2A;
 
@@ -737,6 +738,239 @@ button {
       text-align: center;
       font-size: 4cqw;
        
+    }
+
+    .discount-combos {
+      width: 640px;
+      margin: 0 auto;
+      flex-shrink: 0;
+
+      &__card {
+        position: relative;
+        border: 2px solid $main-color;
+        border-radius: 12px;
+        background: transparent;
+        padding: 26px 12px 12px;
+      }
+
+      &__ribbon {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 310px;
+        height: 34px;
+      }
+
+      &__ribbon-svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.12));
+      }
+
+      &__ribbon-text {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        color: #fff;
+        font-family: "Montserrat", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+      }
+
+      &__ribbon-heart {
+        width: 10px;
+        height: 10px;
+        flex-shrink: 0;
+      }
+
+      &__body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        align-items: center;
+        gap: 8px;
+        padding-top: 5px;
+      }
+
+      &__divider {
+        width: 1px;
+        height: 84px;
+        background: rgba(74, 44, 42, 0.25);
+      }
+
+      &__combo {
+        width: 100%;
+        min-width: 0;
+        display: grid;
+        grid-template-columns: 52px 1fr;
+        gap: 8px;
+        align-items: center;
+        padding: 0 6px;
+      }
+
+      &__image {
+        position: relative;
+        width: 52px;
+        height: 58px;
+        flex-shrink: 0;
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      &__float-heart {
+        position: absolute;
+        width: 11px;
+        height: 11px;
+        color: $main-color;
+        opacity: 0.85;
+
+        &--1 {
+          top: -2px;
+          left: 5px;
+        }
+
+        &--2 {
+          top: 2px;
+          right: 0;
+        }
+      }
+
+      &__combo-info {
+        width: 100%;
+        min-width: 0;
+      }
+
+      &__combo-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+
+      &__combo-title {
+        margin: 0;
+        line-height: 1;
+        flex-shrink: 0;
+      }
+
+      &__combo-script {
+        display: block;
+        font-family: "Dancing Script", cursive;
+        font-size: 19px;
+        font-weight: 700;
+        color: $main-color;
+      }
+
+      &__combo-name {
+        display: block;
+        font-family: "Montserrat", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: $main-color;
+        letter-spacing: 0.5px;
+      }
+
+      &__combo-qty {
+        margin: 0;
+        font-family: $products-font;
+        font-size: 15.6px;
+        color: #4a2c2a;
+        font-weight: 500;
+        line-height: 1;
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+
+      &__price-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 6px;
+        flex-wrap: nowrap;
+      }
+
+      &__price-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: $main-color;
+        border-radius: 7px;
+        padding: 4px 12px;
+        line-height: 1.1;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      &__price-old {
+        font-family: "Montserrat", sans-serif;
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: line-through;
+      }
+
+      &__price-new {
+        font-family: "Montserrat", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+      }
+
+      &__badge {
+        position: relative;
+        width: 85.8px;
+        height: 85.8px;
+        flex-shrink: 0;
+
+        svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+      }
+
+      &__badge-text {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        padding: 20.8px 7.8px;
+        color: #fff;
+        font-family: "Montserrat", sans-serif;
+        font-size: 9.1px;
+        font-weight: 700;
+        line-height: 1.05;
+        text-align: center;
+        letter-spacing: -0.15px;
+
+        span {
+          display: block;
+        }
+
+        strong {
+          display: block;
+          font-size: 14.3px;
+          font-weight: 700;
+          margin-top: 2.6px;
+        }
+      }
     }
 
     ul {
