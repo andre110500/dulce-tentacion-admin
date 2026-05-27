@@ -1,7 +1,9 @@
 import React from "react";
+import ribbonBannerPng from "../assets/ribbon-pink-banner.png";
+import comboFamiliarPng from "../assets/combo-familiar.png";
+import comboAmigosPng from "../assets/combo-amigos.png";
 
 const ACCENT = "#e8547e";
-const ACCENT_DARK = "#d63d6a";
 
 /** Sello con bordes ondulados (estampa), no estrella */
 function buildScallopedSealPath(
@@ -45,20 +47,11 @@ function HeartIcon({ className }: { className?: string }) {
 function RibbonBanner() {
   return (
     <div className="discount-combos__ribbon">
-      <svg
-        className="discount-combos__ribbon-svg"
-        viewBox="0 0 320 44"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fill={ACCENT}
-          d="M8 8h304c2.2 0 4 1.8 4 4v20c0 2.2-1.8 4-4 4H8c-2.2 0-4-1.8-4-4V12c0-2.2 1.8-4 4-4z"
-        />
-        <path fill={ACCENT_DARK} d="M0 14 L12 8 L12 36 L0 30 Z" />
-        <path fill={ACCENT_DARK} d="M320 14 L308 8 L308 36 L320 30 Z" />
-      </svg>
+      <img
+        src={ribbonBannerPng}
+        alt="Combos con descuento"
+        className="discount-combos__ribbon-img"
+      />
       <div className="discount-combos__ribbon-text">
         <HeartIcon className="discount-combos__ribbon-heart" />
         <span>COMBOS CON DESCUENTO</span>
@@ -113,6 +106,7 @@ type ComboCardProps = {
   originalPrice: number;
   discountedPrice: number;
   savings: number;
+  imageSrc?: string;
 };
 
 function ComboCard({
@@ -121,12 +115,23 @@ function ComboCard({
   originalPrice,
   discountedPrice,
   savings,
+  imageSrc,
 }: ComboCardProps) {
   const title = variant === "familiar" ? "FAMILIAR" : "AMIGOS";
 
   return (
     <article className={`discount-combos__combo discount-combos__combo--${variant}`}>
-      <IceCreamPlaceholder />
+      {imageSrc ? (
+        <div className="discount-combos__image">
+          <img
+            src={imageSrc}
+            alt={`Combo ${title}`}
+            className="discount-combos__combo-img"
+          />
+        </div>
+      ) : (
+        <IceCreamPlaceholder />
+      )}
       <div className="discount-combos__combo-info">
         <div className="discount-combos__combo-header">
           <h3 className="discount-combos__combo-title">
@@ -171,6 +176,7 @@ export default function DiscountCombosSection({
             originalPrice={familiarOriginal}
             discountedPrice={familiarDiscounted}
             savings={familiarOriginal - familiarDiscounted}
+            imageSrc={comboFamiliarPng}
           />
           <div className="discount-combos__divider" aria-hidden="true" />
           <ComboCard
@@ -179,6 +185,7 @@ export default function DiscountCombosSection({
             originalPrice={amigosOriginal}
             discountedPrice={amigosDiscounted}
             savings={amigosOriginal - amigosDiscounted}
+            imageSrc={comboAmigosPng}
           />
         </div>
       </div>

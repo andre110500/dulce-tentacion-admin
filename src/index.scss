@@ -727,7 +727,7 @@ button {
     align-items: center;
 
     gap: 5cqw;
-   
+
     letter-spacing: 0.3cqw;
     word-spacing: 0.5cqw;
     padding: 1cqw 2cqw;
@@ -737,12 +737,12 @@ button {
     h2 {
       text-align: center;
       font-size: 4cqw;
-       
+
     }
 
     .discount-combos {
       width: 640px;
-      margin: 0 auto;
+      margin-top: 1rem;
       flex-shrink: 0;
 
       &__card {
@@ -750,7 +750,7 @@ button {
         border: 2px solid $main-color;
         border-radius: 12px;
         background: transparent;
-        padding: 26px 12px 12px;
+        padding: 38px 12px 12px;
       }
 
       &__ribbon {
@@ -759,34 +759,42 @@ button {
         left: 50%;
         transform: translate(-50%, -50%);
         width: 310px;
-        height: 34px;
+        height: 58px;
       }
 
-      &__ribbon-svg {
+      &__ribbon-img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         width: 100%;
-        height: 100%;
+        height: auto;
         display: block;
+        pointer-events: none;
         filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.12));
       }
 
       &__ribbon-text {
         position: absolute;
-        inset: 0;
+        transform: translate(-50%, -50%);
+        top: 40%;
+        left: 50%;
+
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 7px;
         color: #fff;
         font-family: "Montserrat", sans-serif;
-        font-size: 11px;
-        font-weight: 700;
+        font-size: 15px;
+        font-weight: 500;
         letter-spacing: 0.5px;
         white-space: nowrap;
       }
 
       &__ribbon-heart {
-        width: 10px;
-        height: 10px;
+        width: 11px;
+        height: 11px;
         flex-shrink: 0;
       }
 
@@ -824,6 +832,13 @@ button {
           width: 100%;
           height: 100%;
         }
+      }
+
+      &__combo-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
       }
 
       &__float-heart {
@@ -982,7 +997,7 @@ button {
         display: grid;
         align-items: center;
         grid-template-columns: 1fr 1fr;
-       
+
 
         span.line-through {
           text-decoration: line-through;
@@ -992,7 +1007,7 @@ button {
           text-align: right;
         }
 
-        & > span:last-child {
+        &>span:last-child {
           font-weight: 600;
         }
 
@@ -1016,7 +1031,7 @@ button {
         font-family: $products-font;
         font-size: 3.5cqw;
         font-weight: 400;
-        
+
 
         .flavours-label {
           display: block;
@@ -1035,7 +1050,7 @@ button {
 
         li {
           grid-template-columns: 1fr;
-          
+
 
           .add-on-icon {
             text-align: center;
@@ -1109,7 +1124,7 @@ button {
           .frozen-treat-info {
             display: flex;
             flex-direction: column;
-           
+
             flex: 1;
 
             .frozen-treat-name {
