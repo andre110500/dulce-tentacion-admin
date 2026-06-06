@@ -8,6 +8,13 @@ $products-font: "Barlow Condensed", sans-serif;
 $purpple: #100b35;
 $main-color: #e8547e;
 $cool-shadow: 0 0 5px rgba(0, 0, 0, 0.502);
+$transparent-checker-background:
+  linear-gradient(45deg, #d8d8d8 25%, transparent 25%),
+  linear-gradient(-45deg, #d8d8d8 25%, transparent 25%),
+  linear-gradient(45deg, transparent 75%, #d8d8d8 75%),
+  linear-gradient(-45deg, transparent 75%, #d8d8d8 75%);
+$transparent-checker-position: 0 0, 0 8px, 8px -8px, -8px 0;
+$transparent-checker-size: 16px 16px;
 
 /* SweetAlert2 Custom Styles */
 .swal2-popup {
@@ -65,9 +72,17 @@ $cool-shadow: 0 0 5px rgba(0, 0, 0, 0.502);
 }
 
 dialog.preview {
+  background-color: white;
+
   .image-preview {
     max-width: 50vw;
     max-height: 50vh;
+    padding: 0.75rem;
+    background-color: white;
+    // Fondo cuadriculado clasico para que las imagenes transparentes se noten.
+    background-image: $transparent-checker-background;
+    background-position: $transparent-checker-position;
+    background-size: $transparent-checker-size;
   }
 
   button {
@@ -252,6 +267,10 @@ dialog.crud {
         color: white;
         background-color: transparent;
       }
+
+      input[type="file"]:disabled {
+        opacity: 0.45;
+      }
     }
 
     .current-product-image {
@@ -260,6 +279,24 @@ dialog.crud {
       object-fit: contain;
       border-radius: 0.35rem;
       background-color: white;
+      // Muestra un tablero detras de la imagen para distinguir zonas transparentes.
+      background-image: $transparent-checker-background;
+      background-position: $transparent-checker-position;
+      background-size: $transparent-checker-size;
+    }
+
+    .remove-image {
+      width: 100%;
+      max-width: 8rem;
+      background-color: #d33;
+      color: white;
+    }
+
+    .image-removal-note {
+      margin: 0;
+      color: #ffd0dc;
+      font-size: 0.75rem;
+      text-align: center;
     }
 
     .buttons-container {

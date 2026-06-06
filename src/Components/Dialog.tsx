@@ -77,6 +77,8 @@ export function Dialog({ product }) {
     useContext(ItemsContext);
 
   const [showDeleConfirmation, setShowDeleteConfirmation] = useState(false);
+  // Guarda si el usuario pidio eliminar la imagen actual del producto.
+  const [shouldRemoveImage, setShouldRemoveImage] = useState(false);
   // Guarda el type actual para que el select de subType muestre solo opciones validas para ese tipo.
   const [selectedType, setSelectedType] = useState(product?.type || "");
   // Busca las opciones de subType usando el type elegido; si no hay type o no tiene subtypes, usa un array vacio.
@@ -165,14 +167,22 @@ export function Dialog({ product }) {
     const imageFile = formElements.imgUrlFile?.files?.[0];
 
     // Check for changes before proceeding
-    if (product && !imageFile && !checkInputChanges(formElements)) {
+    if (
+      product &&
+      !imageFile &&
+      !shouldRemoveImage &&
+      !checkInputChanges(formElements)
+    ) {
       console.log("No changes detected, closing dialog without submission");
       closeDialog();
       return;
     }
 
     try {
-      if (imageFile) {
+      if (shouldRemoveImage) {
+        // Deja imgUrl vacio para que el body envie undefined y la API quite la imagen del producto.
+        formElements.imgUrl.value = "";
+      } else if (imageFile) {
         // Usa el id del producto al editar, y un id temporal al crear, para generar un public_id estable en Cloudinary.
         const imageId = product?._id || `product-${Date.now()}`;
         const imageUrl = await uploadImageFile(imageFile, imageId);
@@ -320,7 +330,7 @@ export function Dialog({ product }) {
                 {keySchema.key}
                 {isImageField ? (
                   <div className="image-upload-field">
-                    {product?.imgUrl && (
+                    {product?.imgUrl && !shouldRemoveImage && (
                       <img
                         src={product.imgUrl}
                         alt={product.name || "Imagen actual"}
@@ -332,7 +342,30 @@ export function Dialog({ product }) {
                       type="hidden"
                       defaultValue={product?.imgUrl || ""}
                     />
-                    <input name="imgUrlFile" type="file" accept="image/*" />
+                    {product?.imgUrl && (
+                      <button
+                        type="button"
+                        className="remove-image"
+                        onClick={() => {
+                          // Alterna entre marcar la imagen para borrar y restaurarla antes de guardar.
+                          setShouldRemoveImage((currentValue) => !currentValue);
+                          formRef.current.elements.imgUrlFile.value = "";
+                        }}
+                      >
+                        {shouldRemoveImage ? "Restaurar imagen" : "Quitar imagen"}
+                      </button>
+                    )}
+                    {shouldRemoveImage && (
+                      <p className="image-removal-note">
+                        La imagen se quitara al guardar.
+                      </p>
+                    )}
+                    <input
+                      name="imgUrlFile"
+                      type="file"
+                      accept="image/*"
+                      disabled={shouldRemoveImage}
+                    />
                   </div>
                 ) : isSubTypeField ? (
                   <select
