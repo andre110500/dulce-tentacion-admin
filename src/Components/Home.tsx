@@ -8,14 +8,19 @@ export default function Home() {
   return (
     <>
       <Section
-        h1="Productos"
+        h1="Menu de Helados"
         route="products?type=ice-cream&type=add-on"
         schemaRoute="products/schema"
         Menu={IceCreamMenu}
 
       />
       <Section
-        h1="Productos"
+        h1="Bebidas"
+        route="products?type=drink"
+        schemaRoute="products/schema"
+      />
+      <Section
+        h1="Postres congelados"
         route="products?type=frozen-treat"
         schemaRoute="products/schema"
         Menu={FrozenTreatsMenu}

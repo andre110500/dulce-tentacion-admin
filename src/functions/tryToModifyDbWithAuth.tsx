@@ -17,6 +17,67 @@ interface Settings {
   callback: () => Promise<void>; // 🔥 ahora async
 }
 
+interface ValidationError {
+  // Nombre del campo que fallo en la validacion del backend, por ejemplo "price" o "name".
+  field?: string;
+  // Mensaje concreto que envia express-validator para ese campo.
+  message?: string;
+  // Valor recibido por la API; sirve para mostrar que dato causo el error.
+  value?: unknown;
+}
+
+interface RequestError {
+  // Mensaje general del error de Axios o del error manual que lanzamos.
+  message?: string;
+  // Existe cuando la request salio pero el servidor no respondio.
+  request?: unknown;
+  // Existe cuando el servidor respondio con un status fuera del rango 2xx.
+  response?: {
+    // Cuerpo de error que devuelve la API.
+    data?: {
+      // Titulo general del error, por ejemplo "Body validation failed".
+      error?: string;
+      // Lista de errores por campo que devuelve express-validator.
+      errors?: ValidationError[];
+    };
+    // Codigo HTTP de la respuesta, por si necesitamos mostrarlo o debuguearlo.
+    status?: number;
+  };
+}
+
+// Convierte el error de la API en un texto listo para mostrar en SweetAlert.
+const formatServerError = (data: {
+  // Mensaje principal enviado por la API.
+  error?: string;
+  // Detalles opcionales enviados por la API cuando falla la validacion del body.
+  errors?: ValidationError[];
+} = {}) => {
+  // Usa el error principal de la API; si no existe, deja un mensaje generico.
+  const mainMessage = data?.error || "Server error occurred";
+
+  // Si no hay un array de errores, mostramos solo el mensaje principal.
+  if (!Array.isArray(data?.errors) || data.errors.length === 0) {
+    return mainMessage;
+  }
+
+  // Transforma cada error de validacion en una linea legible para el usuario.
+  const validationMessages = data.errors.map((error) => {
+    // Agrega el nombre del campo al inicio cuando la API lo manda.
+    const field = error.field ? `${error.field}: ` : "";
+    // Solo muestra el valor recibido si existe; asi evitamos ruido cuando viene undefined o null.
+    const value =
+      error.value === undefined || error.value === null
+        ? ""
+        : ` (valor: ${String(error.value)})`;
+
+    // Une campo, mensaje y valor en una sola linea de error.
+    return `${field}${error.message || "Valor invalido"}${value}`;
+  });
+
+  // Une el titulo y los detalles con saltos de linea para que la alerta los muestre separados.
+  return [mainMessage, ...validationMessages].join("\n");
+};
+
 export default async function tryToModifyDbWithAuth(settings: Settings) {
   const { route, id, method, body, callback } = settings;
 
@@ -54,38 +115,42 @@ export default async function tryToModifyDbWithAuth(settings: Settings) {
     }
 
     return response.data;
-  } catch (error: any) {
+  } catch (error: unknown) {
+    // Convertimos el error desconocido a la forma que esperamos de Axios para poder leer response/request.
+    const requestError = error as RequestError;
+
     console.log("Error details:", {
       error,
       type: typeof error,
-      message: error?.message,
-      response: error?.response,
-      data: error?.response?.data,
+      message: requestError?.message,
+      response: requestError?.response,
+      data: requestError?.response?.data,
     });
 
     // Check if it's an Axios error
-    if (error?.response) {
+    if (requestError?.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
-      const errorMessage =
-        error.response.data?.error || "Server error occurred";
+      // Incluye el error principal y tambien los detalles del array "errors" si el backend los envio.
+      const errorMessage = formatServerError(requestError.response.data);
       console.log("Server response error:", errorMessage);
+      // Muestra el mensaje ya formateado en el front.
       show_ErrorAlert(errorMessage);
-    } else if (error?.request) {
+    } else if (requestError?.request) {
       // The request was made but no response was received
       console.log("No response received from server");
       show_ErrorAlert("No response from server");
     } else {
       // Something happened in setting up the request that triggered an Error
-      console.log("Request setup error:", error?.message);
+      console.log("Request setup error:", requestError?.message);
       if (
-        error?.message === "Cannot read properties of null (reading 'token')"
+        requestError?.message === "Cannot read properties of null (reading 'token')"
       ) {
         showNotLoggedAlert();
-      } else if (error?.message?.includes("JSON.parse")) {
+      } else if (requestError?.message?.includes("JSON.parse")) {
         show_ErrorAlert("Invalid server response format");
       } else {
-        show_ErrorAlert(error?.message || "An error occurred");
+        show_ErrorAlert(requestError?.message || "An error occurred");
       }
     }
   }
