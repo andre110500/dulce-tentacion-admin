@@ -1,6 +1,74 @@
 import React, { useRef, useContext, useState } from "react";
 import ItemsContext from "../Contexts/ItemsContext";
+import { show_ErrorAlert } from "../alerts";
 import tryToModifyDbWithAuth from "../functions/tryToModifyDbWithAuth";
+
+const fileToDataUrl = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+const uploadImageFile = async (file, id) => {
+  console.log("Uploading product image:", {
+    fileName: file.name,
+    fileType: file.type,
+    fileSize: file.size,
+    id,
+  });
+
+  const image = await fileToDataUrl(file);
+  console.log("Product image converted to data URL:", {
+    id,
+    dataUrlLength: typeof image === "string" ? image.length : 0,
+  });
+
+  const response = await fetch("/.netlify/functions/upload-menu", {
+    method: "POST",
+    body: JSON.stringify({
+      image,
+      id,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    let errorData;
+
+    try {
+      errorData = JSON.parse(errorText);
+    } catch {
+      errorData = null;
+    }
+
+    console.error("Product image upload response failed:", {
+      status: response.status,
+      statusText: response.statusText,
+      body: errorData || errorText,
+    });
+
+    const detailLines = [
+      errorData?.error || "Image upload failed",
+      errorData?.details?.name ? `name: ${errorData.details.name}` : "",
+      errorData?.details?.httpCode
+        ? `httpCode: ${errorData.details.httpCode}`
+        : "",
+      errorData?.debug?.publicId ? `publicId: ${errorData.debug.publicId}` : "",
+      errorData?.debug?.imagePrefix
+        ? `imagePrefix: ${errorData.debug.imagePrefix}`
+        : "",
+    ].filter(Boolean);
+
+    throw new Error(detailLines.join("\n"));
+  }
+
+  const data = await response.json();
+  console.log("Product image uploaded:", data);
+  return data.url;
+};
 
 export function Dialog({ product }) {
   const dialogRef = useRef(null);
@@ -89,15 +157,33 @@ export function Dialog({ product }) {
     return hasChanges;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     const formElements = formRef.current.elements;
+    // Lee el archivo elegido para saber si el usuario quiere agregar o reemplazar la imagen.
+    const imageFile = formElements.imgUrlFile?.files?.[0];
 
     // Check for changes before proceeding
-    if (product && !checkInputChanges(formElements)) {
+    if (product && !imageFile && !checkInputChanges(formElements)) {
       console.log("No changes detected, closing dialog without submission");
       closeDialog();
+      return;
+    }
+
+    try {
+      if (imageFile) {
+        // Usa el id del producto al editar, y un id temporal al crear, para generar un public_id estable en Cloudinary.
+        const imageId = product?._id || `product-${Date.now()}`;
+        const imageUrl = await uploadImageFile(imageFile, imageId);
+        // Guarda la URL final en el input oculto para que el loop de itemKeys la envie como imgUrl.
+        formElements.imgUrl.value = imageUrl;
+      }
+    } catch (error) {
+      console.error("Error uploading product image:", error);
+      const message =
+        error instanceof Error ? error.message : "No se pudo subir la imagen";
+      show_ErrorAlert(`No se pudo subir la imagen\n${message}`);
       return;
     }
 
@@ -226,11 +312,29 @@ export function Dialog({ product }) {
             const isSubTypeField = keySchema.key === "subType";
             // El campo type actualiza selectedType para que las opciones de subType cambien en vivo.
             const isTypeField = keySchema.key === "type";
+            // El campo imgUrl usa un selector de archivo y guarda la URL en un input oculto.
+            const isImageField = keySchema.key === "imgUrl";
 
             return (
               <label>
                 {keySchema.key}
-                {isSubTypeField ? (
+                {isImageField ? (
+                  <div className="image-upload-field">
+                    {product?.imgUrl && (
+                      <img
+                        src={product.imgUrl}
+                        alt={product.name || "Imagen actual"}
+                        className="current-product-image"
+                      />
+                    )}
+                    <input
+                      name="imgUrl"
+                      type="hidden"
+                      defaultValue={product?.imgUrl || ""}
+                    />
+                    <input name="imgUrlFile" type="file" accept="image/*" />
+                  </div>
+                ) : isSubTypeField ? (
                   <select
                     name={keySchema.key}
                     defaultValue={product?.[keySchema.key] || ""}
@@ -255,7 +359,9 @@ export function Dialog({ product }) {
                           // Actualiza selectedType para recalcular las opciones validas del select subType.
                           setSelectedType(event.target.value);
                           // Limpia subType porque el valor anterior podria no ser valido para el nuevo type.
-                          formRef.current.elements.subType.value = "";
+                          if (formRef.current.elements.subType) {
+                            formRef.current.elements.subType.value = "";
+                          }
                         }
                         : undefined
                     }

@@ -241,6 +241,27 @@ dialog.crud {
       background-color: white;
     }
 
+    .image-upload-field {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+
+      input[type="file"] {
+        max-width: 12rem;
+        color: white;
+        background-color: transparent;
+      }
+    }
+
+    .current-product-image {
+      width: 8rem;
+      max-height: 8rem;
+      object-fit: contain;
+      border-radius: 0.35rem;
+      background-color: white;
+    }
+
     .buttons-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
