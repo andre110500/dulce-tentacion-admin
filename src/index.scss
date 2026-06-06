@@ -204,6 +204,8 @@ dialog.crud {
   border-radius: 0.5rem;
   color: white;
   position: relative;
+  width: min(92vw, 34rem);
+  max-width: 34rem;
 
   .delete-comfirmation {
     width: 100%;
@@ -281,6 +283,7 @@ dialog.crud {
       align-items: center;
       gap: 0.5rem;
       padding: 0.75rem;
+      width: 100%;
       border: 1px dashed rgba(255, 255, 255, 0.6);
       border-radius: 0.4rem;
 
@@ -289,20 +292,29 @@ dialog.crud {
         background-color: rgba(255, 255, 255, 0.12);
       }
 
-      input[type="file"] {
-        max-width: 12rem;
-        color: white;
-        background-color: transparent;
+      .image-file-input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
       }
 
-      input[type="file"]:disabled {
-        opacity: 0.45;
+      .image-file-button {
+        width: 100%;
+        max-width: 12rem;
+        padding: 0.45rem 0.75rem;
+        border-radius: 0.35rem;
+        background-color: white;
+        color: black;
+        cursor: pointer;
+        text-align: center;
       }
     }
 
     .current-product-image {
-      width: 8rem;
-      max-height: 8rem;
+      width: min(12rem, 100%);
+      max-height: 12rem;
       object-fit: contain;
       border-radius: 0.35rem;
       background-color: white;
@@ -314,7 +326,7 @@ dialog.crud {
 
     .remove-image {
       width: 100%;
-      max-width: 8rem;
+      max-width: 12rem;
       background-color: #d33;
       color: white;
     }
@@ -324,6 +336,16 @@ dialog.crud {
       color: #ffd0dc;
       font-size: 0.75rem;
       text-align: center;
+    }
+
+    .image-file-name {
+      width: 100%;
+      max-width: 18rem;
+      margin: 0;
+      color: white;
+      font-size: 0.75rem;
+      text-align: center;
+      word-break: break-word;
     }
 
     .image-drop-note {
@@ -347,6 +369,18 @@ dialog.crud {
         background-color: white !important;
         color: black;
       }
+    }
+  }
+}
+
+@media (max-width: 520px) {
+  dialog.crud {
+    width: calc(100vw - 1rem);
+    max-width: calc(100vw - 1rem);
+
+    form {
+      padding: 1.25rem;
+      gap: 1.25rem;
     }
   }
 }

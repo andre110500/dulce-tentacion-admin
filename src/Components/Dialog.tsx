@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useContext, useState } from "react";
+import React, { useEffect, useId, useRef, useContext, useState } from "react";
 import ItemsContext from "../Contexts/ItemsContext";
 import { show_ErrorAlert } from "../alerts";
 import tryToModifyDbWithAuth from "../functions/tryToModifyDbWithAuth";
@@ -70,9 +70,23 @@ const uploadImageFile = async (file, id) => {
   return data.url;
 };
 
+const getImageFileName = (imageUrl) => {
+  if (!imageUrl) {
+    return "";
+  }
+
+  try {
+    const pathname = new URL(imageUrl).pathname;
+    return decodeURIComponent(pathname.split("/").pop() || "");
+  } catch {
+    return imageUrl.split("/").pop() || "";
+  }
+};
+
 export function Dialog({ product }) {
   const dialogRef = useRef(null);
   const formRef = useRef(null);
+  const imageFileInputId = useId();
   const { get_AndDo_, route, setDbItemsArr, itemSchema, itemKeys, subTypesByType } =
     useContext(ItemsContext);
 
@@ -81,6 +95,8 @@ export function Dialog({ product }) {
   const [shouldRemoveImage, setShouldRemoveImage] = useState(false);
   // Guarda una vista previa local cuando el usuario elige o arrastra una imagen nueva.
   const [selectedImagePreview, setSelectedImagePreview] = useState("");
+  // Guarda el nombre del archivo elegido para mostrarlo antes de subirlo a Cloudinary.
+  const [selectedImageName, setSelectedImageName] = useState("");
   // Marca visualmente el dropzone mientras una imagen se esta arrastrando encima.
   const [isDraggingImage, setIsDraggingImage] = useState(false);
   // Guarda el type actual para que el select de subType muestre solo opciones validas para ese tipo.
@@ -120,6 +136,7 @@ export function Dialog({ product }) {
     dataTransfer.items.add(file);
     input.files = dataTransfer.files;
     setShouldRemoveImage(false);
+    setSelectedImageName(file.name);
     setSelectedImagePreview((currentPreview) => {
       if (currentPreview) {
         URL.revokeObjectURL(currentPreview);
@@ -390,6 +407,11 @@ export function Dialog({ product }) {
                         className="current-product-image"
                       />
                     )}
+                    {(selectedImageName || (product?.imgUrl && !shouldRemoveImage)) && (
+                      <p className="image-file-name">
+                        {selectedImageName || getImageFileName(product.imgUrl)}
+                      </p>
+                    )}
                     <input
                       name="imgUrl"
                       type="hidden"
@@ -404,6 +426,7 @@ export function Dialog({ product }) {
                           setShouldRemoveImage((currentValue) => !currentValue);
                           formRef.current.elements.imgUrlFile.value = "";
                           setSelectedImagePreview("");
+                          setSelectedImageName("");
                         }}
                       >
                         {shouldRemoveImage ? "Restaurar imagen" : "Quitar imagen"}
@@ -420,7 +443,9 @@ export function Dialog({ product }) {
                       </p>
                     )}
                     <input
+                      id={imageFileInputId}
                       name="imgUrlFile"
+                      className="image-file-input"
                       type="file"
                       accept="image/*"
                       disabled={shouldRemoveImage}
@@ -428,6 +453,14 @@ export function Dialog({ product }) {
                         setSelectedImageFile(event.target.files?.[0]);
                       }}
                     />
+                    {!shouldRemoveImage && (
+                      <label
+                        className="image-file-button"
+                        htmlFor={imageFileInputId}
+                      >
+                        Examinar imagen
+                      </label>
+                    )}
                   </div>
                 ) : isSubTypeField ? (
                   <select
