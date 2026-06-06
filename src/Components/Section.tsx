@@ -28,6 +28,17 @@ const getSchemaFields = (schemaResponse) => {
   return [];
 };
 
+// Extrae el mapa de subtipos del formato nuevo del schema para saber que subTypes permite cada type.
+const getSchemaSubTypesByType = (schemaResponse) => {
+  // Si la API todavia devuelve el formato viejo, no existe subTypesByType y usamos un objeto vacio.
+  if (!schemaResponse?.subTypesByType) {
+    return {};
+  }
+
+  // Devuelve el mapa nuevo, por ejemplo { drink: ["can"], "frozen-treat": ["tub"] }.
+  return schemaResponse.subTypesByType;
+};
+
 export default function Section({
   h1,
   route,
@@ -38,6 +49,7 @@ export default function Section({
   const [dbItemsArr, setDbItemsArr] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [itemSchemaProperties, setItemSchemaProperties] = useState([]);
+  const [subTypesByType, setSubTypesByType] = useState({});
   const [itemKeys, setItemKeys] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [isUploadingMenu, setIsUploadingMenu] = useState(false);
@@ -174,6 +186,8 @@ export default function Section({
         console.log("📊 Response data:", response.data);
         // Guarda solo el array de campos, aunque la API nueva mande mas informacion como subTypesByType.
         setItemSchemaProperties(getSchemaFields(response.data));
+        // Guarda los subtypes posibles por type para poder mostrarlos en la tabla.
+        setSubTypesByType(getSchemaSubTypesByType(response.data));
         console.log("✅ State updated");
 
 
@@ -232,6 +246,7 @@ export default function Section({
         itemKeys: itemKeys,
         get_AndDo_,
         itemSchema: itemSchemaProperties,
+        subTypesByType: subTypesByType,
         dbItemsArr: dbItemsArr,
         setDbItemsArr: setDbItemsArr,
       }}
@@ -390,6 +405,8 @@ function TableRow({ product }) {
 // Usa unknown porque la celda puede recibir strings, numeros, booleanos u otros valores del producto.
 const OverflowCell = ({ content, dataCell }: { content: unknown; dataCell: string }) => {
   const cellRef = useRef<HTMLTableCellElement>(null);
+  // Muestra la celda vacia cuando el backend no mando valor, para evitar ver "undefined" en la tabla.
+  const displayContent = content === undefined || content === null ? "" : String(content);
 
   const checkOverflow = () => {
     const el = cellRef.current;
@@ -401,7 +418,7 @@ const OverflowCell = ({ content, dataCell }: { content: unknown; dataCell: strin
 
     if (isOverflowing) {
       // Convierte el valor a texto porque el atributo title del HTML solo acepta strings.
-      el.setAttribute("title", String(content));
+      el.setAttribute("title", displayContent);
     } else {
       el.removeAttribute("title");
     }
@@ -422,7 +439,7 @@ const OverflowCell = ({ content, dataCell }: { content: unknown; dataCell: strin
     if (isOverflowing) {
       Swal.fire({
         // Convierte el valor a texto porque SweetAlert espera mostrar un string.
-        text: String(content),
+        text: displayContent,
         confirmButtonText: "Cerrar",
         confirmButtonColor: "#e8547e",
       });
@@ -436,7 +453,7 @@ const OverflowCell = ({ content, dataCell }: { content: unknown; dataCell: strin
       onMouseEnter={checkOverflow}
       onClick={handleClick}
     >
-      <span>{`${content}`}</span>
+      <span>{displayContent}</span>
     </td>
   );
 };

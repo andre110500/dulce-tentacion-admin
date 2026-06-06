@@ -5,10 +5,14 @@ import tryToModifyDbWithAuth from "../functions/tryToModifyDbWithAuth";
 export function Dialog({ product }) {
   const dialogRef = useRef(null);
   const formRef = useRef(null);
-  const { get_AndDo_, route, setDbItemsArr, itemSchema, itemKeys } =
+  const { get_AndDo_, route, setDbItemsArr, itemSchema, itemKeys, subTypesByType } =
     useContext(ItemsContext);
 
   const [showDeleConfirmation, setShowDeleteConfirmation] = useState(false);
+  // Guarda el type actual para que el select de subType muestre solo opciones validas para ese tipo.
+  const [selectedType, setSelectedType] = useState(product?.type || "");
+  // Busca las opciones de subType usando el type elegido; si no hay type o no tiene subtypes, usa un array vacio.
+  const subTypeOptions = subTypesByType?.[selectedType] || [];
 
   const openDialog = () => {
     dialogRef.current.showModal();
@@ -218,25 +222,56 @@ export function Dialog({ product }) {
                   return "text";
               }
             }
+            // El campo subType usa select para permitir solo valores validos segun el type seleccionado.
+            const isSubTypeField = keySchema.key === "subType";
+            // El campo type actualiza selectedType para que las opciones de subType cambien en vivo.
+            const isTypeField = keySchema.key === "type";
+
             return (
               <label>
                 {keySchema.key}
-                <input
-                  name={keySchema.key}
-                  type={getInputType(keySchema.type)}
-                  placeholder={keySchema.key}
-                  defaultValue={
-                    keySchema.type !== "Boolean"
-                      ? product?.[keySchema.key]
-                      : undefined
-                  }
-                  defaultChecked={
-                    keySchema.type === "Boolean"
-                      ? product?.[keySchema.key]
-                      : undefined
-                  }
-                  required={keySchema.required}
-                />
+                {isSubTypeField ? (
+                  <select
+                    name={keySchema.key}
+                    defaultValue={product?.[keySchema.key] || ""}
+                    required={keySchema.required}
+                  >
+                    {/* Permite dejar subType vacio porque el backend lo acepta cuando no corresponde. */}
+                    <option value="">Sin subtipo</option>
+                    {subTypeOptions.map((subType) => (
+                      <option key={`subtype-option-${subType}`} value={subType}>
+                        {subType}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    name={keySchema.key}
+                    type={getInputType(keySchema.type)}
+                    placeholder={keySchema.key}
+                    onChange={
+                      isTypeField
+                        ? (event) => {
+                          // Actualiza selectedType para recalcular las opciones validas del select subType.
+                          setSelectedType(event.target.value);
+                          // Limpia subType porque el valor anterior podria no ser valido para el nuevo type.
+                          formRef.current.elements.subType.value = "";
+                        }
+                        : undefined
+                    }
+                    defaultValue={
+                      keySchema.type !== "Boolean"
+                        ? product?.[keySchema.key]
+                        : undefined
+                    }
+                    defaultChecked={
+                      keySchema.type === "Boolean"
+                        ? product?.[keySchema.key]
+                        : undefined
+                    }
+                    required={keySchema.required}
+                  />
+                )}
               </label>
             );
           })}

@@ -226,11 +226,19 @@ dialog.crud {
       }
     }
 
-    input {
+    input,
+    select {
       padding: 0.2rem 0rem;
       padding-left: 0.3rem;
       text-align: center;
       color: black;
+      background-color: white;
+    }
+
+    select option {
+      // Define color y fondo explicitamente porque algunos navegadores heredan el blanco del dialog y ocultan el texto.
+      color: black;
+      background-color: white;
     }
 
     .buttons-container {
