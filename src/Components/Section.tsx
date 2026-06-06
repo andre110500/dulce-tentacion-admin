@@ -374,14 +374,24 @@ function TableRow({ product }) {
             return (
               <td
                 data-cell={key}
-                className="activable"
+                className={product.imgUrl ? "activable image-cell" : "image-cell"}
                 onClick={() => {
+                  if (!product.imgUrl) {
+                    return;
+                  }
+
                   dialogRef.current.showModal();
                   setPreviewImageUrl(product.imgUrl);
                 }}
                 key={`product-cell-${product._id}-${key}`}
               >
-                <span>{`${product[key]}`}</span>
+                {product.imgUrl && (
+                  <img
+                    src={product.imgUrl}
+                    alt={product.name || "Imagen del producto"}
+                    className="table-thumbnail"
+                  />
+                )}
               </td>
             );
           } else

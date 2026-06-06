@@ -97,6 +97,25 @@ dialog.preview {
   cursor: pointer;
 }
 
+.image-cell {
+  width: 3rem;
+  min-width: 3rem;
+  text-align: center;
+}
+
+.table-thumbnail {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  vertical-align: middle;
+  border-radius: 0.2rem;
+  background-color: white;
+  // Fondo cuadriculado para distinguir transparencias sin aumentar el alto de la fila.
+  background-image: $transparent-checker-background;
+  background-position: $transparent-checker-position;
+  background-size: $transparent-checker-size;
+}
+
 h1 {
   text-align: center;
 }
