@@ -360,6 +360,16 @@ function TableRow({ product }) {
   const { itemKeys } = useContext(ItemsContext);
   const dialogRef = useRef(null);
   const [previewImageUrl, setPreviewImageUrl] = useState("");
+  // Limpia la URL antes de usarla para que espacios o valores falsos no creen una miniatura rota.
+  const rawProductImageUrl = typeof product.imgUrl === "string" ? product.imgUrl.trim() : "";
+  // Considera valida la imagen solo si hay una URL real; evita tratar "undefined" o "null" como imagen.
+  const productImageUrl =
+    rawProductImageUrl &&
+      rawProductImageUrl !== "undefined" &&
+      rawProductImageUrl !== "null"
+      ? rawProductImageUrl
+      : "";
+
   return (
     <>
       <dialog className="preview" ref={dialogRef}>
@@ -374,24 +384,26 @@ function TableRow({ product }) {
             return (
               <td
                 data-cell={key}
-                className={product.imgUrl ? "activable image-cell" : "image-cell"}
+                className={productImageUrl ? "activable image-cell" : "image-cell"}
                 onClick={() => {
-                  if (!product.imgUrl) {
+                  if (!productImageUrl) {
                     return;
                   }
 
                   dialogRef.current.showModal();
-                  setPreviewImageUrl(product.imgUrl);
+                  setPreviewImageUrl(productImageUrl);
                 }}
                 key={`product-cell-${product._id}-${key}`}
               >
-                {product.imgUrl && (
-                  <img
-                    src={product.imgUrl}
-                    alt={product.name || "Imagen del producto"}
-                    className="table-thumbnail"
-                  />
-                )}
+                <span className="thumbnail-wrap">
+                  {productImageUrl && (
+                    <img
+                      src={productImageUrl}
+                      alt={product.name || "Imagen del producto"}
+                      className="table-thumbnail"
+                    />
+                  )}
+                </span>
               </td>
             );
           } else
