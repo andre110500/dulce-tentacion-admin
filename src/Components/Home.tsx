@@ -19,6 +19,11 @@ export default function Home() {
         route="products?type=drink"
         schemaRoute="products/schema"
       />
+         <Section
+        h1="Cigarrillos"
+        route="products?type=cigarette"
+        schemaRoute="products/schema"
+      />
       <Section
         h1="Postres congelados"
         route="products?type=frozen-treat"

@@ -12,6 +12,22 @@ import gear from "../assets/gear.svg";
 
 const ITEMS_PER_PAGE = 10;
 
+// Normaliza la respuesta del schema para que el resto del componente siempre trabaje con un array de campos.
+const getSchemaFields = (schemaResponse) => {
+  // Si la API devuelve el formato viejo, ya es un array y lo podemos usar directamente.
+  if (Array.isArray(schemaResponse)) {
+    return schemaResponse;
+  }
+
+  // Si la API devuelve el formato nuevo, los campos vienen dentro de "fields".
+  if (Array.isArray(schemaResponse?.fields)) {
+    return schemaResponse.fields;
+  }
+
+  // Si llega algo inesperado, devolvemos un array vacio para evitar que falle el .map del render.
+  return [];
+};
+
 export default function Section({
   h1,
   route,
@@ -156,7 +172,8 @@ export default function Section({
           return;
         }
         console.log("📊 Response data:", response.data);
-        setItemSchemaProperties(response.data);
+        // Guarda solo el array de campos, aunque la API nueva mande mas informacion como subTypesByType.
+        setItemSchemaProperties(getSchemaFields(response.data));
         console.log("✅ State updated");
 
 
@@ -370,7 +387,8 @@ function TableRow({ product }) {
   );
 }
 
-const OverflowCell = ({ content, dataCell }: { content: any; dataCell: string }) => {
+// Usa unknown porque la celda puede recibir strings, numeros, booleanos u otros valores del producto.
+const OverflowCell = ({ content, dataCell }: { content: unknown; dataCell: string }) => {
   const cellRef = useRef<HTMLTableCellElement>(null);
 
   const checkOverflow = () => {
@@ -382,7 +400,8 @@ const OverflowCell = ({ content, dataCell }: { content: any; dataCell: string })
     const isOverflowing = target.scrollWidth > target.clientWidth;
 
     if (isOverflowing) {
-      el.setAttribute("title", content);
+      // Convierte el valor a texto porque el atributo title del HTML solo acepta strings.
+      el.setAttribute("title", String(content));
     } else {
       el.removeAttribute("title");
     }
@@ -402,7 +421,8 @@ const OverflowCell = ({ content, dataCell }: { content: any; dataCell: string })
 
     if (isOverflowing) {
       Swal.fire({
-        text: content,
+        // Convierte el valor a texto porque SweetAlert espera mostrar un string.
+        text: String(content),
         confirmButtonText: "Cerrar",
         confirmButtonColor: "#e8547e",
       });
