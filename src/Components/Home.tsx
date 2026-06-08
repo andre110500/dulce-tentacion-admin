@@ -23,15 +23,11 @@ export default function Home() {
         // MenuComponent: el componente que renderiza el diseno visual del menu.
       />
       <Section
-        h1="Bebidas"
-        route="products?type=drink"
+        h1="Bebidas y cigarrillos"
+        route="products?type=drink&type=cigarette"
         schemaRoute="products/schema"
       />
-         <Section
-        h1="Cigarrillos"
-        route="products?type=cigarette"
-        schemaRoute="products/schema"
-      />
+     
       <MenuSection
         h1="Postres congelados"
         route="products?type=frozen-treat"
