@@ -862,13 +862,19 @@ button {
 @container products-menu (min-width:0px) {
   #ice-cream-menu {
     .uls-container {
-      top: 56%;
+    top: 52%;
+    }
+  }
+
+  [id^="drinks-cigarettes-menu"] {
+    .uls-container {
+      top: 54%;
     }
   }
 
   .uls-container {
     position: absolute;
-    top: 52%;
+    top: 56%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;

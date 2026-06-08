@@ -6,7 +6,7 @@
   Se usa para bebidas y cigarrillos (seccion kiosco).
 */
 
-import template from "../assets/products-template.webp";
+import template from "../assets/kiosk-template.webp";
 
 const subTypeTranslations = {
   soda: "Gaseosas",
