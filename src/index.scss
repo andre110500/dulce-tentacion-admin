@@ -1257,6 +1257,41 @@ button {
         }
       }
 
+      .products-group {
+        margin-bottom: 2cqw;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .products-group-header {
+          display: flex;
+          align-items: center;
+          margin-bottom: 1.5cqw;
+          padding: 0.5cqw 1.5cqw;
+          border-bottom: 1.5px solid rgba(74, 44, 42, 0.2);
+          position: relative;
+
+          &::before {
+            content: "";
+            width: 3px;
+            height: 1.2em;
+            background: #dc1537;
+            border-radius: 2px;
+            margin-right: 1cqw;
+            flex-shrink: 0;
+          }
+
+          span {
+            font-size: 2.6cqw;
+            font-weight: 700;
+            color: #4A2C2A;
+            letter-spacing: 0.3cqw;
+            text-transform: uppercase;
+          }
+        }
+      }
+
       &.products-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;

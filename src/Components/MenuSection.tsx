@@ -5,7 +5,7 @@
   MenuUploadSection con soporte para captura de pantalla y subida automática cuando los datos cambian.
 */
 
-import { useLayoutEffect, useRef, useState, useContext } from "react";
+import { useLayoutEffect, useRef, useState, useContext, useMemo } from "react";
 // useLayoutEffect: dispara la subida automatica apenas el DOM se actualiza con nuevos datos.
 // useRef: changeCount persistente entre renders para saltear las primeras ejecuciones del efecto.
 // useState: estado local de subida (isUploadingMenu) para controlar el boton de subir.
@@ -34,8 +34,8 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize }) {
   // menuIds: ej. ["ice-cream-menu"], determina que IDs de menu se generan/suben.
   // MenuComponent: el componente de menu concreto (IceCreamMenu, ProductsMenu, FlavoursMenu, etc.).
   // menuPages: array de paginas a renderizar, ej. [1] para 1 menu, [1,2] para Sabores.
-  // chunkSize: si esta definido, divide los datos en bloques de ese tamano (ej. 10 items por hoja).
-  //   Solo se usa con ProductsMenu; IceCreamMenu y FlavoursMenu no lo usan.
+  // chunkSize: si esta definido, agrupa los productos por subType y empaqueta grupos enteros
+  //   en cada hoja respetando este limite de items por pagina.
 
   const { dbItemsArr } = useContext(ItemsContext);
   // Lee el arreglo de productos desde el contexto que Section expone a sus hijos.
@@ -44,16 +44,54 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize }) {
   // Filtra productos agotados y lo usa tanto para computar paginas como para pasar los datos.
   const filtered = dbItemsArr?.filter((product) => !product.outOfStock) || [];
 
-  // Si chunkSize esta activo, calcula cuantas hojas de menu se necesitan segun la cantidad de items.
-  // Ej: 15 items con chunkSize=10 genera pages=[1, 2] (10 en la primera, 5 en la segunda).
-  // Si no, usa el menuPages recibido (default [1], o [1, 2] para Sabores).
+  // Cuando chunkSize esta activo, agrupa por subType y empaqueta grupos enteros en cada hoja
+  // para que ningun grupo quede partido entre dos paginas.
+  const groupPages = useMemo(() => {
+    if (!chunkSize) return null;
+
+    // Agrupa los items por subType (los que no tienen subType van a "__no_subtype__").
+    const groups = {};
+    for (const item of filtered) {
+      const key = item.subType || "__no_subtype__";
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(item);
+    }
+
+    // Ordena: primero los grupos con subType (alfabetico), luego los que no tienen.
+    const sortedKeys = Object.keys(groups).sort((a, b) => {
+      if (a === "__no_subtype__") return 1;
+      if (b === "__no_subtype__") return -1;
+      return a.localeCompare(b);
+    });
+
+    // Empaqueta grupos enteros en paginas respetando chunkSize.
+    const chunks = [];
+    let currentChunk = [];
+    let currentCount = 0;
+
+    for (const key of sortedKeys) {
+      const items = groups[key];
+      if (currentCount + items.length > chunkSize && currentChunk.length > 0) {
+        chunks.push(currentChunk);
+        currentChunk = [];
+        currentCount = 0;
+      }
+      currentChunk.push(...items);
+      currentCount += items.length;
+    }
+    if (currentChunk.length > 0) {
+      chunks.push(currentChunk);
+    }
+
+    return chunks;
+  }, [chunkSize, filtered]);
+
+  // pages: con chunkSize usa las paginas de groupPages; sin chunkSize usa menuPages.
+  // resolvedMenuIds: con chunkSize genera IDs secuenciales por pagina.
   const pages = chunkSize
-    ? Array.from({ length: Math.ceil(filtered.length / chunkSize) }, (_, i) => i + 1)
+    ? (groupPages || []).map((_, i) => i + 1)
     : menuPages;
 
-  // Cuando chunkSize esta activo, genera IDs secuenciales para cada hoja partiendo del primer menuId.
-  // Ej: "drinks-cigarettes-menu" → ["drinks-cigarettes-menu-1", "drinks-cigarettes-menu-2"].
-  // Asi cada hoja tiene un DOM id unico que generateAndUploadMenu puede localizar.
   const resolvedMenuIds = chunkSize
     ? pages.map((_, i) => `${menuIds[0]}-${i + 1}`)
     : menuIds;
@@ -124,11 +162,8 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize }) {
     // Con chunkSize activo, cada pagina recibe un slice diferente de datos y un menuId unico.
     <div className="menu-container">
       {pages.map((page, index) => {
-        // Con chunkSize, cada hoja recibe solo su bloque de datos (slice).
-        // Sin chunkSize, todas las hojas reciben el mismo array completo (comportamiento anterior).
-        const chunk = chunkSize
-          ? filtered.slice(index * chunkSize, (index + 1) * chunkSize)
-          : filtered;
+        // Con chunkSize usa los grupos pre-empaquetados; sin chunkSize pasa todo.
+        const chunk = chunkSize ? (groupPages ? groupPages[index] : []) : filtered;
 
         return (
           <MenuUploadSection
