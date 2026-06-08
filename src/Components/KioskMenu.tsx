@@ -1,8 +1,9 @@
 /*
-  ProductsMenu: menu generico de productos en formato grilla de 4 columnas con cards.
+  KioskMenu: menu generico de productos en formato grilla de 4 columnas con cards.
   Agrupa los productos por subType con colores de fondo distintos y un índice compacto
   de grupos en la parte superior. Las cards fluyen continuamente sin cortes entre grupos,
   maximizando el espacio de cada fila.
+  Se usa para bebidas y cigarrillos (seccion kiosco).
 */
 
 import template from "../assets/products-template.webp";
@@ -37,7 +38,7 @@ const translateSubType = (subType) => {
   if (!subType) return null;
   const translation = subTypeTranslations[subType];
   if (!translation) {
-    console.warn(`ProductsMenu: subType sin traduccion "${subType}"`);
+    console.warn(`KioskMenu: subType sin traduccion "${subType}"`);
     return subType;
   }
   return translation;
@@ -71,7 +72,7 @@ const PlaceholderIcon = () => (
   </svg>
 );
 
-export default function ProductsMenu({ data, menuId, columns = 4, templateImg }) {
+export default function KioskMenu({ data, menuId, columns = 4, templateImg }) {
   const groups = {};
   for (const item of data) {
     const key = item.subType || "__no_subtype__";

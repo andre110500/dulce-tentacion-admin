@@ -8,11 +8,13 @@ import MenuSection from "./MenuSection";
 
 import IceCreamMenu from "./IceCreamMenu";
 import FlavoursMenu from "./FlavoursMenu";
-import ProductsMenu from "./ProductsMenu";
-// ProductsMenu: menu generico de productos en grilla, usado para postres congelados, bebidas y cigarrillos.
+import KioskMenu from "./KioskMenu";
+import FrozenTreatsMenu from "./FrozenTreatsMenu";
+// KioskMenu: menu en grilla con agrupacion por subType, usado para bebidas y cigarrillos.
+// FrozenTreatsMenu: menu original en lista vertical, usado para postres congelados.
 // MenuComponent: prop de MenuSection que recibe un componente de menu. MenuSection se lo pasa a
 //   MenuContent, que lo renderiza como <MenuComponent data={...} page={...} menuId={...} columns={...} />.
-//   Cualquier componente que acepte esas props puede usarse aqui (ProductsMenu, IceCreamMenu, FlavoursMenu).
+//   Cualquier componente que acepte esas props puede usarse aqui (KioskMenu, FrozenTreatsMenu, IceCreamMenu, FlavoursMenu).
 
 export default function Home() {
   return (
@@ -36,9 +38,9 @@ export default function Home() {
         menuIds={["drinks-cigarettes-menu"]}
         // menuIds: base para generar IDs automaticos. Si hay >36 items, se crean varias hojas
         // con ids "drinks-cigarettes-menu-1", "drinks-cigarettes-menu-2", etc.
-        MenuComponent={ProductsMenu}
-        // ProductsMenu: menu generico en grilla. Recibe columns, chunkSize, templateImg desde MenuSection.
-        //   MenuContent lo renderiza como <ProductsMenu data={chunk} page={page} menuId={...} columns={4} templateImg={...} />.
+        MenuComponent={KioskMenu}
+        // KioskMenu: menu en grilla con agrupacion por subType para bebidas/cigarrillos.
+        //   MenuContent lo renderiza como <KioskMenu data={chunk} page={page} menuId={...} columns={4} templateImg={...} />.
         columns={4}
         chunkSize={36}
         // chunkSize: si hay mas de 36 productos, se genera una hoja extra.
@@ -49,11 +51,12 @@ export default function Home() {
         route="products?type=frozen-treat"
         schemaRoute="products/schema"
         menuIds={["frozen-treats-menu"]}
-        // menuIds: base para IDs. Con chunkSize se generan "frozen-treats-menu-1", etc.
-        MenuComponent={ProductsMenu}
-        // ProductsMenu con 3 columnas para que las cards de postres congelados se vean mas anchas.
-        columns={3}
-        chunkSize={36}
+        // menuIds: base para generar IDs automaticos. "frozen-treats-menu" coincide con el
+        // id del div en FrozenTreatsMenu (via prop menuId).
+        MenuComponent={FrozenTreatsMenu}
+        // FrozenTreatsMenu: menu original en lista vertical para postres congelados.
+        //   Ignora columns, templateImg y chunkSize porque no los necesita.
+        //   Sin chunkSize ni columns, muestra todos los items en una sola hoja.
       />
       <MenuSection
         h1="Sabores"

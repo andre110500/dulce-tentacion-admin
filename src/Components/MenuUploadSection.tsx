@@ -2,7 +2,7 @@
   MenuUploadSection: captura el contenido del menu como imagen (html2canvas), muestra una preview
   y provee el boton "SUBIR MENU". Se regenera automaticamente cuando cambian productsList o
   flavoursList (nuevos datos del fetch). Es usado por MenuSection para envolver cada instancia
-  de IceCreamMenu, FlavoursMenu o ProductsMenu.
+  de IceCreamMenu, FlavoursMenu, KioskMenu o FrozenTreatsMenu.
 */
 
 import html2canvas from "html2canvas";

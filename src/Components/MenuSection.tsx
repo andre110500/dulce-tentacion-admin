@@ -1,7 +1,7 @@
 /*
   MenuSection: wrapper para secciones que tienen un menú visual (vista previa + subida automática).
   Reemplaza el uso directo de <Section Menu={...}> separando la lógica de menú en su propio componente.
-  Recibe un MenuComponent (IceCreamMenu, ProductsMenu, FlavoursMenu) y lo renderiza dentro de
+  Recibe un MenuComponent (KioskMenu, FrozenTreatsMenu, IceCreamMenu, FlavoursMenu) y lo renderiza dentro de
   MenuUploadSection con soporte para captura de pantalla y subida automática cuando los datos cambian.
 */
 
@@ -34,12 +34,12 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
   // menuIds: ej. ["ice-cream-menu"], determina que IDs de menu se generan/suben.
   // MenuComponent: componente React que se renderiza dentro de MenuUploadSection.
   //   MenuContent lo invoca como <MenuComponent data={chunk} page={page} menuId={...} columns={columns} templateImg={templateImg} />.
-  //   Puede ser ProductsMenu, IceCreamMenu, FlavoursMenu, etc. — cualquier componente que acepte esas props.
+  //   Puede ser KioskMenu, FrozenTreatsMenu, IceCreamMenu, FlavoursMenu, etc. — cualquier componente que acepte esas props.
   // menuPages: array de paginas a renderizar, ej. [1] para 1 menu, [1,2] para Sabores.
   // chunkSize: si esta definido, agrupa los productos por subType y empaqueta grupos enteros
   //   en cada hoja respetando este limite de items por pagina.
-  // columns: cuantas columnas de grid usa el MenuComponent (solo aplica a ProductsMenu).
-  // templateImg: ruta de la imagen de fondo del menu (solo ProductsMenu).
+  // columns: cuantas columnas de grid usa el MenuComponent (solo aplica a KioskMenu).
+  // templateImg: ruta de la imagen de fondo del menu (solo KioskMenu y FrozenTreatsMenu).
 
   const { dbItemsArr } = useContext(ItemsContext);
   // Lee el arreglo de productos desde el contexto que Section expone a sus hijos.
@@ -186,15 +186,15 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
               // page: necesario para FlavoursMenu que tiene 2 paginas distintas. Los demas menus
               // simplemente ignoran esta prop asi que no afecta.
               page={page}
-              // menuId: necesario para ProductsMenu que usa un id dinamico para el div del menu.
+              // menuId: necesario para KioskMenu y FrozenTreatsMenu que usan un id dinamico.
               // Con chunkSize activo, los IDs son secuenciales ("...-1", "...-2").
               // Sin chunkSize, usa los menuIds originales del array (menuIds[index]).
               // IceCreamMenu y FlavoursMenu ignoran esta prop porque tienen su id harcodeado.
               menuId={resolvedMenuIds[index]}
-              // columns: define cuantas columnas de grid usa ProductsMenu.
-              // IceCreamMenu y FlavoursMenu ignoran esta prop.
+              // columns: define cuantas columnas de grid usa KioskMenu.
+              // IceCreamMenu, FrozenTreatsMenu y FlavoursMenu ignoran esta prop.
               columns={columns}
-              // templateImg: imagen de fondo del menu (solo ProductsMenu).
+              // templateImg: imagen de fondo del menu (solo KioskMenu y FrozenTreatsMenu).
               templateImg={templateImg}
             />
           </MenuUploadSection>
@@ -209,11 +209,11 @@ export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuCompo
   // menuIds: IDs de los elementos del DOM que se capturan como imagen (ej. "ice-cream-menu").
   // MenuComponent: componente React que se pasa como prop desde Home.jsx y se reenvia a MenuContent.
   //   MenuContent lo renderiza como <MenuComponent data={...} page={...} menuId={...} columns={...} templateImg={...} />.
-  //   Puede ser ProductsMenu, IceCreamMenu, FlavoursMenu, etc. — cualquier componente que acepte esas props.
+  //   Puede ser KioskMenu, FrozenTreatsMenu, IceCreamMenu, FlavoursMenu, etc. — cualquier componente que acepte esas props.
   // menuPages: por defecto [1], para Sabores se pasa [1, 2] porque genera dos menus distintos.
   // chunkSize: opcional, divide el menu en varias hojas cuando hay mas items que este limite.
-  // columns: opcional, cuantas columnas de grid (solo ProductsMenu).
-  // templateImg: opcional, ruta de la imagen de fondo (solo ProductsMenu).
+  // columns: opcional, cuantas columnas de grid (solo KioskMenu).
+  // templateImg: opcional, ruta de la imagen de fondo (solo KioskMenu y FrozenTreatsMenu).
   return (
     <Section h1={h1} route={route} schemaRoute={schemaRoute}>
       {/* Section se encarga del fetch, la tabla, la paginacion y expone dbItemsArr via context.
