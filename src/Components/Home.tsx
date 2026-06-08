@@ -31,8 +31,8 @@ export default function Home() {
         // menuIds: base para generar IDs automaticos. Si hay >10 items, se crean varias hojas
         // con ids "drinks-cigarettes-menu-1", "drinks-cigarettes-menu-2", etc.
         MenuComponent={ProductsMenu}
-        chunkSize={14}
-        // chunkSize: si hay mas de 14 productos, se genera una hoja extra.
+        chunkSize={20}
+        // chunkSize: si hay mas de 20 productos, se genera una hoja extra.
       />
 
       <MenuSection
@@ -42,7 +42,7 @@ export default function Home() {
         menuIds={["frozen-treats-menu"]}
         // menuIds: base para IDs. Con chunkSize se generan "frozen-treats-menu-1", etc.
         MenuComponent={ProductsMenu}
-        chunkSize={14}
+        chunkSize={20}
       />
       <MenuSection
         h1="Sabores"
