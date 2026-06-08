@@ -853,6 +853,10 @@ button {
       container-name: products-menu;
     }
 
+    [id^="drinks-cigarettes-menu"] {
+      height: 1422px;
+    }
+
     [id^="flavours-menu"] {
       container-name: flavours-menu;
     }
@@ -869,6 +873,23 @@ button {
   [id^="drinks-cigarettes-menu"] {
     .uls-container {
       top: 54%;
+    }
+
+    .kiosk-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 25%;
+      padding: 0 20px;
+      background: linear-gradient(180deg, #fbc3d8 0%, #f8a5c2 100%);
+
+      img {
+        height: 70%;
+
+        &:nth-child(2) {
+          height: 80%;
+        }
+      }
     }
   }
 
