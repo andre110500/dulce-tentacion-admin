@@ -1,18 +1,26 @@
-import React from "react";
+import Section from "./Section";
+// Section: componente base para secciones SIN menu (solo tabla de datos).
+
+import MenuSection from "./MenuSection";
+// MenuSection: wrapper para secciones CON menu. Recibe MenuComponent, menuIds y menuPages.
+
 import IceCreamMenu from "./IceCreamMenu";
 import FlavoursMenu from "./FlavoursMenu";
-import Section from "./Section";
 import FrozenTreatsMenu from "./FrozenTreatsMenu";
+// Cada MenuComponent define el diseno visual de su menu. Se pasan como prop a MenuSection.
 
 export default function Home() {
   return (
     <>
-      <Section
+      <MenuSection
         h1="Menu de Helados"
         route="products?type=ice-cream&type=add-on"
         schemaRoute="products/schema"
-        Menu={IceCreamMenu}
-
+        menuIds={["ice-cream-menu"]}
+        // menuIds: IDs de los elementos DOM del menu para la captura (html2canvas).
+        // "ice-cream-menu" coincide con el id del div en IceCreamMenu.
+        MenuComponent={IceCreamMenu}
+        // MenuComponent: el componente que renderiza el diseno visual del menu.
       />
       <Section
         h1="Bebidas"
@@ -24,18 +32,25 @@ export default function Home() {
         route="products?type=cigarette"
         schemaRoute="products/schema"
       />
-      <Section
+      <MenuSection
         h1="Postres congelados"
         route="products?type=frozen-treat"
         schemaRoute="products/schema"
-        Menu={FrozenTreatsMenu}
-
+        menuIds={["frozen-treats-menu"]}
+        // menuIds: el div de FrozenTreatsMenu tiene id="frozen-treats-menu".
+        MenuComponent={FrozenTreatsMenu}
       />
-      <Section
+      <MenuSection
         h1="Sabores"
         route="generic/flavour"
         schemaRoute="generic/flavour/schema"
-        Menu={FlavoursMenu}
+        menuIds={["flavours-menu-1", "flavours-menu-2"]}
+        // Sabores genera DOS menus (pagina 1 y pagina 2) porque entran ~8 sabores por hoja.
+        // flavours-menu-1 y flavours-menu-2 son los IDs de los divs en FlavoursMenu.
+        MenuComponent={FlavoursMenu}
+        menuPages={[1, 2]}
+        // menuPages: array de paginas a renderizar. Cada pagina crea un MenuUploadSection
+        // separado con su propio FlavoursMenu, pasando page=1 y page=2 respectivamente.
       />
 
       <Section
