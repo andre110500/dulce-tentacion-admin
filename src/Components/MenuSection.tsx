@@ -1,7 +1,7 @@
 /*
   MenuSection: wrapper para secciones que tienen un menú visual (vista previa + subida automática).
   Reemplaza el uso directo de <Section Menu={...}> separando la lógica de menú en su propio componente.
-  Recibe un MenuComponent (IceCreamMenu, FlavoursMenu, FrozenTreatsMenu) y lo renderiza dentro de
+  Recibe un MenuComponent (IceCreamMenu, ProductsMenu, FlavoursMenu) y lo renderiza dentro de
   MenuUploadSection con soporte para captura de pantalla y subida automática cuando los datos cambian.
 */
 
@@ -32,7 +32,7 @@ import ItemsContext from "../Contexts/ItemsContext";
 // usar useContext(ItemsContext) para leer dbItemsArr. Aqui vive toda la logica de subida.
 function MenuContent({ menuIds, MenuComponent, menuPages }) {
   // menuIds: ej. ["ice-cream-menu"], determina que IDs de menu se generan/suben.
-  // MenuComponent: el componente de menu concreto (IceCreamMenu, FlavoursMenu, etc.).
+  // MenuComponent: el componente de menu concreto (IceCreamMenu, ProductsMenu, FlavoursMenu, etc.).
   // menuPages: array de paginas a renderizar, ej. [1] para 1 menu, [1,2] para Sabores.
 
   const { dbItemsArr } = useContext(ItemsContext);
@@ -104,7 +104,7 @@ function MenuContent({ menuIds, MenuComponent, menuPages }) {
     // Renderiza el contenedor de menus con tantas instancias de MenuUploadSection como paginas tenga.
     // Para la mayoria de los menus menuPages es [1] (una sola pagina). Para Sabores es [1, 2].
     <div className="menu-container">
-      {menuPages.map((page) => (
+      {menuPages.map((page, index) => (
         <MenuUploadSection
           key={page}
           // productsList y flavoursList: MenuUploadSection los necesita para detectar cambios y
@@ -120,6 +120,10 @@ function MenuContent({ menuIds, MenuComponent, menuPages }) {
             // page: necesario para FlavoursMenu que tiene 2 paginas distintas. Los demas menus
             // simplemente ignoran esta prop asi que no afecta.
             page={page}
+            // menuId: necesario para ProductsMenu que usa un id dinamico para el div del menu.
+            // Se toma del array menuIds segun el indice, asi cada pagina tiene su propio id.
+            // IceCreamMenu y FlavoursMenu ignoran esta prop porque ya tienen su id harcodeado.
+            menuId={menuIds[index]}
           />
         </MenuUploadSection>
       ))}

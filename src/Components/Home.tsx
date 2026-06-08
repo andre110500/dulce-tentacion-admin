@@ -6,7 +6,8 @@ import MenuSection from "./MenuSection";
 
 import IceCreamMenu from "./IceCreamMenu";
 import FlavoursMenu from "./FlavoursMenu";
-import FrozenTreatsMenu from "./FrozenTreatsMenu";
+import ProductsMenu from "./ProductsMenu";
+// ProductsMenu: menu generico de productos en lista, usado para postres congelados, bebidas y cigarrillos.
 // Cada MenuComponent define el diseno visual de su menu. Se pasan como prop a MenuSection.
 
 export default function Home() {
@@ -22,19 +23,31 @@ export default function Home() {
         MenuComponent={IceCreamMenu}
         // MenuComponent: el componente que renderiza el diseno visual del menu.
       />
-      <Section
-        h1="Bebidas y cigarrillos"
-        route="products?type=drink&type=cigarette"
+      <MenuSection
+        h1="Bebidas"
+        route="products?type=drink"
         schemaRoute="products/schema"
+        menuIds={["drinks-menu"]}
+        // menuIds: el div de ProductsMenu para bebidas tendra id="drinks-menu".
+        MenuComponent={ProductsMenu}
       />
-     
+
+      <MenuSection
+        h1="Cigarrillos"
+        route="products?type=cigarette"
+        schemaRoute="products/schema"
+        menuIds={["cigarettes-menu"]}
+        // menuIds: el div de ProductsMenu para cigarrillos tendra id="cigarettes-menu".
+        MenuComponent={ProductsMenu}
+      />
+
       <MenuSection
         h1="Postres congelados"
         route="products?type=frozen-treat"
         schemaRoute="products/schema"
         menuIds={["frozen-treats-menu"]}
-        // menuIds: el div de FrozenTreatsMenu tiene id="frozen-treats-menu".
-        MenuComponent={FrozenTreatsMenu}
+        // menuIds: el div de ProductsMenu para postres congelados tendra id="frozen-treats-menu".
+        MenuComponent={ProductsMenu}
       />
       <MenuSection
         h1="Sabores"
