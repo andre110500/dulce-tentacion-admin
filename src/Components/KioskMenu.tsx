@@ -9,29 +9,12 @@
 import template from "../assets/kiosk-template.webp";
 
 const subTypeTranslations = {
-  soda: "Gaseosas",
-  water: "Aguas",
-  juice: "Jugos",
-  beer: "Cervezas",
-  "energy-drink": "Bebidas energéticas",
-  "sports-drink": "Bebidas deportivas",
-  tea: "Tés",
-  coffee: "Cafés",
-  milk: "Leches",
-  cocktail: "Cócteles",
-  liquor: "Licores",
-  regular: "Regulares",
-  menthol: "Mentolados",
-  premium: "Premium",
-  light: "Light",
-  slim: "Slim",
-  capsule: "Cápsula",
-  "ice-cream-bar": "Barritas de helado",
-  popsicle: "Paletas",
-  "ice-cream": "Helados",
-  sorbet: "Sorbetes",
-  sandwich: "Sándwiches de helado",
-  other: "Otros",
+  can: "Latas",
+  fernet: "Fernet",
+  liqueur: "Licores",
+  "small-bottle": "Petacas",
+  "soft-drink": "Sin alcohol",
+  wine: "Vino",
 };
 
 const translateSubType = (subType) => {
