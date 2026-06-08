@@ -1257,52 +1257,66 @@ button {
         }
       }
 
-      &.frozen-treats-list {
-        li.frozen-treat-item {
+      &.products-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5cqw;
+
+        li.products-card {
           display: flex;
           align-items: center;
-          gap: 3cqw;
+          gap: 2cqw;
+          background: rgba(255, 255, 255, 0.85);
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: 1cqw;
+          padding: 1.5cqw 2cqw;
           grid-template-columns: unset;
 
-          .frozen-treat-thumbnail {
-            width: 10cqw;
-            height: 10cqw;
+          .products-card-col1 {
             flex-shrink: 0;
-            border-radius: 0.5cqw;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            object-fit: cover;
-            background-color: transparent;
 
-            &.frozen-treat-placeholder {
-              background-color: rgba(255, 255, 255, 0.8);
-              border: 1px solid rgba(0, 0, 0, 0.1);
+            .products-thumbnail {
+              width: 6cqw;
+              height: 6cqw;
+              border-radius: 0.5cqw;
+              overflow: hidden;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              object-fit: cover;
+              background-color: transparent;
+
+              &.products-placeholder {
+                background-color: rgba(255, 255, 255, 0.8);
+                border: 1px solid rgba(0, 0, 0, 0.1);
+              }
             }
           }
 
-          .frozen-treat-info {
+          .products-card-col2 {
             display: flex;
             flex-direction: column;
-
+            gap: 0.5cqw;
             flex: 1;
+            min-width: 0;
 
-            .frozen-treat-name {
-              font-size: 3.5cqw;
+            .products-name {
+              font-size: 2.4cqw;
               text-align: left;
+              line-height: 1.2;
+              word-break: break-word;
 
               .flavours-label {
                 display: block;
-                font-size: 2.2cqw;
+                font-size: 1.8cqw;
                 font-weight: 500;
                 opacity: 0.85;
-                margin-top: 0.5cqw;
+                margin-top: 0.3cqw;
               }
             }
 
-            .frozen-treat-price {
-              font-size: 3.5cqw;
+            .products-price {
+              font-size: 2.8cqw;
               font-weight: 600;
             }
           }

@@ -1,8 +1,9 @@
 /*
-  ProductsMenu: menu generico de productos en formato lista con precio, thumbnail y nombre.
-  Reemplaza a FrozenTreatsMenu: ahora acepta cualquier array de products (no solo frozen-treats)
-  y recibe un menuId dinamico para que pueda reutilizarse en distintas secciones (bebidas,
-  cigarrillos, postres congelados, etc.) sin conflictos de id en el DOM.
+  ProductsMenu: menu generico de productos en formato grilla de 2 columnas con cards.
+  Acepta cualquier array de products (ya filtrados por la route del fetch) y recibe un
+  menuId dinamico para reutilizarse en distintas secciones sin conflictos de id en el DOM.
+  Organiza los productos en 2 filas (grid de 2 columnas) con cards compactas para que
+  quepan ~20 items por hoja. Los nombres se muestran completos sin truncar.
 */
 
 import template from "../assets/products-template.webp";
@@ -25,9 +26,8 @@ const PlaceholderIcon = () => (
 );
 
 export default function ProductsMenu({ data, menuId }) {
-  // data: arreglo de productos a renderizar (ya filtrados por la route del fetch).
-  // menuId: id del div contenedor, usado por generateAndUploadMenu para localizar el DOM
-  //   mediante document.getElementById(menuId) y capturarlo con html2canvas.
+  // data: arreglo de productos a renderizar.
+  // menuId: id del div contenedor para la captura con html2canvas.
 
   return (
     <div id={menuId} className="menu products-menu">
@@ -35,21 +35,20 @@ export default function ProductsMenu({ data, menuId }) {
 
       <div className="uls-container">
 
-        <ul className="frozen-treats-list">
-          {/* Itera sobre todos los productos recibidos sin filtrar por tipo.
-              Antes filtraba product.type === "frozen-treat", ahora el filtro ya viene
-              aplicado desde la route del fetch (ej. products?type=drink). */}
+        <ul className="products-grid">
           {data.map((item) => (
-            <li key={item._id} className="frozen-treat-item">
-              {item.imgUrl ? (
-                <img src={item.imgUrl} alt={item.name} className="frozen-treat-thumbnail" crossOrigin="anonymous" />
-              ) : (
-                <div className="frozen-treat-thumbnail frozen-treat-placeholder">
-                  <PlaceholderIcon />
-                </div>
-              )}
-              <div className="frozen-treat-info">
-                <span className="frozen-treat-name">
+            <li key={item._id} className="products-card">
+              <div className="products-card-col1">
+                {item.imgUrl ? (
+                  <img src={item.imgUrl} alt={item.name} className="products-thumbnail" crossOrigin="anonymous" />
+                ) : (
+                  <div className="products-thumbnail products-placeholder">
+                    <PlaceholderIcon />
+                  </div>
+                )}
+              </div>
+              <div className="products-card-col2">
+                <span className="products-name">
                   {item.name}
                   {item.flavours && (
                     <span className="flavours-label">
@@ -57,7 +56,7 @@ export default function ProductsMenu({ data, menuId }) {
                     </span>
                   )}
                 </span>
-                <span className="frozen-treat-price">${item.price}</span>
+                <span className="products-price">${item.price}</span>
               </div>
             </li>
           ))}
