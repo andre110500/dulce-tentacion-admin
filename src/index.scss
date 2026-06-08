@@ -1174,19 +1174,21 @@ button {
             color: #4A2C2A;
             text-transform: uppercase;
             letter-spacing: 0.15cqw;
+            font-family: "Barlow Condensed", sans-serif;
           }
         }
       }
 
       .products-card {
+
         display: flex;
         align-items: center;
         gap: 2cqw;
         background: rgba(255, 255, 255, 0.85);
         border: 1px solid rgba(0, 0, 0, 0.08);
         border-radius: 1cqw;
-        padding: 1.5cqw 2cqw;
-
+        padding: 0;
+       
         .products-card-col1 {
           flex-shrink: 0;
 
@@ -1216,7 +1218,11 @@ button {
           min-width: 0;
 
           .products-name {
-            font-size: 2.4cqw;
+            text-transform: uppercase;
+            font-family: "Barlow Condensed", sans-serif;
+            font-size: 2.5cqw;
+            font-weight: 400;
+            letter-spacing: 0.1cqw;
             text-align: left;
             line-height: 1.2;
             word-break: break-word;
@@ -1231,7 +1237,8 @@ button {
           }
 
           .products-price {
-            font-size: 2.8cqw;
+            text-transform: uppercase;
+            font-size: 2.6cqw;
             font-weight: 600;
           }
         }
