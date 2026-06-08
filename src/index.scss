@@ -1143,10 +1143,9 @@ button {
       }
     }
 
-    .products-grouped-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-      gap: 2cqw;
+      .products-grouped-grid {
+        display: grid;
+        gap: 2cqw;
 
       .products-index {
         grid-column: 1 / -1;

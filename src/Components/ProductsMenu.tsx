@@ -71,7 +71,7 @@ const PlaceholderIcon = () => (
   </svg>
 );
 
-export default function ProductsMenu({ data, menuId }) {
+export default function ProductsMenu({ data, menuId, columns = 4 }) {
   const groups = {};
   for (const item of data) {
     const key = item.subType || "__no_subtype__";
@@ -98,7 +98,7 @@ export default function ProductsMenu({ data, menuId }) {
 
       <div className="uls-container">
 
-        <div className="products-grouped-grid">
+        <div className="products-grouped-grid" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
           {/* Indice compacto de grupos con sus colores */}
           <div className="products-index">
             {groupKeys.map((groupKey) => {

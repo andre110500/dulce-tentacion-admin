@@ -28,11 +28,11 @@ export default function Home() {
         route="products?type=drink&type=cigarette"
         schemaRoute="products/schema"
         menuIds={["drinks-cigarettes-menu"]}
-        // menuIds: base para generar IDs automaticos. Si hay >10 items, se crean varias hojas
+        // menuIds: base para generar IDs automaticos. Si hay >36 items, se crean varias hojas
         // con ids "drinks-cigarettes-menu-1", "drinks-cigarettes-menu-2", etc.
         MenuComponent={ProductsMenu}
-        chunkSize={20}
-        // chunkSize: si hay mas de 20 productos, se genera una hoja extra.
+        chunkSize={36}
+        // chunkSize: si hay mas de 36 productos, se genera una hoja extra.
       />
 
       <MenuSection
@@ -42,7 +42,7 @@ export default function Home() {
         menuIds={["frozen-treats-menu"]}
         // menuIds: base para IDs. Con chunkSize se generan "frozen-treats-menu-1", etc.
         MenuComponent={ProductsMenu}
-        chunkSize={20}
+        chunkSize={36}
       />
       <MenuSection
         h1="Sabores"
