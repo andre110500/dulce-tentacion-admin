@@ -6,6 +6,10 @@
   Se usa para bebidas y cigarrillos (seccion kiosco).
 */
 
+import arteEnCadaSabor from "../assets/arte-en-cada-sabor.png";
+import logo from "../assets/logo.png";
+import helado from "../assets/helado.png";
+
 const subTypeTranslations = {
   can: "Latas",
   fernet: "Fernet",
@@ -76,6 +80,12 @@ export default function KioskMenu({ data, menuId, columns = 4, templateImg }) {
 
   return (
     <div id={menuId} className="menu products-menu" style={{ width: 800, height: 1422 }}>
+
+      <div className="kiosk-header" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "25%", padding: "0 20px", background: "linear-gradient(180deg, #fbc3d8 0%, #f8a5c2 100%)" }}>
+        <img src={arteEnCadaSabor} alt="" style={{ height: "70%" }} />
+        <img src={logo} alt="" style={{ height: "80%" }} />
+        <img src={helado} alt="" style={{ height: "70%" }} />
+      </div>
 
       <div className="uls-container">
 
