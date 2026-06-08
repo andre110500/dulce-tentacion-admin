@@ -1143,6 +1143,87 @@ button {
       }
     }
 
+    .products-grouped-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 2cqw;
+
+      .products-card-badge {
+        font-size: 2cqw;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.2cqw;
+        padding: 0 0 0.3cqw;
+        border-bottom: 1px solid currentColor;
+        opacity: 0.7;
+        margin-bottom: 0.5cqw;
+      }
+
+      .products-card {
+        display: flex;
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 1cqw;
+        padding: 1.5cqw 2cqw;
+
+        .products-card-inner {
+          display: flex;
+          align-items: center;
+          gap: 2cqw;
+        }
+
+        .products-card-col1 {
+          flex-shrink: 0;
+
+          .products-thumbnail {
+            width: 6cqw;
+            height: 6cqw;
+            border-radius: 0.5cqw;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            object-fit: cover;
+            background-color: transparent;
+
+            &.products-placeholder {
+              background-color: rgba(255, 255, 255, 0.8);
+              border: 1px solid rgba(0, 0, 0, 0.1);
+            }
+          }
+        }
+
+        .products-card-col2 {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5cqw;
+          flex: 1;
+          min-width: 0;
+
+          .products-name {
+            font-size: 2.4cqw;
+            text-align: left;
+            line-height: 1.2;
+            word-break: break-word;
+
+            .flavours-label {
+              display: block;
+              font-size: 1.8cqw;
+              font-weight: 500;
+              opacity: 0.85;
+              margin-top: 0.3cqw;
+            }
+          }
+
+          .products-price {
+            font-size: 2.8cqw;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+
     ul {
       display: flex;
       flex-direction: column;
@@ -1257,106 +1338,6 @@ button {
         }
       }
 
-      .products-group {
-        margin-bottom: 2cqw;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-
-        .products-group-header {
-          display: flex;
-          align-items: center;
-          margin-bottom: 1.5cqw;
-          padding: 0.5cqw 1.5cqw;
-          border-bottom: 1.5px solid rgba(74, 44, 42, 0.2);
-          position: relative;
-
-          &::before {
-            content: "";
-            width: 3px;
-            height: 1.2em;
-            background: #dc1537;
-            border-radius: 2px;
-            margin-right: 1cqw;
-            flex-shrink: 0;
-          }
-
-          span {
-            font-size: 2.6cqw;
-            font-weight: 700;
-            color: #4A2C2A;
-            letter-spacing: 0.3cqw;
-            text-transform: uppercase;
-          }
-        }
-      }
-
-      &.products-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 2cqw;
-
-        li.products-card {
-          display: flex;
-          align-items: center;
-          gap: 2cqw;
-          background: rgba(255, 255, 255, 0.85);
-          border: 1px solid rgba(0, 0, 0, 0.08);
-          border-radius: 1cqw;
-          padding: 1.5cqw 2cqw;
-          grid-template-columns: unset;
-
-          .products-card-col1 {
-            flex-shrink: 0;
-
-            .products-thumbnail {
-              width: 6cqw;
-              height: 6cqw;
-              border-radius: 0.5cqw;
-              overflow: hidden;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              object-fit: cover;
-              background-color: transparent;
-
-              &.products-placeholder {
-                background-color: rgba(255, 255, 255, 0.8);
-                border: 1px solid rgba(0, 0, 0, 0.1);
-              }
-            }
-          }
-
-          .products-card-col2 {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5cqw;
-            flex: 1;
-            min-width: 0;
-
-            .products-name {
-              font-size: 2.4cqw;
-              text-align: left;
-              line-height: 1.2;
-              word-break: break-word;
-
-              .flavours-label {
-                display: block;
-                font-size: 1.8cqw;
-                font-weight: 500;
-                opacity: 0.85;
-                margin-top: 0.3cqw;
-              }
-            }
-
-            .products-price {
-              font-size: 2.8cqw;
-              font-weight: 600;
-            }
-          }
-        }
-      }
     }
 
     ul.second {
