@@ -895,6 +895,13 @@ background-color: pink;
     }
   }
 
+  [id^="ice-cream-menu"] {
+    .uls-container {
+      transform: translate(-50%, -45%);
+    }
+ 
+  }
+
   .uls-container {
     position: absolute;
     top: 56%;
