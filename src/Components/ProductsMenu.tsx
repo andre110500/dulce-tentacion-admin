@@ -71,7 +71,7 @@ const PlaceholderIcon = () => (
   </svg>
 );
 
-export default function ProductsMenu({ data, menuId, columns = 4 }) {
+export default function ProductsMenu({ data, menuId, columns = 4, templateImg }) {
   const groups = {};
   for (const item of data) {
     const key = item.subType || "__no_subtype__";
@@ -94,7 +94,7 @@ export default function ProductsMenu({ data, menuId, columns = 4 }) {
 
   return (
     <div id={menuId} className="menu products-menu">
-      <img src={template} alt="" style={{ width: "100%" }} />
+      <img src={templateImg || template} alt="" style={{ width: "100%" }} />
 
       <div className="uls-container">
 

@@ -1,9 +1,9 @@
 export const buildInfo = {
-  "commitHash": "e38869acde22fa22e023c08a74dd84fe3d56671c",
-  "shortCommitHash": "e38869a",
-  "commitTimestamp": "2026-06-07T23:06:22-03:00",
+  "commitHash": "816ff117c554698beb4d6c0bb4e148f1f75967eb",
+  "shortCommitHash": "816ff11",
+  "commitTimestamp": "2026-06-07T23:20:26-03:00",
   "branch": "main",
   "deployId": "local",
-  "buildTimestamp": "2026-06-08T02:06:22.779Z",
+  "buildTimestamp": "2026-06-08T02:20:26.431Z",
   "githubRepo": "ae95caba/dulce-tentacion-admin"
 } as const;

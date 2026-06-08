@@ -30,13 +30,16 @@ import ItemsContext from "../Contexts/ItemsContext";
 
 // MenuContent es un componente interno que se renderiza DENTRO de Section, por eso puede
 // usar useContext(ItemsContext) para leer dbItemsArr. Aqui vive toda la logica de subida.
-function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns }) {
+function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, templateImg }) {
   // menuIds: ej. ["ice-cream-menu"], determina que IDs de menu se generan/suben.
-  // MenuComponent: el componente de menu concreto (IceCreamMenu, ProductsMenu, FlavoursMenu, etc.).
+  // MenuComponent: componente React que se renderiza dentro de MenuUploadSection.
+  //   MenuContent lo invoca como <MenuComponent data={chunk} page={page} menuId={...} columns={columns} templateImg={templateImg} />.
+  //   Puede ser ProductsMenu, IceCreamMenu, FlavoursMenu, etc. — cualquier componente que acepte esas props.
   // menuPages: array de paginas a renderizar, ej. [1] para 1 menu, [1,2] para Sabores.
   // chunkSize: si esta definido, agrupa los productos por subType y empaqueta grupos enteros
   //   en cada hoja respetando este limite de items por pagina.
   // columns: cuantas columnas de grid usa el MenuComponent (solo aplica a ProductsMenu).
+  // templateImg: ruta de la imagen de fondo del menu (solo ProductsMenu).
 
   const { dbItemsArr } = useContext(ItemsContext);
   // Lee el arreglo de productos desde el contexto que Section expone a sus hijos.
@@ -191,6 +194,8 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns }) 
               // columns: define cuantas columnas de grid usa ProductsMenu.
               // IceCreamMenu y FlavoursMenu ignoran esta prop.
               columns={columns}
+              // templateImg: imagen de fondo del menu (solo ProductsMenu).
+              templateImg={templateImg}
             />
           </MenuUploadSection>
         );
@@ -199,13 +204,16 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns }) 
   );
 }
 
-export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuComponent, menuPages = [1], chunkSize, columns }) {
+export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuComponent, menuPages = [1], chunkSize, columns, templateImg }) {
   // MenuSection es un wrapper que delega todo el fetch/tabla a Section y solo agrega la capa de menu.
   // menuIds: IDs de los elementos del DOM que se capturan como imagen (ej. "ice-cream-menu").
-  // MenuComponent: componente React que renderiza el diseno del menu.
+  // MenuComponent: componente React que se pasa como prop desde Home.jsx y se reenvia a MenuContent.
+  //   MenuContent lo renderiza como <MenuComponent data={...} page={...} menuId={...} columns={...} templateImg={...} />.
+  //   Puede ser ProductsMenu, IceCreamMenu, FlavoursMenu, etc. — cualquier componente que acepte esas props.
   // menuPages: por defecto [1], para Sabores se pasa [1, 2] porque genera dos menus distintos.
   // chunkSize: opcional, divide el menu en varias hojas cuando hay mas items que este limite.
   // columns: opcional, cuantas columnas de grid (solo ProductsMenu).
+  // templateImg: opcional, ruta de la imagen de fondo (solo ProductsMenu).
   return (
     <Section h1={h1} route={route} schemaRoute={schemaRoute}>
       {/* Section se encarga del fetch, la tabla, la paginacion y expone dbItemsArr via context.
@@ -216,6 +224,7 @@ export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuCompo
         menuPages={menuPages}
         chunkSize={chunkSize}
         columns={columns}
+        templateImg={templateImg}
       />
     </Section>
   );
