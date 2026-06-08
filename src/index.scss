@@ -1148,30 +1148,45 @@ button {
       grid-template-columns: 1fr 1fr 1fr 1fr;
       gap: 2cqw;
 
-      .products-card-badge {
-        font-size: 2cqw;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.2cqw;
-        padding: 0 0 0.3cqw;
-        border-bottom: 1px solid currentColor;
-        opacity: 0.7;
+      .products-index {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5cqw 3cqw;
+        padding: 0.5cqw 0 1cqw;
+        border-bottom: 1px solid rgba(74, 44, 42, 0.12);
         margin-bottom: 0.5cqw;
+
+        .products-index-item {
+          display: flex;
+          align-items: center;
+          gap: 0.7cqw;
+
+          .products-index-dot {
+            width: 1.2cqw;
+            height: 1.2cqw;
+            border-radius: 50%;
+            flex-shrink: 0;
+          }
+
+          .products-index-label {
+            font-size: 2cqw;
+            font-weight: 600;
+            color: #4A2C2A;
+            text-transform: uppercase;
+            letter-spacing: 0.15cqw;
+          }
+        }
       }
 
       .products-card {
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        gap: 2cqw;
         background: rgba(255, 255, 255, 0.85);
         border: 1px solid rgba(0, 0, 0, 0.08);
         border-radius: 1cqw;
         padding: 1.5cqw 2cqw;
-
-        .products-card-inner {
-          display: flex;
-          align-items: center;
-          gap: 2cqw;
-        }
 
         .products-card-col1 {
           flex-shrink: 0;

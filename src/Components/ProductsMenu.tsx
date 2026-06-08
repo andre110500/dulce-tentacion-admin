@@ -1,13 +1,12 @@
 /*
   ProductsMenu: menu generico de productos en formato grilla de 4 columnas con cards.
-  Agrupa los productos por subType. Cada grupo se distingue por un color de fondo distinto
-  en sus cards y una etiqueta compacta en cada card. Las cards fluyen continuamente en la
-  grilla sin cortes entre grupos, maximizando el espacio de cada fila.
+  Agrupa los productos por subType con colores de fondo distintos y un índice compacto
+  de grupos en la parte superior. Las cards fluyen continuamente sin cortes entre grupos,
+  maximizando el espacio de cada fila.
 */
 
 import template from "../assets/products-template.webp";
 
-// Mapa de traduccion de subType (ingles -> español).
 const subTypeTranslations = {
   soda: "Gaseosas",
   water: "Aguas",
@@ -44,16 +43,15 @@ const translateSubType = (subType) => {
   return translation;
 };
 
-// Paleta de colores para distinguir grupos. Cada grupo recibe un fondo y borde sutiles.
 const groupPalette = [
-  { bg: "rgba(220, 21, 55, 0.07)", border: "rgba(220, 21, 55, 0.2)", badge: "#dc1537" },
-  { bg: "rgba(255, 152, 0, 0.07)", border: "rgba(255, 152, 0, 0.2)", badge: "#ff9800" },
-  { bg: "rgba(33, 150, 243, 0.07)", border: "rgba(33, 150, 243, 0.2)", badge: "#2196f3" },
-  { bg: "rgba(76, 175, 80, 0.07)", border: "rgba(76, 175, 80, 0.2)", badge: "#4caf50" },
-  { bg: "rgba(156, 39, 176, 0.07)", border: "rgba(156, 39, 176, 0.2)", badge: "#9c27b0" },
-  { bg: "rgba(0, 188, 212, 0.07)", border: "rgba(0, 188, 212, 0.2)", badge: "#00bcd4" },
-  { bg: "rgba(233, 30, 99, 0.07)", border: "rgba(233, 30, 99, 0.2)", badge: "#e91e63" },
-  { bg: "rgba(121, 85, 72, 0.07)", border: "rgba(121, 85, 72, 0.2)", badge: "#795548" },
+  { bg: "rgba(220, 21, 55, 0.07)", border: "rgba(220, 21, 55, 0.2)", marker: "#dc1537" },
+  { bg: "rgba(255, 152, 0, 0.07)", border: "rgba(255, 152, 0, 0.2)", marker: "#ff9800" },
+  { bg: "rgba(33, 150, 243, 0.07)", border: "rgba(33, 150, 243, 0.2)", marker: "#2196f3" },
+  { bg: "rgba(76, 175, 80, 0.07)", border: "rgba(76, 175, 80, 0.2)", marker: "#4caf50" },
+  { bg: "rgba(156, 39, 176, 0.07)", border: "rgba(156, 39, 176, 0.2)", marker: "#9c27b0" },
+  { bg: "rgba(0, 188, 212, 0.07)", border: "rgba(0, 188, 212, 0.2)", marker: "#00bcd4" },
+  { bg: "rgba(233, 30, 99, 0.07)", border: "rgba(233, 30, 99, 0.2)", marker: "#e91e63" },
+  { bg: "rgba(121, 85, 72, 0.07)", border: "rgba(121, 85, 72, 0.2)", marker: "#795548" },
 ];
 
 const PlaceholderIcon = () => (
@@ -74,7 +72,6 @@ const PlaceholderIcon = () => (
 );
 
 export default function ProductsMenu({ data, menuId }) {
-  // Agrupa los productos por subType.
   const groups = {};
   for (const item of data) {
     const key = item.subType || "__no_subtype__";
@@ -84,14 +81,12 @@ export default function ProductsMenu({ data, menuId }) {
     groups[key].push(item);
   }
 
-  // Ordena los grupos y asigna color a cada uno.
   const groupKeys = Object.keys(groups).sort((a, b) => {
     if (a === "__no_subtype__") return 1;
     if (b === "__no_subtype__") return -1;
     return a.localeCompare(b);
   });
 
-  // A cada grupo le toca un color de la paleta (ciclica).
   const getColor = (groupKey) => {
     const idx = groupKeys.indexOf(groupKey);
     return groupPalette[idx % groupPalette.length];
@@ -104,43 +99,50 @@ export default function ProductsMenu({ data, menuId }) {
       <div className="uls-container">
 
         <div className="products-grouped-grid">
+          {/* Indice compacto de grupos con sus colores */}
+          <div className="products-index">
+            {groupKeys.map((groupKey) => {
+              const label = groupKey === "__no_subtype__" ? null : translateSubType(groupKey);
+              if (!label) return null;
+              const color = getColor(groupKey);
+              return (
+                <div key={groupKey} className="products-index-item">
+                  <span className="products-index-dot" style={{ backgroundColor: color.marker }} />
+                  <span className="products-index-label">{label}</span>
+                </div>
+              );
+            })}
+          </div>
+
           {groupKeys.flatMap((groupKey) => {
             const items = groups[groupKey];
-            const label = groupKey === "__no_subtype__" ? null : translateSubType(groupKey);
             const color = getColor(groupKey);
 
-            return items.map((item, i) => (
+            return items.map((item) => (
               <div
                 key={item._id}
                 className="products-card"
                 style={{ backgroundColor: color.bg, borderColor: color.border }}
               >
-                {label && i === 0 && (
-                  <div className="products-card-badge" style={{ color: color.badge }}>
-                    {label}
-                  </div>
-                )}
-                <div className="products-card-inner">
-                  <div className="products-card-col1">
-                    {item.imgUrl ? (
-                      <img src={item.imgUrl} alt={item.name} className="products-thumbnail" crossOrigin="anonymous" />
-                    ) : (
-                      <div className="products-thumbnail products-placeholder">
-                        <PlaceholderIcon />
-                      </div>
+                <div className="products-card-col1">
+                  {item.imgUrl ? (
+                    <img src={item.imgUrl} alt={item.name} className="products-thumbnail" crossOrigin="anonymous" />
+                  ) : (
+                    <div className="products-thumbnail products-placeholder">
+                      <PlaceholderIcon />
+                    </div>
+                  )}
+                </div>
+                <div className="products-card-col2">
+                  <span className="products-name">
+                    {item.name}
+                    {item.flavours && (
+                      <span className="flavours-label">
+                        hasta {item.flavours} sabores
+                      </span>
                     )}
-                  </div>
-                  <div className="products-card-col2">
-                    <span className="products-name">
-                      {item.name}
-                      {item.flavours && (
-                        <span className="flavours-label">
-                          hasta {item.flavours} sabores
-                        </span>
-                      )}
-                    </span>
-                    <span className="products-price">${item.price}</span>
-                  </div>
+                  </span>
+                  <span className="products-price">${item.price}</span>
                 </div>
               </div>
             ));
