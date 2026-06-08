@@ -6,8 +6,6 @@
   Se usa para bebidas y cigarrillos (seccion kiosco).
 */
 
-import template from "../assets/kiosk-template.webp";
-
 const subTypeTranslations = {
   can: "Latas",
   fernet: "Fernet",
@@ -77,8 +75,7 @@ export default function KioskMenu({ data, menuId, columns = 4, templateImg }) {
   };
 
   return (
-    <div id={menuId} className="menu products-menu">
-      <img src={templateImg || template} alt="" style={{ width: "100%" }} />
+    <div id={menuId} className="menu products-menu" style={{ width: 800, height: 1422 }}>
 
       <div className="uls-container">
 
