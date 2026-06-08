@@ -135,13 +135,9 @@ export default function Section({ h1, route, schemaRoute, children }) {
             </div>
 
             {children && (
-              // Si hay children (ej. el menu que pasa MenuSection), los renderiza dentro del
-              // contenedor .menu-container. Antes habia un ternario enorme con route === "generic/flavour"
-              // para decidir cuantas instancias de MenuUploadSection crear. Ahora eso lo decide
-              // MenuSection, que pasa el contenido ya armado como children de Section.
-              <div className="menu-container">
-                {children}
-              </div>
+              // Si hay children (ej. el menu que pasa MenuSection), los renderiza debajo de la tabla.
+              // MenuSection ya envuelve en .menu-container, asi que no es necesario otro wrapper.
+              children
             )}
           </>
         )}
