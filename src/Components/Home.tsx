@@ -24,21 +24,15 @@ export default function Home() {
         // MenuComponent: el componente que renderiza el diseno visual del menu.
       />
       <MenuSection
-        h1="Bebidas"
-        route="products?type=drink"
+        h1="Bebidas y cigarrillos"
+        route="products?type=drink&type=cigarette"
         schemaRoute="products/schema"
-        menuIds={["drinks-menu"]}
-        // menuIds: el div de ProductsMenu para bebidas tendra id="drinks-menu".
+        menuIds={["drinks-cigarettes-menu"]}
+        // menuIds: base para generar IDs automaticos. Si hay >10 items, se crean varias hojas
+        // con ids "drinks-cigarettes-menu-1", "drinks-cigarettes-menu-2", etc.
         MenuComponent={ProductsMenu}
-      />
-
-      <MenuSection
-        h1="Cigarrillos"
-        route="products?type=cigarette"
-        schemaRoute="products/schema"
-        menuIds={["cigarettes-menu"]}
-        // menuIds: el div de ProductsMenu para cigarrillos tendra id="cigarettes-menu".
-        MenuComponent={ProductsMenu}
+        chunkSize={10}
+        // chunkSize: si hay mas de 10 productos, se genera una hoja extra.
       />
 
       <MenuSection
@@ -46,8 +40,9 @@ export default function Home() {
         route="products?type=frozen-treat"
         schemaRoute="products/schema"
         menuIds={["frozen-treats-menu"]}
-        // menuIds: el div de ProductsMenu para postres congelados tendra id="frozen-treats-menu".
+        // menuIds: base para IDs. Con chunkSize se generan "frozen-treats-menu-1", etc.
         MenuComponent={ProductsMenu}
+        chunkSize={10}
       />
       <MenuSection
         h1="Sabores"
