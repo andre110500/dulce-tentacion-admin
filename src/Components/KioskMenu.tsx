@@ -28,14 +28,14 @@ const translateSubType = (subType) => {
 };
 
 const groupPalette = [
-  { bg: "rgba(220, 21, 55, 0.07)", border: "rgba(220, 21, 55, 0.2)", marker: "#dc1537" },
-  { bg: "rgba(255, 152, 0, 0.07)", border: "rgba(255, 152, 0, 0.2)", marker: "#ff9800" },
-  { bg: "rgba(33, 150, 243, 0.07)", border: "rgba(33, 150, 243, 0.2)", marker: "#2196f3" },
-  { bg: "rgba(76, 175, 80, 0.07)", border: "rgba(76, 175, 80, 0.2)", marker: "#4caf50" },
-  { bg: "rgba(156, 39, 176, 0.07)", border: "rgba(156, 39, 176, 0.2)", marker: "#9c27b0" },
-  { bg: "rgba(0, 188, 212, 0.07)", border: "rgba(0, 188, 212, 0.2)", marker: "#00bcd4" },
-  { bg: "rgba(233, 30, 99, 0.07)", border: "rgba(233, 30, 99, 0.2)", marker: "#e91e63" },
-  { bg: "rgba(121, 85, 72, 0.07)", border: "rgba(121, 85, 72, 0.2)", marker: "#795548" },
+  { bg: "rgba(220, 21, 55, 0.25)", border: "rgba(220, 21, 55, 0.5)", marker: "#dc1537" },
+  { bg: "rgba(255, 152, 0, 0.25)", border: "rgba(255, 152, 0, 0.5)", marker: "#ff9800" },
+  { bg: "rgba(33, 150, 243, 0.25)", border: "rgba(33, 150, 243, 0.5)", marker: "#2196f3" },
+  { bg: "rgba(76, 175, 80, 0.25)", border: "rgba(76, 175, 80, 0.5)", marker: "#4caf50" },
+  { bg: "rgba(156, 39, 176, 0.25)", border: "rgba(156, 39, 176, 0.5)", marker: "#9c27b0" },
+  { bg: "rgba(0, 188, 212, 0.25)", border: "rgba(0, 188, 212, 0.5)", marker: "#00bcd4" },
+  { bg: "rgba(233, 30, 99, 0.25)", border: "rgba(233, 30, 99, 0.5)", marker: "#e91e63" },
+  { bg: "rgba(121, 85, 72, 0.25)", border: "rgba(121, 85, 72, 0.5)", marker: "#795548" },
 ];
 
 const PlaceholderIcon = () => (
