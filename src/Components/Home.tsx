@@ -40,8 +40,8 @@ export default function Home() {
         // con ids "drinks-cigarettes-menu-1", "drinks-cigarettes-menu-2", etc.
         MenuComponent={KioskMenu}
         // KioskMenu: menu en grilla con agrupacion por subType para bebidas/cigarrillos.
-        //   MenuContent lo renderiza como <KioskMenu data={chunk} page={page} menuId={...} columns={4} templateImg={...} />.
-        columns={4}
+        //   MenuContent lo renderiza como <KioskMenu data={chunk} page={page} menuId={...} columns={2} templateImg={...} />.
+        columns={2}
         chunkSize={36}
         // chunkSize: si hay mas de 36 productos, se genera una hoja extra.
       />

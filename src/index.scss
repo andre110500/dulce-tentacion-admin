@@ -812,7 +812,7 @@ button {
       position: relative;
       max-width: 100%;
       margin: auto;
-background-color: pink;
+background-color:  #beb2b2;
       .menu {
         max-width: 100%;
 
@@ -871,23 +871,31 @@ background-color: pink;
   }
 
   [id^="drinks-cigarettes-menu"] {
+    display: flex;
+    flex-direction: column;
+
     .uls-container {
-      top: 54%;
+      position: static;
+      top: auto;
+      left: auto;
+      transform: none;
+      flex: 1;
+      width: 100%;
+      height: auto;
     }
 
     .kiosk-header {
       display: flex;
       align-items: center;
       justify-content: center;
-       
-      height: 25%;
+        
+      height: 12%;
       padding: 0 20px;
-     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 
       img {
         
 
-      width: 25cqw !important;  
+      width: 18cqw  ;  
       }
       img:first-of-type {
    margin-right : 2cqw;

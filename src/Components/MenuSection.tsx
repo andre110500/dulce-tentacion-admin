@@ -8,7 +8,7 @@
 import { useLayoutEffect, useRef, useState, useContext, useMemo } from "react";
 // useLayoutEffect: dispara la subida automatica apenas el DOM se actualiza con nuevos datos.
 // useRef: changeCount persistente entre renders para saltear las primeras ejecuciones del efecto.
-// useState: estado local de subida (isUploadingMenu) para controlar el boton de subir.
+// useState: estado local de subida (isUploadingMenu) y columnas editables.
 // useContext: lee dbItemsArr del ItemsContext que Section provee a sus hijos.
 
 import Swal from "sweetalert2";
@@ -204,7 +204,7 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
   );
 }
 
-export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuComponent, menuPages = [1], chunkSize, columns, templateImg }) {
+export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuComponent, menuPages = [1], chunkSize, columns: defaultColumns, templateImg }) {
   // MenuSection es un wrapper que delega todo el fetch/tabla a Section y solo agrega la capa de menu.
   // menuIds: IDs de los elementos del DOM que se capturan como imagen (ej. "ice-cream-menu").
   // MenuComponent: componente React que se pasa como prop desde Home.jsx y se reenvia a MenuContent.
@@ -214,6 +214,8 @@ export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuCompo
   // chunkSize: opcional, divide el menu en varias hojas cuando hay mas items que este limite.
   // columns: opcional, cuantas columnas de grid (solo KioskMenu).
   // templateImg: opcional, ruta de la imagen de fondo (solo KioskMenu y FrozenTreatsMenu).
+  const columns = defaultColumns ?? 3;
+
   return (
     <Section h1={h1} route={route} schemaRoute={schemaRoute}>
       {/* Section se encarga del fetch, la tabla, la paginacion y expone dbItemsArr via context.

@@ -19,14 +19,18 @@ const subTypeTranslations = {
   wine: "Vino",
 };
 
-const translateSubType = (subType) => {
-  if (!subType) return null;
-  const translation = subTypeTranslations[subType];
-  if (!translation) {
-    console.warn(`KioskMenu: subType sin traduccion "${subType}"`);
-    return subType;
-  }
-  return translation;
+const typeTranslations = {
+  drink: "Bebidas",
+  cigarette: "Cigarrillos",
+  "frozen-treat": "Postres congelados",
+};
+
+const getGroupLabel = (groupKey) => {
+  // Si la key es un type (drink, cigarette...), traduce como type
+  if (typeTranslations[groupKey]) return typeTranslations[groupKey];
+  // Si es un subType, traduce como subType
+  if (subTypeTranslations[groupKey]) return subTypeTranslations[groupKey];
+  return null;
 };
 
 const groupPalette = [
@@ -60,7 +64,7 @@ const PlaceholderIcon = () => (
 export default function KioskMenu({ data, menuId, columns = 4, templateImg }) {
   const groups = {};
   for (const item of data) {
-    const key = item.subType || "__no_subtype__";
+    const key = item.subType || item.type || "__no_subtype__";
     if (!groups[key]) {
       groups[key] = [];
     }
@@ -68,8 +72,13 @@ export default function KioskMenu({ data, menuId, columns = 4, templateImg }) {
   }
 
   const groupKeys = Object.keys(groups).sort((a, b) => {
+    // type-based groups (cigarette, etc.) van despues de subType-based groups
+    const aIsType = !!typeTranslations[a] && !subTypeTranslations[a];
+    const bIsType = !!typeTranslations[b] && !subTypeTranslations[b];
     if (a === "__no_subtype__") return 1;
     if (b === "__no_subtype__") return -1;
+    if (aIsType && !bIsType) return 1;
+    if (!aIsType && bIsType) return -1;
     return a.localeCompare(b);
   });
 
@@ -93,7 +102,7 @@ export default function KioskMenu({ data, menuId, columns = 4, templateImg }) {
           {/* Indice compacto de grupos con sus colores */}
           <div className="products-index">
             {groupKeys.map((groupKey) => {
-              const label = groupKey === "__no_subtype__" ? null : translateSubType(groupKey);
+              const label = getGroupLabel(groupKey);
               if (!label) return null;
               const color = getColor(groupKey);
               return (
