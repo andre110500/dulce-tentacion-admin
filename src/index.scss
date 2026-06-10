@@ -942,8 +942,8 @@ background-color:  #beb2b2;
     }
 
     .discount-combos {
-      width: 640px;
-      margin-top: 1rem;
+      width: 80cqw;
+      margin-top: 1cqw;
       flex-shrink: 0;
       letter-spacing: normal;
       word-spacing: normal;
@@ -951,9 +951,9 @@ background-color:  #beb2b2;
       &__card {
         position: relative;
         border: 2px solid $main-color;
-        border-radius: 12px;
+        border-radius: 1.5cqw;
         background: transparent;
-        padding: 38px 12px 12px;
+        padding: 4.75cqw 1.5cqw 1.5cqw;
       }
 
       &__ribbon {
@@ -961,8 +961,8 @@ background-color:  #beb2b2;
         top: 0;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 310px;
-        height: 58px;
+        width: 38.75cqw;
+        height: 7.25cqw;
       }
 
       &__ribbon-img {
@@ -974,7 +974,7 @@ background-color:  #beb2b2;
         height: auto;
         display: block;
         pointer-events: none;
-        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.12));
+        filter: drop-shadow(0 0.125cqw 0.25cqw rgba(0, 0, 0, 0.12));
       }
 
       &__ribbon-text {
@@ -986,18 +986,18 @@ background-color:  #beb2b2;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 7px;
+        gap: 0.875cqw;
         color: #fff;
         font-family: "Montserrat", sans-serif;
-        font-size: 14px;
+        font-size: 1.75cqw;
         font-weight: 700;
-        letter-spacing: 1.5px;
+        letter-spacing: 0.1875cqw;
         white-space: nowrap;
       }
 
       &__ribbon-heart {
-        width: 11px;
-        height: 11px;
+        width: 1.375cqw;
+        height: 1.375cqw;
         flex-shrink: 0;
       }
 
@@ -1005,13 +1005,13 @@ background-color:  #beb2b2;
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
         align-items: center;
-        gap: 8px;
-        padding-top: 5px;
+        gap: 1cqw;
+        padding-top: 0.625cqw;
       }
 
       &__divider {
         width: 1px;
-        height: 84px;
+        height: 10.5cqw;
         background: rgba(74, 44, 42, 0.25);
       }
 
@@ -1019,16 +1019,16 @@ background-color:  #beb2b2;
         width: 100%;
         min-width: 0;
         display: grid;
-        grid-template-columns: 52px 1fr;
-        gap: 8px;
+        grid-template-columns: 6.5cqw 1fr;
+        gap: 1cqw;
         align-items: center;
-        padding: 0 6px;
+        padding: 0 0.75cqw;
       }
 
       &__image {
         position: relative;
-        width: 52px;
-        height: 58px;
+        width: 6.5cqw;
+        height: 7.25cqw;
         flex-shrink: 0;
 
         svg {
@@ -1046,18 +1046,18 @@ background-color:  #beb2b2;
 
       &__float-heart {
         position: absolute;
-        width: 11px;
-        height: 11px;
+        width: 1.375cqw;
+        height: 1.375cqw;
         color: $main-color;
         opacity: 0.85;
 
         &--1 {
-          top: -2px;
-          left: 5px;
+          top: -0.25cqw;
+          left: 0.625cqw;
         }
 
         &--2 {
-          top: 2px;
+          top: 0.25cqw;
           right: 0;
         }
       }
@@ -1069,8 +1069,8 @@ background-color:  #beb2b2;
         grid-template-columns: 1fr auto;
         grid-template-rows: auto auto;
         align-items: center;
-        row-gap: 8px;
-        column-gap: 12px;
+        row-gap: 1cqw;
+        column-gap: 1.5cqw;
       }
 
       &__combo-title {
@@ -1083,7 +1083,7 @@ background-color:  #beb2b2;
       &__combo-script {
         display: block;
         font-family: "Dancing Script", cursive;
-        font-size: 19px;
+        font-size: 2.375cqw;
         font-weight: 700;
         color: $main-color;
       }
@@ -1091,20 +1091,20 @@ background-color:  #beb2b2;
       &__combo-name {
         display: block;
         font-family: "Montserrat", sans-serif;
-        font-size: 15px;
+        font-size: 1.875cqw;
         font-weight: 700;
         color: $main-color;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.0625cqw;
       }
 
       &__combo-qty {
         margin: 0;
         font-family: "Montserrat", sans-serif;
-        font-size: 14px;
+        font-size: 1.75cqw;
         color: #4a2c2a;
         font-weight: 600;
         line-height: 1;
-        letter-spacing: 0.2px;
+        letter-spacing: 0.025cqw;
         flex-shrink: 0;
         white-space: nowrap;
         justify-self: center;
@@ -1117,8 +1117,8 @@ background-color:  #beb2b2;
         align-items: center;
         justify-content: center;
         background: $main-color;
-        border-radius: 7px;
-        padding: 4px 12px;
+        border-radius: 0.875cqw;
+        padding: 0.5cqw 1.5cqw;
         line-height: 1.1;
         white-space: nowrap;
         flex-shrink: 0;
@@ -1127,25 +1127,25 @@ background-color:  #beb2b2;
 
       &__price-old {
         font-family: "Montserrat", sans-serif;
-        font-size: 11px;
+        font-size: 1.375cqw;
         font-weight: 500;
         color: rgba(255, 255, 255, 0.85);
         text-decoration: line-through;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.0625cqw;
       }
 
       &__price-new {
         font-family: "Montserrat", sans-serif;
-        font-size: 17px;
+        font-size: 2.125cqw;
         font-weight: 700;
         color: #fff;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.0625cqw;
       }
 
       &__badge {
         position: relative;
-        width: 85.8px;
-        height: 85.8px;
+        width: 10.725cqw;
+        height: 10.725cqw;
         flex-shrink: 0;
         justify-self: center;
 
@@ -1166,14 +1166,14 @@ background-color:  #beb2b2;
         box-sizing: border-box;
         width: 100%;
         height: 100%;
-        padding: 20px 6px;
+        padding: 2.5cqw 0.75cqw;
         color: #fff;
         font-family: "Montserrat", sans-serif;
-        font-size: 9.5px;
+        font-size: 1.1875cqw;
         font-weight: 700;
         line-height: 1.1;
         text-align: center;
-        letter-spacing: 0.2px;
+        letter-spacing: 0.025cqw;
 
         span {
           display: block;
@@ -1181,10 +1181,10 @@ background-color:  #beb2b2;
 
         strong {
           display: block;
-          font-size: 14.5px;
+          font-size: 1.8125cqw;
           font-weight: 700;
-          margin-top: 2px;
-          letter-spacing: 0.5px;
+          margin-top: 0.25cqw;
+          letter-spacing: 0.0625cqw;
         }
       }
     }
