@@ -7,8 +7,8 @@
 
 import { useLayoutEffect, useRef, useState, useContext, useMemo } from "react";
 // useLayoutEffect: dispara la subida automatica apenas el DOM se actualiza con nuevos datos.
-// useRef: changeCount persistente entre renders para saltear las primeras ejecuciones del efecto.
-// useState: estado local de subida (isUploadingMenu) y columnas editables.
+// useRef: isFirstRender flag para saltear el primer render (Strict Mode).
+// useState: estado local de subida (isUploadingMenu) para controlar el boton de subir.
 // useContext: lee dbItemsArr del ItemsContext que Section provee a sus hijos.
 
 import Swal from "sweetalert2";
@@ -100,9 +100,8 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
     ? pages.map((_, i) => `${menuIds[0]}-${i + 1}`)
     : menuIds;
 
-  const changeCount = useRef(0);
-  // Contador de ejecuciones del useLayoutEffect. Sirve para evitar la subida automatica en los
-  // primeros renders (React Strict Mode monta/desmonta dos veces y duplicaria la subida).
+  const isFirstRender = useRef(true);
+  // isFirstRender: evita la subida automatica en el primer render (incluye el re-monte de Strict Mode).
 
   const [isUploadingMenu, setIsUploadingMenu] = useState(false);
   // Estado que deshabilita el boton "SUBIR MENU" mientras se esta subiendo para evitar doble click.
@@ -142,11 +141,9 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
 
   useLayoutEffect(() => {
     // Efecto de SUBIDA AUTOMATICA: se dispara sincronicamente despues de cada cambio en dbItemsArr.
-    // Esto asegura que el menu se actualice en el storage cada vez que los productos cambian.
-    changeCount.current += 1;
-
-    // Saltea los primeros 2 disparos para evitar la doble ejecucion de Strict Mode.
-    if (changeCount.current <= 2) {
+    // Saltea el primer render (Strict Mode monta/desmonta dos veces y duplicaria la subida).
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
       return;
     }
 
