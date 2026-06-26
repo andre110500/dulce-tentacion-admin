@@ -99,6 +99,8 @@ export function Dialog({ product }) {
   const [selectedImageName, setSelectedImageName] = useState("");
   // Marca visualmente el dropzone mientras una imagen se esta arrastrando encima.
   const [isDraggingImage, setIsDraggingImage] = useState(false);
+  // Guarda la URL escrita a mano por el usuario para usarla directamente como imgUrl sin subir a Cloudinary.
+  const [imageLink, setImageLink] = useState("");
   // Guarda el type actual para que el select de subType muestre solo opciones validas para ese tipo.
   const [selectedType, setSelectedType] = useState(product?.type || "");
   // Busca las opciones de subType usando el type elegido; si no hay type o no tiene subtypes, usa un array vacio.
@@ -106,6 +108,11 @@ export function Dialog({ product }) {
 
   const openDialog = () => {
     dialogRef.current.showModal();
+    // Limpia cualquier estado previo de imagen al abrir el dialog.
+    setImageLink("");
+    setSelectedImagePreview("");
+    setSelectedImageName("");
+    setShouldRemoveImage(false);
   };
 
   useEffect(() => {
@@ -136,6 +143,7 @@ export function Dialog({ product }) {
     dataTransfer.items.add(file);
     input.files = dataTransfer.files;
     setShouldRemoveImage(false);
+    setImageLink("");
     setSelectedImageName(file.name);
     setSelectedImagePreview((currentPreview) => {
       if (currentPreview) {
@@ -144,6 +152,17 @@ export function Dialog({ product }) {
 
       return URL.createObjectURL(file);
     });
+  };
+
+  const setImageLinkValue = (url) => {
+    setImageLink(url);
+    if (url) {
+      // Cuando el usuario pega una URL, limpia la seleccion de archivo y muestra preview desde la URL.
+      formRef.current.elements.imgUrlFile.value = "";
+      setSelectedImagePreview("");
+      setSelectedImageName("");
+      setShouldRemoveImage(false);
+    }
   };
 
   function checkInputChanges(formElements) {
@@ -224,6 +243,7 @@ export function Dialog({ product }) {
     if (
       product &&
       !imageFile &&
+      !imageLink &&
       !shouldRemoveImage &&
       !checkInputChanges(formElements)
     ) {
@@ -242,6 +262,9 @@ export function Dialog({ product }) {
         const imageUrl = await uploadImageFile(imageFile, imageId);
         // Guarda la URL final en el input oculto para que el loop de itemKeys la envie como imgUrl.
         formElements.imgUrl.value = imageUrl;
+      } else if (imageLink) {
+        // Usa la URL escrita directamente sin subir a Cloudinary.
+        formElements.imgUrl.value = imageLink;
       }
     } catch (error) {
       console.error("Error uploading product image:", error);
@@ -400,16 +423,16 @@ export function Dialog({ product }) {
                       setSelectedImageFile(event.dataTransfer.files?.[0]);
                     }}
                   >
-                    {(selectedImagePreview || (product?.imgUrl && !shouldRemoveImage)) && (
+                    {(selectedImagePreview || imageLink || (product?.imgUrl && !shouldRemoveImage)) && (
                       <img
-                        src={selectedImagePreview || product.imgUrl}
+                        src={selectedImagePreview || imageLink || product.imgUrl}
                         alt={product?.name || "Imagen actual"}
                         className="current-product-image"
                       />
                     )}
-                    {(selectedImageName || (product?.imgUrl && !shouldRemoveImage)) && (
+                    {(selectedImageName || imageLink || (product?.imgUrl && !shouldRemoveImage)) && (
                       <p className="image-file-name">
-                        {selectedImageName || getImageFileName(product.imgUrl)}
+                        {selectedImageName || imageLink || getImageFileName(product.imgUrl)}
                       </p>
                     )}
                     <input
@@ -461,6 +484,16 @@ export function Dialog({ product }) {
                         Examinar imagen
                       </label>
                     )}
+                    <input
+                      className="image-link-input"
+                      type="url"
+                      placeholder="O pega una URL de imagen..."
+                      value={imageLink}
+                      disabled={shouldRemoveImage}
+                      onChange={(event) => {
+                        setImageLinkValue(event.target.value);
+                      }}
+                    />
                   </div>
                 ) : isSubTypeField ? (
                   <select
