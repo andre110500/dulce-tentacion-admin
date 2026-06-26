@@ -403,7 +403,7 @@ export function Dialog({ product }) {
                     {(selectedImagePreview || (product?.imgUrl && !shouldRemoveImage)) && (
                       <img
                         src={selectedImagePreview || product.imgUrl}
-                        alt={product.name || "Imagen actual"}
+                        alt={product?.name || "Imagen actual"}
                         className="current-product-image"
                       />
                     )}
