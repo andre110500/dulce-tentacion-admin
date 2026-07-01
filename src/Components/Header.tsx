@@ -6,12 +6,31 @@ import UserContext from "../Contexts/UserContext";
 import logo from "../assets/logo-white.png";
 import UserDialog from "./UserDialog";
 
-export default function Header() {
+export default function Header({ pages, currentPath }) {
   const { isUserOnline, setIsUserOnline } = useContext(UserContext);
   const signupDialogRef = useRef(null);
   const signinDialogRef = useRef(null);
+  const menuCheckboxRef = useRef(null);
+
+  const closeMenu = () => {
+    if (menuCheckboxRef.current) {
+      (menuCheckboxRef.current as HTMLInputElement).checked = false;
+    }
+  };
+
   const tabs = (
     <ul>
+      {pages.map((page) => (
+        <li key={page.path}>
+          <a
+            className={page.path === currentPath ? "active" : undefined}
+            href={`#${page.path}`}
+            onClick={closeMenu}
+          >
+            {page.label}
+          </a>
+        </li>
+      ))}
       {isUserOnline ? (
         <li>
           <LogoutButton setIsUserOnline={setIsUserOnline} />
@@ -103,7 +122,8 @@ export default function Header() {
       <img
         className="logo"
         onClick={() => {
-          window.scrollTo(0, 0);
+          window.location.hash = "/";
+          closeMenu();
         }}
         src={logo}
         alt=""
@@ -111,7 +131,7 @@ export default function Header() {
 
       <nav>{tabs}</nav>
 
-      <input type="checkbox" id="checkbox" />
+      <input ref={menuCheckboxRef} type="checkbox" id="checkbox" />
 
       <aside>{tabs}</aside>
       <label className="burger-menu" htmlFor="checkbox"></label>

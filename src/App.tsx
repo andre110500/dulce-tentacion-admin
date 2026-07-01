@@ -1,15 +1,32 @@
 import "./App.css";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
-import Home from "./Components/Home";
-import React, { useState, useEffect } from "react";
+import Home, {
+  DrinksAndCigarettesPage,
+  FlavoursPage,
+  FrozenTreatsPage,
+  IceCreamPage,
+} from "./Components/Home";
+import { useState, useEffect } from "react";
 import UserContext from "./Contexts/UserContext";
-import { showSuccessAlert } from "./alerts";
-import Swal from "sweetalert2";
 import BuildStatus from "./Components/BuildStatus";
+
+const pages = [
+  { path: "/", label: "Helados", Component: IceCreamPage },
+  { path: "/bebidas", label: "Bebidas", Component: DrinksAndCigarettesPage },
+  { path: "/postres", label: "Postres", Component: FrozenTreatsPage },
+  { path: "/sabores", label: "Sabores", Component: FlavoursPage },
+  { path: "/otros", label: "Otros", Component: Home },
+];
+
+function getCurrentPath() {
+  const hashPath = window.location.hash.replace(/^#/, "");
+  return pages.some((page) => page.path === hashPath) ? hashPath : "/";
+}
 
 function App() {
   const [isUserOnline, setIsUserOnline] = useState(false);
+  const [currentPath, setCurrentPath] = useState(getCurrentPath);
 
   async function checkTokenValidityAndSetUserOnlineStatus(token) {
     const requestOptions = {
@@ -57,6 +74,16 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    const handleHashChange = () => {
+      setCurrentPath(getCurrentPath());
+      window.scrollTo(0, 0);
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
   return (
     <>
       <UserContext.Provider
@@ -65,8 +92,8 @@ function App() {
           setIsUserOnline,
         }}
       >
-        <Header />
-        <Main />
+        <Header pages={pages} currentPath={currentPath} />
+        <Main currentPath={currentPath} />
         <Footer />
         <BuildStatus />
       </UserContext.Provider>
@@ -74,10 +101,13 @@ function App() {
   );
 }
 
-function Main() {
+function Main({ currentPath }) {
+  const activePage = pages.find((page) => page.path === currentPath) || pages[0];
+  const ActivePage = activePage.Component;
+
   return (
     <main>
-      <Home />
+      <ActivePage />
     </main>
   );
 }

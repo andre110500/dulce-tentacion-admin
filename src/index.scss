@@ -451,6 +451,10 @@ dialog.crud {
     color: black;
   }
 
+  a.active {
+    color: black;
+  }
+
   .logo {
     width: 3rem;
     cursor: pointer;
@@ -468,6 +472,8 @@ dialog.crud {
     ul {
       display: flex;
       gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
 
       li {
         display: flex;
