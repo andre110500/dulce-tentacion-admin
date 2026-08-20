@@ -322,6 +322,7 @@ export function Dialog({ product }) {
       settings.id = product._id;
     }
 
+    closeDialog();
     tryToModifyDbWithAuth(settings);
   }
 
@@ -357,6 +358,7 @@ export function Dialog({ product }) {
       },
     };
 
+    closeDialog();
     tryToModifyDbWithAuth(settings);
   }
 
@@ -506,6 +508,25 @@ export function Dialog({ product }) {
                     {subTypeOptions.map((subType) => (
                       <option key={`subtype-option-${subType}`} value={subType}>
                         {subType}
+                      </option>
+                    ))}
+                  </select>
+                ) : keySchema.enum ? (
+                  <select
+                    name={keySchema.key}
+                    defaultValue={product?.[keySchema.key] || ""}
+                    required={keySchema.required}
+                    onChange={isTypeField ? (event) => {
+                      setSelectedType(event.target.value);
+                      if (formRef.current.elements.subType) {
+                        formRef.current.elements.subType.value = "";
+                      }
+                    } : undefined}
+                  >
+                    <option value="">Seleccionar...</option>
+                    {keySchema.enum.map((value) => (
+                      <option key={`enum-option-${value}`} value={value}>
+                        {value}
                       </option>
                     ))}
                   </select>

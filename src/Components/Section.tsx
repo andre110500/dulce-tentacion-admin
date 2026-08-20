@@ -78,9 +78,9 @@ export default function Section({ h1, route, schemaRoute, children }) {
 
       setIsLoading(false);
 
-      const keys = itemSchemaProperties.map(
-        (itemSchemaProperty) => itemSchemaProperty.key
-      );
+      const keys = itemSchemaProperties
+        .filter((itemSchemaProperty) => itemSchemaProperty.key !== "_id" && itemSchemaProperty.key !== "__v")
+        .map((itemSchemaProperty) => itemSchemaProperty.key);
       setItemKeys(keys);
     }
   }, [itemSchemaProperties, dbItemsArr]);
@@ -111,7 +111,9 @@ export default function Section({ h1, route, schemaRoute, children }) {
         route,
         itemKeys: itemKeys,
         get_AndDo_,
-        itemSchema: itemSchemaProperties,
+        itemSchema: itemSchemaProperties?.filter(
+          (prop) => prop.key !== "_id" && prop.key !== "__v"
+        ),
         subTypesByType: subTypesByType,
         dbItemsArr: dbItemsArr,
         setDbItemsArr: setDbItemsArr,

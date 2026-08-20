@@ -6,6 +6,7 @@ import Home, {
   FlavoursPage,
   FrozenTreatsPage,
   IceCreamPage,
+  DiscountsPage,
 } from "./Components/Home";
 import { useState, useEffect } from "react";
 import UserContext from "./Contexts/UserContext";
@@ -17,6 +18,7 @@ const pages = [
   { path: "/postres", label: "Postres", Component: FrozenTreatsPage },
   { path: "/sabores", label: "Sabores", Component: FlavoursPage },
   { path: "/otros", label: "Otros", Component: Home },
+  { path: "/descuentos", label: "Descuentos", Component: DiscountsPage },
 ];
 
 function getCurrentPath() {

@@ -95,9 +95,13 @@ export default defineConfig(({ mode }) => {
                 !env.CLOUDINARY_API_KEY ||
                 !env.CLOUDINARY_API_SECRET
               ) {
-                throw new Error(
-                  "Missing Cloudinary env vars in .env.development"
-                );
+                console.warn("[upload-menu:local] Cloudinary env vars not configured, skipping upload");
+                res.statusCode = 500;
+                res.setHeader("Content-Type", "application/json");
+                res.end(JSON.stringify({
+                  error: "Cloudinary no está configurado. Agrega CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY y CLOUDINARY_API_SECRET en .env.development",
+                }));
+                return;
               }
 
               cloudinary.config({

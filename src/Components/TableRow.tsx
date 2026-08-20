@@ -8,6 +8,7 @@ import { useRef, useState, useContext } from "react";
 import ItemsContext from "../Contexts/ItemsContext";
 import { Dialog } from "./Dialog";
 import OverflowCell from "./OverflowCell";
+import Swal from "sweetalert2";
 
 function TableRow({ product }) {
   // product: objeto del producto actual (contiene _id, name, imgUrl, y demas campos del schema).
@@ -40,6 +41,22 @@ function TableRow({ product }) {
       </dialog>
 
       <tr id={product._id}>
+        <td
+          data-cell="_id"
+          className="id-cell activable"
+          onClick={() => {
+            navigator.clipboard.writeText(product._id);
+            Swal.fire({
+              title: "Copiado",
+              text: product._id,
+              icon: "success",
+              timer: 1500,
+              showConfirmButton: false,
+            });
+          }}
+        >
+          <span>{product._id}</span>
+        </td>
         {itemKeys.map((key) => {
           // Itera sobre cada key del schema y renderiza una celda.
           if (key === "imgUrl") {

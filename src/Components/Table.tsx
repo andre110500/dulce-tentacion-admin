@@ -18,6 +18,7 @@ function Table({ keys, data, currentPage, totalPages, onPageChange }) {
       <table>
         <thead>
           <tr>
+            <th>_id</th>
             {/* Renderiza un <th> por cada key del schema mas uno fijo para la columna de edicion. */}
             {keys.map((key) => (
               <th key={`product-hcell-${key}`}>{key}</th>

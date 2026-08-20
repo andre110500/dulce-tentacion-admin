@@ -88,6 +88,16 @@ export function FlavoursPage() {
   );
 }
 
+export function DiscountsPage() {
+  return (
+    <Section
+      h1="Descuentos"
+      route="discounts"
+      schemaRoute="discounts/schema"
+    />
+  );
+}
+
 export default function Home() {
   return (
     <>
