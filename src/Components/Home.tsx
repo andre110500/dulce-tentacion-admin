@@ -1,34 +1,31 @@
+import { useState, useEffect } from "react";
 import Section from "./Section";
-// Section: componente base para secciones SIN menu (solo tabla de datos).
-
 import MenuSection from "./MenuSection";
-// MenuSection: wrapper para secciones CON menu. Recibe MenuComponent (el componente React que
-//   renderiza el diseno visual del menu), menuIds, menuPages y props especificas del menu
-//   como columns, chunkSize y templateImg que se reenvian al MenuComponent.
-
 import IceCreamMenu from "./IceCreamMenu";
 import FlavoursMenu from "./FlavoursMenu";
 import KioskMenu from "./KioskMenu";
 import FrozenTreatsMenu from "./FrozenTreatsMenu";
-// KioskMenu: menu en grilla con agrupacion por subType, usado para bebidas y cigarrillos.
-// FrozenTreatsMenu: menu original en lista vertical, usado para postres congelados.
-// MenuComponent: prop de MenuSection que recibe un componente de menu. MenuSection se lo pasa a
-//   MenuContent, que lo renderiza como <MenuComponent data={...} page={...} menuId={...} columns={...} />.
-//   Cualquier componente que acepte esas props puede usarse aqui (KioskMenu, FrozenTreatsMenu, IceCreamMenu, FlavoursMenu).
+import get_AndDo_ from "../functions/get_AndDo_";
 
 export function IceCreamPage() {
+  const [discounts, setDiscounts] = useState([]);
+
+  useEffect(() => {
+    get_AndDo_("discounts").then((response) => {
+      if (response?.data) {
+        setDiscounts(response.data.filter((d) => d.type === "ice-cream"));
+      }
+    });
+  }, []);
+
   return (
     <MenuSection
       h1="Menu de Helados"
       route="products?type=ice-cream&type=add-on"
       schemaRoute="products/schema"
       menuIds={["ice-cream-menu"]}
-      // menuIds: IDs de los elementos DOM del menu para la captura (html2canvas).
-      // "ice-cream-menu" coincide con el id del div en IceCreamMenu.
       MenuComponent={IceCreamMenu}
-      // MenuComponent: componente React que renderiza el diseno del menu.
-      //   MenuSection lo pasa a MenuContent, que lo invoca como <IceCreamMenu data={...} page={...} />.
-      //   Las props extra (columns, templateImg, etc.) simplemente las ignora si no las usa.
+      discountsList={discounts}
     />
   );
 }

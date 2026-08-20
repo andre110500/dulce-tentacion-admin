@@ -101,7 +101,7 @@ function IceCreamPlaceholder() {
 }
 
 type ComboCardProps = {
-  variant: "familiar" | "amigos";
+  name: string;
   quantity: string;
   originalPrice: number;
   discountedPrice: number;
@@ -110,22 +110,24 @@ type ComboCardProps = {
 };
 
 function ComboCard({
-  variant,
+  name,
   quantity,
   originalPrice,
   discountedPrice,
   savings,
   imageSrc,
 }: ComboCardProps) {
-  const title = variant === "familiar" ? "FAMILIAR" : "AMIGOS";
+  const parts = name.split(/\s+/);
+  const scriptWord = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+  const displayName = parts.slice(1).join(" ").toUpperCase();
 
   return (
-    <article className={`discount-combos__combo discount-combos__combo--${variant}`}>
+    <article className="discount-combos__combo">
       {imageSrc ? (
         <div className="discount-combos__image">
           <img
             src={imageSrc}
-            alt={`Combo ${title}`}
+            alt={`Combo ${name}`}
             className="discount-combos__combo-img"
           />
         </div>
@@ -134,8 +136,8 @@ function ComboCard({
       )}
       <div className="discount-combos__combo-info">
         <h3 className="discount-combos__combo-title">
-          <span className="discount-combos__combo-script">Combo</span>
-          <span className="discount-combos__combo-name">{title}</span>
+          <span className="discount-combos__combo-script">{scriptWord}</span>
+          <span className="discount-combos__combo-name">{displayName}</span>
         </h3>
         <p className="discount-combos__combo-qty">{quantity}</p>
         <div className="discount-combos__price-box">
@@ -148,41 +150,44 @@ function ComboCard({
   );
 }
 
-type DiscountCombosSectionProps = {
-  familiarOriginal: number;
-  familiarDiscounted: number;
-  amigosOriginal: number;
-  amigosDiscounted: number;
+type ComboData = {
+  name: string;
+  quantity: string;
+  originalPrice: number;
+  discountedPrice: number;
+  savings: number;
+  imageSrc?: string;
 };
 
+type DiscountCombosSectionProps = {
+  combos: ComboData[];
+};
+
+const comboImages = [comboAmigosPng, comboFamiliarPng];
+
 export default function DiscountCombosSection({
-  familiarOriginal,
-  familiarDiscounted,
-  amigosOriginal,
-  amigosDiscounted,
+  combos,
 }: DiscountCombosSectionProps) {
   return (
     <section className="discount-combos" aria-label="Combos con descuento">
       <div className="discount-combos__card">
         <RibbonBanner />
         <div className="discount-combos__body">
-          <ComboCard
-            variant="familiar"
-            quantity="2 de 1/2kg"
-            originalPrice={familiarOriginal}
-            discountedPrice={familiarDiscounted}
-            savings={familiarOriginal - familiarDiscounted}
-            imageSrc={comboFamiliarPng}
-          />
-          <div className="discount-combos__divider" aria-hidden="true" />
-          <ComboCard
-            variant="amigos"
-            quantity="2 de 1/4kg"
-            originalPrice={amigosOriginal}
-            discountedPrice={amigosDiscounted}
-            savings={amigosOriginal - amigosDiscounted}
-            imageSrc={comboAmigosPng}
-          />
+          {combos.map((combo, index) => (
+            <React.Fragment key={combo.name}>
+              {index > 0 && (
+                <div className="discount-combos__divider" aria-hidden="true" />
+              )}
+              <ComboCard
+                name={combo.name}
+                quantity={combo.quantity}
+                originalPrice={combo.originalPrice}
+                discountedPrice={combo.discountedPrice}
+                savings={combo.savings}
+                imageSrc={combo.imageSrc || comboImages[index]}
+              />
+            </React.Fragment>
+          ))}
         </div>
       </div>
     </section>

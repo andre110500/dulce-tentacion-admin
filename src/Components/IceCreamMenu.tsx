@@ -5,11 +5,7 @@ import iceCreamTubIcon3 from "../assets/3.png";
 import iceCreamTubIcon4 from "../assets/4.png";
 import DiscountCombosSection from "./DiscountCombosSection";
 
-export default function IceCreamMenu({ data }) {
-  function getPriceByFlavoursQuantity(number) {
-    return data.find((obj) => obj.flavours === number)?.price;
-  }
-
+export default function IceCreamMenu({ data, discounts = [] }) {
   const iconsByFlavours = {
     2: iceCreamTubIcon2,
     3: iceCreamTubIcon3,
@@ -22,6 +18,19 @@ export default function IceCreamMenu({ data }) {
 
   const addOns = data.filter((product) => {
     return product.type === "add-on" && !product.outOfStock;
+  });
+
+  const combos = discounts.map((discount) => {
+    const product = data.find((p) => p._id === discount.productId);
+    const originalPrice = product ? product.price * discount.quantity : 0;
+    const discountedPrice = originalPrice - discount.value;
+    return {
+      name: discount.name,
+      quantity: `${discount.quantity} de ${product?.name || ""}`,
+      originalPrice,
+      discountedPrice,
+      savings: discount.value,
+    };
   });
 
   return (
@@ -58,10 +67,7 @@ export default function IceCreamMenu({ data }) {
           ))}
         </ul>
         <DiscountCombosSection
-          familiarOriginal={getPriceByFlavoursQuantity(3) * 2}
-          familiarDiscounted={getPriceByFlavoursQuantity(3) * 2 - 500}
-          amigosOriginal={getPriceByFlavoursQuantity(2) * 2}
-          amigosDiscounted={getPriceByFlavoursQuantity(2) * 2 - 300}
+          combos={combos}
         />
         <h2>Adicionales</h2>
         <ul className="add-ons-list">

@@ -20,12 +20,14 @@ export default function MenuUploadSection({
   children,
   productsList,
   flavoursList,
+  discountsList,
   onManualMenuUpload,
   isUploadingMenu,
 }: {
   children: React.ReactNode;
   productsList: unknown;
   flavoursList: unknown;
+  discountsList?: unknown;
   onManualMenuUpload?: () => void;
   isUploadingMenu?: boolean;
 }) {
@@ -83,7 +85,7 @@ export default function MenuUploadSection({
         URL.revokeObjectURL(imageSrc);
       }
     };
-  }, [productsList, flavoursList]);
+  }, [productsList, flavoursList, discountsList]);
   // Se re-ejecuta cuando cambian productsList o flavoursList (nuevos datos del fetch o edicion).
 
   return (

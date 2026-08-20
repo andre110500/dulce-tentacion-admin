@@ -30,7 +30,7 @@ import ItemsContext from "../Contexts/ItemsContext";
 
 // MenuContent es un componente interno que se renderiza DENTRO de Section, por eso puede
 // usar useContext(ItemsContext) para leer dbItemsArr. Aqui vive toda la logica de subida.
-function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, templateImg }) {
+function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, templateImg, discountsList }) {
   // menuIds: ej. ["ice-cream-menu"], determina que IDs de menu se generan/suben.
   // MenuComponent: componente React que se renderiza dentro de MenuUploadSection.
   //   MenuContent lo invoca como <MenuComponent data={chunk} page={page} menuId={...} columns={columns} templateImg={templateImg} />.
@@ -169,30 +169,19 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
         return (
           <MenuUploadSection
             key={page}
-            // productsList y flavoursList: MenuUploadSection los necesita para detectar cambios y
-            // regenerar la captura automaticamente (via html2canvas). Siempre pasa dbItemsArr
-            // completo (no el chunk) para que cualquier cambio dispare la regeneracion.
             productsList={dbItemsArr}
             flavoursList={dbItemsArr}
+            discountsList={discountsList}
             onManualMenuUpload={handleManualMenuUpload}
             isUploadingMenu={isUploadingMenu}
           >
             <MenuComponent
-              // data: con chunkSize activo, solo los items de esta hoja; sin chunkSize, todos.
               data={chunk}
-              // page: necesario para FlavoursMenu que tiene 2 paginas distintas. Los demas menus
-              // simplemente ignoran esta prop asi que no afecta.
               page={page}
-              // menuId: necesario para KioskMenu y FrozenTreatsMenu que usan un id dinamico.
-              // Con chunkSize activo, los IDs son secuenciales ("...-1", "...-2").
-              // Sin chunkSize, usa los menuIds originales del array (menuIds[index]).
-              // IceCreamMenu y FlavoursMenu ignoran esta prop porque tienen su id harcodeado.
               menuId={resolvedMenuIds[index]}
-              // columns: define cuantas columnas de grid usa KioskMenu.
-              // IceCreamMenu, FrozenTreatsMenu y FlavoursMenu ignoran esta prop.
               columns={columns}
-              // templateImg: imagen de fondo del menu (solo KioskMenu y FrozenTreatsMenu).
               templateImg={templateImg}
+              discounts={discountsList}
             />
           </MenuUploadSection>
         );
@@ -201,7 +190,7 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
   );
 }
 
-export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuComponent, menuPages = [1], chunkSize, columns: defaultColumns, templateImg }) {
+export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuComponent, menuPages = [1], chunkSize, columns: defaultColumns, templateImg, discountsList }) {
   // MenuSection es un wrapper que delega todo el fetch/tabla a Section y solo agrega la capa de menu.
   // menuIds: IDs de los elementos del DOM que se capturan como imagen (ej. "ice-cream-menu").
   // MenuComponent: componente React que se pasa como prop desde Home.jsx y se reenvia a MenuContent.
@@ -224,6 +213,7 @@ export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuCompo
         chunkSize={chunkSize}
         columns={columns}
         templateImg={templateImg}
+        discountsList={discountsList}
       />
     </Section>
   );
