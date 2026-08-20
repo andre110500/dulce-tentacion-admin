@@ -30,6 +30,16 @@ import ItemsContext from "../Contexts/ItemsContext";
 
 // MenuContent es un componente interno que se renderiza DENTRO de Section, por eso puede
 // usar useContext(ItemsContext) para leer dbItemsArr. Aqui vive toda la logica de subida.
+const entityMenuMap: Record<string, string[]> = {
+  "ice-cream": ["ice-cream-menu"],
+  "add-on": ["ice-cream-menu"],
+  "frozen-treat": ["frozen-treats-menu"],
+  "drink": ["drinks-cigarettes-menu"],
+  "cigarette": ["drinks-cigarettes-menu"],
+  "flavour": ["flavours-menu-1", "flavours-menu-2"],
+  "discount": ["ice-cream-menu"],
+};
+
 function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, templateImg, discountsList }) {
   // menuIds: ej. ["ice-cream-menu"], determina que IDs de menu se generan/suben.
   // MenuComponent: componente React que se renderiza dentro de MenuUploadSection.
@@ -103,13 +113,17 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
   const isFirstRender = useRef(true);
   // isFirstRender: evita la subida automatica en el primer render (incluye el re-monte de Strict Mode).
 
+  const prevDataRef = useRef(dbItemsArr);
+  // prevDataRef: guarda el dbItemsArr anterior para comparar y detectar que tipo de entidad cambio.
+
   const [isUploadingMenu, setIsUploadingMenu] = useState(false);
   // Estado que deshabilita el boton "SUBIR MENU" mientras se esta subiendo para evitar doble click.
 
-  const uploadMenus = async () => {
+  const uploadMenus = async (idsToUpload = resolvedMenuIds) => {
     // Itera sobre cada menuId (resuelto) y genera+sube cada menu llamando a generateAndUploadMenu.
     // Con chunkSize activo, esto sube tantas imagenes como hojas tenga el menu.
-    for (const id of resolvedMenuIds) {
+    // idsToUpload: opcional, permite filtrar solo los menus afectados por el cambio.
+    for (const id of idsToUpload) {
       await generateAndUploadMenu(id);
     }
   };
@@ -144,6 +158,7 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
     // Saltea el primer render (Strict Mode monta/desmonta dos veces y duplicaria la subida).
     if (isFirstRender.current) {
       isFirstRender.current = false;
+      prevDataRef.current = dbItemsArr;
       return;
     }
 
@@ -152,8 +167,76 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
       return;
     }
 
-    // Ejecuta la subida de todos los menus definidos en resolvedMenuIds.
-    uploadMenus();
+    // Detecta que tipos de entidad cambiaron comparando el array anterior con el actual.
+    const prevData = prevDataRef.current || [];
+    const affectedTypes = new Set<string>();
+
+    // Cuenta items por tipo en cada version.
+    const countByType = (data) => {
+      const counts: Record<string, number> = {};
+      for (const item of data) {
+        const key = item.type || "__no_type__";
+        counts[key] = (counts[key] || 0) + 1;
+      }
+      return counts;
+    };
+
+    const prevCounts = countByType(prevData);
+    const newCounts = countByType(dbItemsArr);
+
+    // Detecta tipos con cantidad diferente (agregados o eliminados).
+    const allTypes = new Set([...Object.keys(prevCounts), ...Object.keys(newCounts)]);
+    for (const type of allTypes) {
+      if ((prevCounts[type] || 0) !== (newCounts[type] || 0)) {
+        affectedTypes.add(type);
+      }
+    }
+
+    // Detecta items modificados (misma cantidad pero contenido diferente).
+    if (prevData.length === dbItemsArr.length) {
+      for (let i = 0; i < dbItemsArr.length; i++) {
+        if (JSON.stringify(prevData[i]) !== JSON.stringify(dbItemsArr[i])) {
+          const type = dbItemsArr[i].type || "__no_type__";
+          affectedTypes.add(type);
+        }
+      }
+    }
+
+    // Detecta items sin campo "type" (sabores u otros genericos).
+    const hasNoTypeItems = dbItemsArr.some((item) => !item.type);
+    const prevHadNoTypeItems = prevData.some((item) => !item.type);
+    if (hasNoTypeItems || prevHadNoTypeItems) {
+      affectedTypes.add("__no_type__");
+    }
+
+    prevDataRef.current = dbItemsArr;
+
+    // Si no se detectaron cambios, no sube nada.
+    if (affectedTypes.size === 0) {
+      return;
+    }
+
+    // Mapea los tipos afectados a los menuIds que deben re-subirse.
+    const affectedMenuIds = new Set<string>();
+    for (const type of affectedTypes) {
+      const mapped = entityMenuMap[type];
+      if (mapped) {
+        for (const id of mapped) {
+          affectedMenuIds.add(id);
+        }
+      }
+    }
+
+    // Filtra resolvedMenuIds para subir solo los menus afectados.
+    // Si un tipo no esta en el mapa (dato desconocido), no sube nada.
+    if (affectedMenuIds.size === 0) {
+      return;
+    }
+
+    const idsToUpload = resolvedMenuIds.filter((id) => affectedMenuIds.has(id));
+
+    // Ejecuta la subida solo de los menus filtrados.
+    uploadMenus(idsToUpload);
 
   }, [dbItemsArr]);
   // Solo se re-ejecuta cuando dbItemsArr cambia (nuevos datos del fetch).
