@@ -2128,14 +2128,14 @@ input:checked~.burger-menu {
 }
 
 /* ---- DRINKS/CLGARETTES: reuse vertical KioskMenu with overrides ---- */
-.kiosk-container .menu.products-menu {
+.menu.products-menu {
   width: 1366px;
   height: 768px;
   position: relative;
   overflow: hidden;
 }
 
-.kiosk-container .menu.products-menu > img {
+.menu.products-menu > img {
   position: absolute;
   inset: 0;
   width: 100%;
