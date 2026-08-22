@@ -103,15 +103,27 @@ export default function ConfigurarCartelesPage() {
     [products]
   );
 
+  const ensureCarousel = async () => {
+    if (carousel) return carousel;
+    const token = JSON.parse(localStorage.getItem("jwtToken") || "{}").token;
+    const res = await client.post("/carousel", { name: "kiosk", slides: [] }, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const c = res.data.carousel;
+    setCarousel(c);
+    return c;
+  };
+
   const saveSlides = async (updated: Slide[]) => {
-    if (!carousel) return;
     try {
-      await client.put(`/carousel/${carousel._id}`, {
+      const c = await ensureCarousel();
+      await client.put(`/carousel/${c._id}`, {
         name: "kiosk",
         slides: updated,
       }, {
         headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwtToken") || "{}").token}` },
       });
+      setCarousel(c);
       setSlides(updated);
       Swal.fire({ icon: "success", text: "Guardado", timer: 1200, showConfirmButton: false });
     } catch {
