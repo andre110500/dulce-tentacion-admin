@@ -8,6 +8,8 @@ import Home, {
   IceCreamPage,
   DiscountsPage,
 } from "./Components/Home";
+import CartelesPage from "./Components/CartelesPage";
+import ConfigurarCartelesPage from "./Components/ConfigurarCartelesPage";
 import { useState, useEffect } from "react";
 import UserContext from "./Contexts/UserContext";
 import BuildStatus from "./Components/BuildStatus";
@@ -19,10 +21,14 @@ const pages = [
   { path: "/sabores", label: "Sabores", Component: FlavoursPage },
   { path: "/otros", label: "Otros", Component: Home },
   { path: "/descuentos", label: "Descuentos", Component: DiscountsPage },
+  { path: "/carteles", label: "Carteles", Component: ConfigurarCartelesPage },
 ];
+
+const fullscreenPages = ["/carteles/carousel"];
 
 function getCurrentPath() {
   const hashPath = window.location.hash.replace(/^#/, "");
+  if (hashPath === "/carteles/carousel") return "/carteles/carousel";
   return pages.some((page) => page.path === hashPath) ? hashPath : "/";
 }
 
@@ -86,6 +92,8 @@ function App() {
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
+  const isFullscreen = fullscreenPages.includes(currentPath);
+
   return (
     <>
       <UserContext.Provider
@@ -94,16 +102,20 @@ function App() {
           setIsUserOnline,
         }}
       >
-        <Header pages={pages} currentPath={currentPath} />
+        {!isFullscreen && <Header pages={pages} currentPath={currentPath} />}
         <Main currentPath={currentPath} />
-        <Footer />
-        <BuildStatus />
+        {!isFullscreen && <Footer />}
+        {!isFullscreen && <BuildStatus />}
       </UserContext.Provider>
     </>
   );
 }
 
 function Main({ currentPath }) {
+  if (currentPath === "/carteles/carousel") {
+    return <CartelesPage />;
+  }
+
   const activePage = pages.find((page) => page.path === currentPath) || pages[0];
   const ActivePage = activePage.Component;
 

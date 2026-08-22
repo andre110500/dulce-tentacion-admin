@@ -5,7 +5,7 @@ import iceCreamTubIcon3 from "../assets/3.png";
 import iceCreamTubIcon4 from "../assets/4.png";
 import DiscountCombosSection from "./DiscountCombosSection";
 
-export default function IceCreamMenu({ data, discounts = [] }) {
+export default function IceCreamMenu({ data, discounts = [], menuId }) {
   const iconsByFlavours = {
     2: iceCreamTubIcon2,
     3: iceCreamTubIcon3,
@@ -34,7 +34,7 @@ export default function IceCreamMenu({ data, discounts = [] }) {
   });
 
   return (
-    <div id="ice-cream-menu" className="menu products-menu">
+    <div id={menuId || "ice-cream-menu"} className="menu products-menu">
       <img src={template} alt="" style={{ width: "100%" }} />
 
       <div className="uls-container">

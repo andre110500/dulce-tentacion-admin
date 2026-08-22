@@ -16,6 +16,8 @@ import { useEffect, useState, useRef } from "react";
 import TimeStamp from "./TimeStamp";
 // TimeStamp: muestra la fecha/hora actual en la esquina del menu para tracking de versiones.
 
+import KioskPreview from "./KioskPreview";
+
 export default function MenuUploadSection({
   children,
   productsList,
@@ -23,6 +25,7 @@ export default function MenuUploadSection({
   discountsList,
   onManualMenuUpload,
   isUploadingMenu,
+  kioskMenuIds,
 }: {
   children: React.ReactNode;
   productsList: unknown;
@@ -30,6 +33,7 @@ export default function MenuUploadSection({
   discountsList?: unknown;
   onManualMenuUpload?: () => void;
   isUploadingMenu?: boolean;
+  kioskMenuIds?: string[];
 }) {
   // children: el componente de menu concreto (IceCreamMenu, FlavoursMenu, etc.).
   // productsList / flavoursList: se usan como dependencias del useEffect para regenerar la imagen
@@ -117,11 +121,14 @@ export default function MenuUploadSection({
       )}
 
       {imageSrc && onManualMenuUpload && (
-        // Boton "SUBIR MENU": solo visible cuando hay una preview generada y onManualMenuUpload
-        // fue provisto (MenuSection siempre lo pasa). Se deshabilita mientras se esta subiendo.
-        <button onClick={onManualMenuUpload} disabled={isUploadingMenu}>
-          {isUploadingMenu ? "SUBIENDO MENÚ..." : "SUBIR MENÚ"}
-        </button>
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+          <button onClick={onManualMenuUpload} disabled={isUploadingMenu}>
+            {isUploadingMenu ? "SUBIENDO MENÚ..." : "SUBIR MENÚ"}
+          </button>
+          {kioskMenuIds && kioskMenuIds.length > 0 && (
+            <KioskPreview menuIds={kioskMenuIds} />
+          )}
+        </div>
       )}
     </section>
   );

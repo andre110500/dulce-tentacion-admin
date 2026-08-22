@@ -12,6 +12,7 @@ interface FlavourItem {
 interface FlavoursMenuProps {
   data: FlavourItem[];
   page?: number;
+  menuId?: string;
 }
 
 const PlaceholderIcon = () => (
@@ -30,7 +31,7 @@ const PlaceholderIcon = () => (
   </svg>
 );
 
-export default function FlavoursMenu({ data, page }: FlavoursMenuProps) {
+export default function FlavoursMenu({ data, page, menuId }: FlavoursMenuProps) {
   const ulStyle = {
     display: "flex",
     flexDirection: "column",
@@ -48,10 +49,10 @@ export default function FlavoursMenu({ data, page }: FlavoursMenuProps) {
   const firstCol = pageFlavours.slice(0, firstColCount);
   const secondCol = pageFlavours.slice(firstColCount);
 
-  const menuId = page ? `flavours-menu-${page}` : "flavours-menu";
+  const menuIdFinal = menuId || (page ? `flavours-menu-${page}` : "flavours-menu");
 
   return (
-    <div className="menu" id={menuId}>
+    <div className="menu" id={menuIdFinal}>
       <img src={template} alt="" style={{ width: "100%" }} />
       <div className="uls-container">
         <ul className="first" style={ulStyle}>

@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import Section from "./Section";
 import MenuSection from "./MenuSection";
 import IceCreamMenu from "./IceCreamMenu";
+import IceCreamMenuKiosk from "./IceCreamMenuKiosk";
 import FlavoursMenu from "./FlavoursMenu";
+import FlavoursMenuKiosk from "./FlavoursMenuKiosk";
 import KioskMenu from "./KioskMenu";
 import FrozenTreatsMenu from "./FrozenTreatsMenu";
+import FrozenTreatsMenuKiosk from "./FrozenTreatsMenuKiosk";
 import get_AndDo_ from "../functions/get_AndDo_";
 
 export function IceCreamPage() {
@@ -25,6 +28,7 @@ export function IceCreamPage() {
       schemaRoute="products/schema"
       menuIds={["ice-cream-menu"]}
       MenuComponent={IceCreamMenu}
+      KioskMenuComponent={IceCreamMenuKiosk}
       discountsList={discounts}
     />
   );
@@ -37,14 +41,9 @@ export function DrinksAndCigarettesPage() {
       route="products?type=drink&type=cigarette"
       schemaRoute="products/schema"
       menuIds={["drinks-cigarettes-menu"]}
-      // menuIds: base para generar IDs automaticos. Si hay >36 items, se crean varias hojas
-      // con ids "drinks-cigarettes-menu-1", "drinks-cigarettes-menu-2", etc.
       MenuComponent={KioskMenu}
-      // KioskMenu: menu en grilla con agrupacion por subType para bebidas/cigarrillos.
-      //   MenuContent lo renderiza como <KioskMenu data={chunk} page={page} menuId={...} columns={2} templateImg={...} />.
       columns={2}
       chunkSize={36}
-      // chunkSize: si hay mas de 36 productos, se genera una hoja extra.
     />
   );
 }
@@ -56,12 +55,8 @@ export function FrozenTreatsPage() {
       route="products?type=frozen-treat"
       schemaRoute="products/schema"
       menuIds={["frozen-treats-menu"]}
-      // menuIds: base para generar IDs automaticos. "frozen-treats-menu" coincide con el
-      // id del div en FrozenTreatsMenu (via prop menuId).
       MenuComponent={FrozenTreatsMenu}
-      // FrozenTreatsMenu: menu original en lista vertical para postres congelados.
-      //   Ignora columns, templateImg y chunkSize porque no los necesita.
-      //   Sin chunkSize ni columns, muestra todos los items en una sola hoja.
+      KioskMenuComponent={FrozenTreatsMenuKiosk}
     />
   );
 }
@@ -73,14 +68,9 @@ export function FlavoursPage() {
       route="generic/flavour"
       schemaRoute="generic/flavour/schema"
       menuIds={["flavours-menu-1", "flavours-menu-2"]}
-      // Sabores genera DOS menus (pagina 1 y pagina 2) porque entran ~8 sabores por hoja.
-      // flavours-menu-1 y flavours-menu-2 son los IDs de los divs en FlavoursMenu.
       MenuComponent={FlavoursMenu}
-      // FlavoursMenu: menu de sabores con diseno especifico (2 paginas, fuentes decorativas).
-      //   Ignora columns, chunkSize y templateImg porque no los necesita.
+      KioskMenuComponent={FlavoursMenuKiosk}
       menuPages={[1, 2]}
-      // menuPages: array de paginas a renderizar. Cada pagina crea un MenuUploadSection
-      // separado con su propio FlavoursMenu, pasando page=1 y page=2 respectivamente.
     />
   );
 }
@@ -98,6 +88,24 @@ export function DiscountsPage() {
 export default function Home() {
   return (
     <>
+      <a         href="#/carteles" style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "0.5rem",
+        padding: "0.65rem 1.2rem",
+        borderRadius: "0.55rem",
+        backgroundColor: "#100b35",
+        color: "white",
+        fontWeight: 800,
+        fontSize: "0.78rem",
+        textTransform: "uppercase",
+        letterSpacing: "0.04em",
+        textDecoration: "none",
+        cursor: "pointer",
+      }}>
+        Configurar Carteles
+      </a>
+
       <Section
         h1="Salsas"
         route="generic/sauce"

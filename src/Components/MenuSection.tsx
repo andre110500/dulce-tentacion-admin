@@ -17,6 +17,9 @@ import Swal from "sweetalert2";
 import { generateAndUploadMenu } from "../functions/generateAndUploadMenu";
 // generateAndUploadMenu: genera una captura del DOM del menu y la sube al storage.
 
+import { generateAndUploadKioskMenu } from "../functions/generateAndUploadKioskMenu";
+// generateAndUploadKioskMenu: genera version landscape (1366x768) y la sube con prefijo kiosk-.
+
 import Section from "./Section";
 // Section: componente base que ya maneja el fetch de datos, la tabla y la paginacion.
 // MenuSection anida su contenido como children de Section para reusar toda esa logica.
@@ -40,7 +43,7 @@ const entityMenuMap: Record<string, string[]> = {
   "discount": ["ice-cream-menu"],
 };
 
-function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, templateImg, discountsList }) {
+function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, chunkSize, columns, templateImg, discountsList }) {
   // menuIds: ej. ["ice-cream-menu"], determina que IDs de menu se generan/suben.
   // MenuComponent: componente React que se renderiza dentro de MenuUploadSection.
   //   MenuContent lo invoca como <MenuComponent data={chunk} page={page} menuId={...} columns={columns} templateImg={templateImg} />.
@@ -128,12 +131,20 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
     }
   };
 
+  const uploadKioskMenus = async (idsToUpload = resolvedMenuIds) => {
+    // Genera versiones landscape (1366x768) de cada menu y las sube con prefijo kiosk-.
+    for (const id of idsToUpload) {
+      await generateAndUploadKioskMenu(id);
+    }
+  };
+
   const handleManualMenuUpload = async () => {
     // Manejador del boton "SUBIR MENU" en MenuUploadSection.
-    // Activa el estado de carga, ejecuta uploadMenus(), y muestra exito o error con Swal.
+    // Activa el estado de carga, ejecuta uploadMenus() + uploadKioskMenus(), y muestra exito o error con Swal.
     try {
       setIsUploadingMenu(true);
       await uploadMenus();
+      await uploadKioskMenus();
       await Swal.fire({
         icon: "success",
         text: "Menú subido correctamente",
@@ -235,8 +246,9 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
 
     const idsToUpload = resolvedMenuIds.filter((id) => affectedMenuIds.has(id));
 
-    // Ejecuta la subida solo de los menus filtrados.
+    // Ejecuta la subida solo de los menus filtrados (vertical + kiosk landscape).
     uploadMenus(idsToUpload);
+    uploadKioskMenus(idsToUpload);
 
   }, [dbItemsArr]);
   // Solo se re-ejecuta cuando dbItemsArr cambia (nuevos datos del fetch).
@@ -244,6 +256,7 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
   return (
     // Renderiza el contenedor de menus con tantas instancias de MenuUploadSection como paginas tenga.
     // Con chunkSize activo, cada pagina recibe un slice diferente de datos y un menuId unico.
+    <>
     <div className="menu-container">
       {pages.map((page, index) => {
         // Con chunkSize usa los grupos pre-empaquetados; sin chunkSize pasa todo.
@@ -257,6 +270,7 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
             discountsList={discountsList}
             onManualMenuUpload={handleManualMenuUpload}
             isUploadingMenu={isUploadingMenu}
+            kioskMenuIds={[`kiosk-${resolvedMenuIds[index]}`]}
           >
             <MenuComponent
               data={chunk}
@@ -270,10 +284,32 @@ function MenuContent({ menuIds, MenuComponent, menuPages, chunkSize, columns, te
         );
       })}
     </div>
+
+    {/* Kiosk landscape container: renderiza versiones 1366x768 de cada menu, oculto offscreen */}
+    <div className="kiosk-container">
+      {pages.map((page, index) => {
+        const chunk = chunkSize ? (groupPages ? groupPages[index] : []) : filtered;
+        const kioskId = `kiosk-${resolvedMenuIds[index]}`;
+        const LandscapeComponent = KioskMenuComponent || MenuComponent;
+
+        return (
+          <LandscapeComponent
+            key={kioskId}
+            data={chunk}
+            page={page}
+            menuId={kioskId}
+            columns={columns}
+            templateImg={templateImg}
+            discounts={discountsList}
+          />
+        );
+      })}
+    </div>
+    </>
   );
 }
 
-export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuComponent, menuPages = [1], chunkSize, columns: defaultColumns, templateImg, discountsList }) {
+export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuComponent, KioskMenuComponent, menuPages = [1], chunkSize, columns: defaultColumns, templateImg, discountsList }) {
   // MenuSection es un wrapper que delega todo el fetch/tabla a Section y solo agrega la capa de menu.
   // menuIds: IDs de los elementos del DOM que se capturan como imagen (ej. "ice-cream-menu").
   // MenuComponent: componente React que se pasa como prop desde Home.jsx y se reenvia a MenuContent.
@@ -292,6 +328,7 @@ export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuCompo
       <MenuContent
         menuIds={menuIds}
         MenuComponent={MenuComponent}
+        KioskMenuComponent={KioskMenuComponent}
         menuPages={menuPages}
         chunkSize={chunkSize}
         columns={columns}
