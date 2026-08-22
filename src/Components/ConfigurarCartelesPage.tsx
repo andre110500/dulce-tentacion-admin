@@ -224,7 +224,7 @@ export default function ConfigurarCartelesPage() {
     if (!component) return null;
 
     return (
-      <div style={previewFrameStyle}>
+      <div className="kiosk-frame" style={previewFrameStyle}>
         {component}
       </div>
     );

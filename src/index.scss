@@ -1761,6 +1761,12 @@ input:checked~.burger-menu {
   overflow: hidden;
 }
 
+.kiosk-frame {
+  width: 1366px;
+  height: 768px;
+  overflow: hidden;
+}
+
 .kl-menu {
   position: relative;
   width: 1366px;
@@ -2128,14 +2134,14 @@ input:checked~.burger-menu {
 }
 
 /* ---- DRINKS/CLGARETTES: reuse vertical KioskMenu with overrides ---- */
-.menu.products-menu {
+:is(.kiosk-container, .kiosk-frame) .menu.products-menu {
   width: 1366px;
   height: 768px;
   position: relative;
   overflow: hidden;
 }
 
-.menu.products-menu > img {
+:is(.kiosk-container, .kiosk-frame) .menu.products-menu > img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -2143,26 +2149,26 @@ input:checked~.burger-menu {
   object-fit: cover;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] {
   display: flex;
   flex-direction: column;
   background-color: #fffdf7;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .kiosk-header {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .kiosk-header {
   display: none;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .kiosk-header img {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .kiosk-header img {
   height: 80%;
   width: auto;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .kiosk-header img:first-of-type {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .kiosk-header img:first-of-type {
   margin-right: 24px;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .uls-container {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .uls-container {
   position: static;
   transform: none;
   flex: 1;
@@ -2176,7 +2182,7 @@ input:checked~.burger-menu {
   overflow-y: auto;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .products-grouped-grid {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .products-grouped-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, 140px) !important;
   gap: 16px 16px;
@@ -2185,7 +2191,7 @@ input:checked~.burger-menu {
   flex: 1;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .products-index {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .products-index {
   grid-column: 1 / -1;
   display: flex;
   flex-wrap: wrap;
@@ -2195,20 +2201,20 @@ input:checked~.burger-menu {
   margin-bottom: 4px;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .products-index-item {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .products-index-item {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .products-index-dot {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .products-index-dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .products-index-label {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .products-index-label {
   font-size: 13px;
   font-weight: 600;
   color: #4A2C2A;
@@ -2217,7 +2223,7 @@ input:checked~.burger-menu {
   font-family: "Barlow Condensed", sans-serif;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .products-card {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .products-card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2231,11 +2237,11 @@ input:checked~.burger-menu {
   box-sizing: border-box;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .products-card-col1 {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .products-card-col1 {
   flex-shrink: 0;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .products-thumbnail {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .products-thumbnail {
   width: 60px;
   height: 60px;
   border-radius: 6px;
@@ -2247,7 +2253,7 @@ input:checked~.burger-menu {
   background-color: transparent;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .products-card-col2 {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .products-card-col2 {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2256,7 +2262,7 @@ input:checked~.burger-menu {
   min-width: 0;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .products-name {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .products-name {
   text-transform: uppercase;
   font-family: "Barlow Condensed", sans-serif;
   font-size: 12px;
@@ -2267,13 +2273,13 @@ input:checked~.burger-menu {
   word-break: break-word;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .products-price {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .products-price {
   text-transform: uppercase;
   font-size: 11px;
   font-weight: 600;
 }
 
-[id^="kiosk-drinks-cigarettes-menu"] .flavours-label {
+:is(.kiosk-container, .kiosk-frame) [id^="kiosk-drinks-cigarettes-menu"] .flavours-label {
   display: block;
   font-size: 12px;
   font-weight: 500;

@@ -182,7 +182,7 @@ export default function CartelesPage() {
         }
       }}
     >
-      <div style={kioskFrameStyle}>
+      <div className="kiosk-frame" style={kioskFrameStyle}>
         {renderSlideContent(slide)}
       </div>
 
