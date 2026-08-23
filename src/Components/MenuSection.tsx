@@ -41,6 +41,7 @@ const entityMenuMap: Record<string, string[]> = {
   "cigarette": ["drinks-cigarettes-menu"],
   "flavour": ["flavours-menu-1", "flavours-menu-2"],
   "discount": ["ice-cream-menu"],
+  "__no_type__": ["flavours-menu-1", "flavours-menu-2"],
 };
 
 function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, chunkSize, columns, templateImg, discountsList }) {
@@ -246,9 +247,33 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
 
     const idsToUpload = resolvedMenuIds.filter((id) => affectedMenuIds.has(id));
 
+    console.log("Auto-upload: affected types", [...affectedTypes], "→ menu IDs", [...affectedMenuIds], "→ filtered", idsToUpload);
+
     // Ejecuta la subida solo de los menus filtrados (vertical + kiosk landscape).
-    uploadMenus(idsToUpload);
-    uploadKioskMenus(idsToUpload);
+    Promise.all([
+      uploadMenus(idsToUpload),
+      uploadKioskMenus(idsToUpload),
+    ])
+      .then(() => {
+        console.log("Auto-upload completed for:", idsToUpload);
+        Swal.fire({
+          icon: "success",
+          text: "Menú actualizado automáticamente",
+          confirmButtonText: "Cerrar",
+          confirmButtonColor: "#e8547e",
+          timer: 3000,
+          timerProgressBar: true,
+        });
+      })
+      .catch((err) => {
+        console.error("Auto-upload failed:", err);
+        Swal.fire({
+          icon: "error",
+          text: "No se pudo actualizar el menú automáticamente",
+          confirmButtonText: "Cerrar",
+          confirmButtonColor: "#e8547e",
+        });
+      });
 
   }, [dbItemsArr]);
   // Solo se re-ejecuta cuando dbItemsArr cambia (nuevos datos del fetch).

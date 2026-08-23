@@ -9,8 +9,7 @@ export async function generateAndUploadKioskMenu(menuId: string) {
 
     const element = document.getElementById(kioskId);
     if (!element) {
-        console.error("Kiosk element not found:", kioskId);
-        return;
+        throw new Error(`Kiosk element not found: ${kioskId}`);
     }
 
     // Find the parent .kiosk-container
@@ -59,7 +58,7 @@ export async function generateAndUploadKioskMenu(menuId: string) {
 
         return new Promise<void>((resolve, reject) => {
             canvas.toBlob(async (blob) => {
-                if (!blob) return reject("Blob not created");
+                if (!blob) return reject(new Error("Blob not created"));
 
                 const reader = new FileReader();
                 reader.readAsDataURL(blob);
@@ -67,16 +66,25 @@ export async function generateAndUploadKioskMenu(menuId: string) {
                 reader.onloadend = async () => {
                     console.log("Uploading kiosk image for:", kioskId);
 
-                    await fetch("/.netlify/functions/upload-menu", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            image: reader.result,
-                            id: kioskId,
-                        }),
-                    });
+                    try {
+                        const res = await fetch("/.netlify/functions/upload-menu", {
+                            method: "POST",
+                            body: JSON.stringify({
+                                image: reader.result,
+                                id: kioskId,
+                            }),
+                        });
 
-                    console.log("Kiosk upload finished for:", kioskId);
-                    resolve();
+                        if (!res.ok) {
+                            const text = await res.text().catch(() => "Unknown error");
+                            throw new Error(`Kiosk upload failed (${res.status}): ${text}`);
+                        }
+
+                        console.log("Kiosk upload finished for:", kioskId);
+                        resolve();
+                    } catch (err) {
+                        reject(err instanceof Error ? err : new Error(String(err)));
+                    }
                 };
             }, "image/webp", 0.85);
         });
