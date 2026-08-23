@@ -1809,8 +1809,9 @@ input:checked~.burger-menu {
 }
 
 .kl-ice-cream .kl-flavours-tag {
-  color: rgba(255, 255, 255, 0.85);
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  color: #2d2430;
+  text-shadow: none;
+  opacity: 0.6;
 }
 
 /* ---- ICE CREAM: 3 columns ---- */
@@ -1951,6 +1952,14 @@ input:checked~.burger-menu {
   padding: 5px 0;
 }
 
+.kl-ice-cream .kl-product-row {
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid #e8547e;
+  border-radius: 16px;
+  padding: 14px 16px;
+  gap: 14px;
+}
+
 .kl-tub-icon {
   width: 44px;
   height: 44px;
@@ -1966,8 +1975,8 @@ input:checked~.burger-menu {
 }
 
 .kl-ice-cream .kl-product-name {
-  color: #fff;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  color: #2d2430;
+  text-shadow: none;
 }
 
 .kl-product-price {
@@ -1979,7 +1988,7 @@ input:checked~.burger-menu {
 }
 
 .kl-ice-cream .kl-product-price {
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: none;
 }
 
 .kl-addons-grid {
@@ -1999,6 +2008,15 @@ input:checked~.burger-menu {
   gap: 3px;
 }
 
+.kl-ice-cream .kl-addon-card {
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid #e8547e;
+  border-radius: 16px;
+  padding: 14px 16px;
+  gap: 3px;
+  align-items: center;
+}
+
 .kl-addon-img {
   width: 68px;
   height: 68px;
@@ -2009,11 +2027,12 @@ input:checked~.burger-menu {
   font-size: 19px;
   font-weight: 700;
   line-height: 1.1;
+  text-align: center;
 }
 
 .kl-ice-cream .kl-addon-name {
-  color: #fff;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  color: #2d2430;
+  text-shadow: none;
 }
 
 .kl-addon-price {
@@ -2024,7 +2043,7 @@ input:checked~.burger-menu {
 }
 
 .kl-ice-cream .kl-addon-price {
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: none;
 }
 
 /* ---- FROZEN TREATS: grid ---- */
@@ -2045,6 +2064,11 @@ input:checked~.burger-menu {
   margin-bottom: 20px;
 }
 
+.kl-frozen .kl-heading {
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+
 .kl-frozen-grid {
   display: flex;
   flex-wrap: wrap;
@@ -2057,8 +2081,9 @@ input:checked~.burger-menu {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: rgba(255, 255, 255, 0.88);
-  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid #e8547e;
+  border-radius: 16px;
   padding: 14px 16px;
 }
 

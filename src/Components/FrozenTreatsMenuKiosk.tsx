@@ -1,3 +1,5 @@
+import fondo2 from "../assets/fondo-2.jpeg";
+
 const PlaceholderIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
     stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
@@ -10,7 +12,8 @@ const PlaceholderIcon = () => (
 
 export default function FrozenTreatsMenuKiosk({ data, menuId }) {
   return (
-    <div id={menuId} className="kl-menu menu" style={{ backgroundColor: '#FBC6D7' }}>
+    <div id={menuId} className="kl-menu menu">
+      <img src={fondo2} alt="" className="kl-bg" style={{ opacity: 0.6 }} />
 
       <div className="kl-frozen">
         <h2 className="kl-heading kl-frozen-title">Postres Congelados</h2>
