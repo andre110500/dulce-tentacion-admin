@@ -1,3 +1,4 @@
+import fondo from "../assets/fondo.jpeg";
 import iceCreamTubIcon2 from "../assets/2.png";
 import iceCreamTubIcon3 from "../assets/3.png";
 import iceCreamTubIcon4 from "../assets/4.png";
@@ -28,7 +29,8 @@ export default function IceCreamMenuKiosk({ data, discounts = [] as any[], menuI
   });
 
   return (
-    <div id={menuId || "ice-cream-menu"} className="kl-menu menu" style={{ backgroundColor: '#FBC6D7' }}>
+    <div id={menuId || "ice-cream-menu"} className="kl-menu menu">
+      <img src={fondo} alt="" className="kl-bg" style={{ opacity: 0.6 }} />
 
       <div className="kl-ice-cream">
         {/* Column 1: Helados */}

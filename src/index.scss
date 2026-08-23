@@ -1795,12 +1795,22 @@ input:checked~.burger-menu {
   text-align: center;
 }
 
+.kl-ice-cream .kl-heading {
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+
 .kl-flavours-tag {
   display: block;
   font-size: 18px;
   font-weight: 500;
   opacity: 0.7;
   margin-top: 3px;
+}
+
+.kl-ice-cream .kl-flavours-tag {
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* ---- ICE CREAM: 3 columns ---- */
@@ -1955,12 +1965,21 @@ input:checked~.burger-menu {
   line-height: 1.15;
 }
 
+.kl-ice-cream .kl-product-name {
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
 .kl-product-price {
   font-family: "Dancing Script", cursive;
   font-size: 26px;
   font-weight: 700;
   color: #e8547e;
   flex-shrink: 0;
+}
+
+.kl-ice-cream .kl-product-price {
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 .kl-addons-grid {
@@ -1992,11 +2011,20 @@ input:checked~.burger-menu {
   line-height: 1.1;
 }
 
+.kl-ice-cream .kl-addon-name {
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
 .kl-addon-price {
   font-family: "Dancing Script", cursive;
   font-size: 22px;
   font-weight: 700;
   color: #e8547e;
+}
+
+.kl-ice-cream .kl-addon-price {
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* ---- FROZEN TREATS: grid ---- */
