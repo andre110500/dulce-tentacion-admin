@@ -167,8 +167,6 @@ export default function CartelesPage() {
     );
   }
 
-  const slide = slides[currentIndex];
-
   return (
     <div
       style={containerStyle}
@@ -182,8 +180,19 @@ export default function CartelesPage() {
         }
       }}
     >
-      <div className="kiosk-frame" style={kioskFrameStyle}>
-        {renderSlideContent(slide)}
+      <div className="kiosk-frame" style={{ ...kioskFrameStyle, position: "relative" }}>
+        {slides.map((s, i) => (
+          <div
+            key={s._id}
+            style={{
+              ...slideLayerStyle,
+              visibility: i === currentIndex ? "visible" : "hidden",
+              zIndex: i === currentIndex ? 1 : 0,
+            }}
+          >
+            {renderSlideContent(s)}
+          </div>
+        ))}
       </div>
 
       {!isFullscreen && (
@@ -249,6 +258,11 @@ const kioskFrameStyle: React.CSSProperties = {
   overflow: "hidden",
   flexShrink: 0,
   pointerEvents: "none",
+};
+
+const slideLayerStyle: React.CSSProperties = {
+  position: "absolute",
+  inset: 0,
 };
 
 const imgStyle: React.CSSProperties = {

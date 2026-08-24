@@ -1,8 +1,8 @@
 /*
-  MenuUploadSection: captura el contenido del menu como imagen (html2canvas), muestra una preview
-  y provee el boton "SUBIR MENU". Se regenera automaticamente cuando cambian productsList o
-  flavoursList (nuevos datos del fetch). Es usado por MenuSection para envolver cada instancia
-  de IceCreamMenu, FlavoursMenu, KioskMenu o FrozenTreatsMenu.
+  MenuUploadSection: captura el contenido del menu como imagen (html2canvas) y muestra una preview.
+  Se regenera automaticamente cuando cambian productsList o flavoursList (nuevos datos del fetch).
+  Es usado por MenuSection para envolver cada instancia de IceCreamMenu, FlavoursMenu, KioskMenu
+  o FrozenTreatsMenu.
 */
 
 import html2canvas from "html2canvas";
@@ -23,24 +23,18 @@ export default function MenuUploadSection({
   productsList,
   flavoursList,
   discountsList,
-  onManualMenuUpload,
-  isUploadingMenu,
   kioskMenuIds,
 }: {
   children: React.ReactNode;
   productsList: unknown;
   flavoursList: unknown;
   discountsList?: unknown;
-  onManualMenuUpload?: () => void;
-  isUploadingMenu?: boolean;
   kioskMenuIds?: string[];
 }) {
   // children: el componente de menu concreto (IceCreamMenu, FlavoursMenu, etc.).
   // productsList / flavoursList: se usan como dependencias del useEffect para regenerar la imagen
   //   cuando los datos cambian. MenuSection los pasa desde dbItemsArr.
-  // onManualMenuUpload: callback que ejecuta MenuSection.handleManualMenuUpload cuando se hace
-  //   click en "SUBIR MENU".
-  // isUploadingMenu: booleano que deshabilita el boton mientras la subida esta en progreso.
+  // kioskMenuIds: ids de las versiones landscape que previsualiza KioskPreview.
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // isLoading: true mientras html2canvas esta procesando la captura. Muestra un boton "CARGANDO".
@@ -120,15 +114,8 @@ export default function MenuUploadSection({
         </button>
       )}
 
-      {imageSrc && onManualMenuUpload && (
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-          <button onClick={onManualMenuUpload} disabled={isUploadingMenu}>
-            {isUploadingMenu ? "SUBIENDO MENÚ..." : "SUBIR MENÚ"}
-          </button>
-          {kioskMenuIds && kioskMenuIds.length > 0 && (
-            <KioskPreview menuIds={kioskMenuIds} />
-          )}
-        </div>
+      {imageSrc && kioskMenuIds && kioskMenuIds.length > 0 && (
+        <KioskPreview menuIds={kioskMenuIds} />
       )}
     </section>
   );

@@ -1,4 +1,4 @@
-import fondo2 from "../assets/fondo-2.jpeg";
+import fondo2 from "../assets/fondo-2.webp";
 
 const PlaceholderIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"

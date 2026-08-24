@@ -11,6 +11,8 @@ import Home, {
 import CartelesPage from "./Components/CartelesPage";
 import ConfigurarCartelesPage from "./Components/ConfigurarCartelesPage";
 import { useState, useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import UserContext from "./Contexts/UserContext";
 import BuildStatus from "./Components/BuildStatus";
 
@@ -104,8 +106,17 @@ function App() {
       >
         {!isFullscreen && <Header pages={pages} currentPath={currentPath} />}
         <Main currentPath={currentPath} />
-        {!isFullscreen && <Footer />}
-        {!isFullscreen && <BuildStatus />}
+        {!isFullscreen && (
+          <>
+            <Footer />
+            <BuildStatus />
+            <ToastContainer
+              position="bottom-right"
+              autoClose={3000}
+              theme="dark"
+            />
+          </>
+        )}
       </UserContext.Provider>
     </>
   );

@@ -1,4 +1,4 @@
-import fondo from "../assets/fondo.jpeg";
+import fondo from "../assets/fondo.webp";
 import iceCreamTubIcon2 from "../assets/2.png";
 import iceCreamTubIcon3 from "../assets/3.png";
 import iceCreamTubIcon4 from "../assets/4.png";

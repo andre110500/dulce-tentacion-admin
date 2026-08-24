@@ -5,14 +5,13 @@
   MenuUploadSection con soporte para captura de pantalla y subida automática cuando los datos cambian.
 */
 
-import { useLayoutEffect, useRef, useState, useContext, useMemo } from "react";
+import { useLayoutEffect, useRef, useContext, useMemo } from "react";
 // useLayoutEffect: dispara la subida automatica apenas el DOM se actualiza con nuevos datos.
 // useRef: isFirstRender flag para saltear el primer render (Strict Mode).
-// useState: estado local de subida (isUploadingMenu) para controlar el boton de subir.
 // useContext: lee dbItemsArr del ItemsContext que Section provee a sus hijos.
 
-import Swal from "sweetalert2";
-// Swal: alertas de exito/error al subir el menu manualmente.
+import { toast } from "react-toastify";
+// toast: notificaciones de exito/error de la subida automatica del menu.
 
 import { generateAndUploadMenu } from "../functions/generateAndUploadMenu";
 // generateAndUploadMenu: genera una captura del DOM del menu y la sube al storage.
@@ -25,7 +24,7 @@ import Section from "./Section";
 // MenuSection anida su contenido como children de Section para reusar toda esa logica.
 
 import MenuUploadSection from "./MenuUploadSection";
-// MenuUploadSection: toma una captura del menu (html2canvas), muestra la preview y provee el boton "SUBIR MENU".
+// MenuUploadSection: toma una captura del menu (html2canvas) y muestra la preview.
 
 import ItemsContext from "../Contexts/ItemsContext";
 // ItemsContext: contexto donde Section expone dbItemsArr, route, itemKeys, etc. Lo necesitamos
@@ -120,9 +119,6 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
   const prevDataRef = useRef(dbItemsArr);
   // prevDataRef: guarda el dbItemsArr anterior para comparar y detectar que tipo de entidad cambio.
 
-  const [isUploadingMenu, setIsUploadingMenu] = useState(false);
-  // Estado que deshabilita el boton "SUBIR MENU" mientras se esta subiendo para evitar doble click.
-
   const uploadMenus = async (idsToUpload = resolvedMenuIds) => {
     // Itera sobre cada menuId (resuelto) y genera+sube cada menu llamando a generateAndUploadMenu.
     // Con chunkSize activo, esto sube tantas imagenes como hojas tenga el menu.
@@ -136,32 +132,6 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
     // Genera versiones landscape (1366x768) de cada menu y las sube con prefijo kiosk-.
     for (const id of idsToUpload) {
       await generateAndUploadKioskMenu(id);
-    }
-  };
-
-  const handleManualMenuUpload = async () => {
-    // Manejador del boton "SUBIR MENU" en MenuUploadSection.
-    // Activa el estado de carga, ejecuta uploadMenus() + uploadKioskMenus(), y muestra exito o error con Swal.
-    try {
-      setIsUploadingMenu(true);
-      await uploadMenus();
-      await uploadKioskMenus();
-      await Swal.fire({
-        icon: "success",
-        text: "Menú subido correctamente",
-        confirmButtonText: "Cerrar",
-        confirmButtonColor: "#e8547e",
-      });
-    } catch (err) {
-      console.error(err);
-      await Swal.fire({
-        icon: "error",
-        text: "No se pudo subir el menú",
-        confirmButtonText: "Cerrar",
-        confirmButtonColor: "#e8547e",
-      });
-    } finally {
-      setIsUploadingMenu(false);
     }
   };
 
@@ -255,24 +225,11 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
       uploadKioskMenus(idsToUpload),
     ])
       .then(() => {
-        console.log("Auto-upload completed for:", idsToUpload);
-        Swal.fire({
-          icon: "success",
-          text: "Menú actualizado automáticamente",
-          confirmButtonText: "Cerrar",
-          confirmButtonColor: "#e8547e",
-          timer: 3000,
-          timerProgressBar: true,
-        });
+        toast.success(`Menús actualizados: ${idsToUpload.join(", ")}`);
       })
       .catch((err) => {
         console.error("Auto-upload failed:", err);
-        Swal.fire({
-          icon: "error",
-          text: "No se pudo actualizar el menú automáticamente",
-          confirmButtonText: "Cerrar",
-          confirmButtonColor: "#e8547e",
-        });
+        toast.error(`No se pudo actualizar el menú automáticamente (${idsToUpload.join(", ")})`);
       });
 
   }, [dbItemsArr]);
@@ -293,8 +250,6 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
             productsList={dbItemsArr}
             flavoursList={dbItemsArr}
             discountsList={discountsList}
-            onManualMenuUpload={handleManualMenuUpload}
-            isUploadingMenu={isUploadingMenu}
             kioskMenuIds={[`kiosk-${resolvedMenuIds[index]}`]}
           >
             <MenuComponent
