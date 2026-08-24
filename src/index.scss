@@ -1753,7 +1753,9 @@ input:checked~.burger-menu {
    ============================================================ */
 
 .kiosk-container {
-  position: fixed;
+  /* absolute (no fixed): html2canvas captura elementos absolute offscreen sin necesidad de
+     moverlos a la vista, evitando el "flash" del menu durante la subida automatica. */
+  position: absolute;
   top: -99999px;
   left: -99999px;
   width: 1366px;

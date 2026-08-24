@@ -15,25 +15,6 @@ export async function generateAndUploadKioskMenu(menuId: string) {
     // Find the parent .kiosk-container
     const container = element.closest(".kiosk-container") as HTMLElement | null;
 
-    // Save original styles
-    let origStyles = {};
-    if (container) {
-        origStyles = {
-            top: container.style.top,
-            left: container.style.left,
-            zIndex: container.style.zIndex,
-            marginTop: container.style.marginTop,
-            marginLeft: container.style.marginLeft,
-        };
-
-        // Move container on-screen for html2canvas
-        container.style.top = "0px";
-        container.style.left = "0px";
-        container.style.marginTop = "0px";
-        container.style.marginLeft = "0px";
-        container.style.zIndex = "-1";
-    }
-
     // Hide all sibling menus except the target
     const hiddenSiblings: HTMLElement[] = [];
     if (container) {
@@ -89,10 +70,6 @@ export async function generateAndUploadKioskMenu(menuId: string) {
             }, "image/webp", 0.85);
         });
     } finally {
-        // Restore container styles
-        if (container) {
-            Object.assign(container.style, origStyles);
-        }
         // Restore hidden siblings
         hiddenSiblings.forEach((m) => {
             m.style.display = "";

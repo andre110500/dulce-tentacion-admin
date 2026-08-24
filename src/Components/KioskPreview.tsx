@@ -22,6 +22,7 @@ export default function KioskPreview({ menuIds }: { menuIds: string[] }) {
     if (!container) return;
 
     // Save original values
+    const origPosition = container.style.position;
     const origTop = container.style.top;
     const origLeft = container.style.left;
     const origZ = container.style.zIndex;
@@ -30,6 +31,7 @@ export default function KioskPreview({ menuIds }: { menuIds: string[] }) {
     const origDisplay = container.style.display;
 
     // Position centered on screen (no transform to avoid breaking container queries)
+    container.style.position = "fixed";
     container.style.top = "50%";
     container.style.left = "50%";
     container.style.marginTop = "-384px";
@@ -48,6 +50,7 @@ export default function KioskPreview({ menuIds }: { menuIds: string[] }) {
     });
 
     return () => {
+      container.style.position = origPosition;
       container.style.top = origTop;
       container.style.left = origLeft;
       container.style.zIndex = origZ;
