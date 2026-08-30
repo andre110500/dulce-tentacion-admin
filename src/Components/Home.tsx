@@ -76,11 +76,28 @@ export function FlavoursPage() {
 }
 
 export function DiscountsPage() {
+  const [products, setProducts] = useState([]);
+
+  // Productos de helados (helados + adicionales) que necesita el menu para renderizar la
+  // seccion "Combos con descuento". Los descuentos salen de la tabla (contexto de Section),
+  // que se actualiza al editar y dispara la subida automatica a Cloudinary.
+  useEffect(() => {
+    get_AndDo_("products?type=ice-cream&type=add-on").then((response) => {
+      if (response?.data) {
+        setProducts(response.data);
+      }
+    });
+  }, []);
+
   return (
-    <Section
+    <MenuSection
       h1="Descuentos"
       route="discounts"
       schemaRoute="discounts/schema"
+      menuIds={["ice-cream-menu"]}
+      MenuComponent={IceCreamMenu}
+      KioskMenuComponent={IceCreamMenuKiosk}
+      productsData={products}
     />
   );
 }

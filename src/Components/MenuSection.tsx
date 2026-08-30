@@ -43,7 +43,7 @@ const entityMenuMap: Record<string, string[]> = {
   "__no_type__": ["flavours-menu-1", "flavours-menu-2"],
 };
 
-function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, chunkSize, columns, templateImg, discountsList }) {
+export function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, chunkSize, columns, templateImg, discountsList, productsData }) {
   // menuIds: ej. ["ice-cream-menu"], determina que IDs de menu se generan/suben.
   // MenuComponent: componente React que se renderiza dentro de MenuUploadSection.
   //   MenuContent lo invoca como <MenuComponent data={chunk} page={page} menuId={...} columns={columns} templateImg={templateImg} />.
@@ -53,13 +53,35 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
   //   en cada hoja respetando este limite de items por pagina.
   // columns: cuantas columnas de grid usa el MenuComponent (solo aplica a KioskMenu).
   // templateImg: ruta de la imagen de fondo del menu (solo KioskMenu y FrozenTreatsMenu).
+  // productsData: opcional. Cuando se provee (ej. pagina Descuentos), se usa como fuente de productos
+  //   del menu en lugar de dbItemsArr del contexto (que en esa pagina son los descuentos).
 
   const { dbItemsArr } = useContext(ItemsContext);
-  // Lee el arreglo de productos desde el contexto que Section expone a sus hijos.
+  // Lee el arreglo de datos desde el contexto que Section expone a sus hijos.
   // Cuando Section termina el fetch, dbItemsArr cambia y esto re-renderiza MenuContent.
+  // - Pagina de helados/paginas normales: dbItemsArr son los productos del menu.
+  // - Pagina Descuentos: dbItemsArr son los descuentos (los que se editan desde la tabla).
+
+  const usesProductsData = productsData !== undefined;
+  // Cuando se provee productsData (pagina Descuentos), el menu usa productos de ese fetch extra,
+  // y los combos con descuento salen de dbItemsArr (los descuentos editados de la tabla).
+  // En las demas paginas no hay productsData: dbItemsArr son los productos y los descuentos
+  // llegan por prop discountsList.
+
+  // Productos del menu.
+  const menuProducts = productsData ?? dbItemsArr;
+
+  // Descuentos del menu. En la pagina Descuentos salen del contexto (siempre frescos tras editar).
+  // Se filtran por tipo ice-cream igual que en IceCreamPage.
+  const menuDiscounts = usesProductsData
+    ? (dbItemsArr || []).filter((d) => !d.outOfStock && d.type === "ice-cream")
+    : discountsList;
+
+  // Fuente de cambios a vigilar para la subida automatica.
+  const dataSource = menuProducts;
 
   // Filtra productos agotados y lo usa tanto para computar paginas como para pasar los datos.
-  const filtered = dbItemsArr?.filter((product) => !product.outOfStock) || [];
+  const filtered = dataSource?.filter((product) => !product.outOfStock) || [];
 
   // Cuando chunkSize esta activo, agrupa por subType y empaqueta grupos enteros en cada hoja
   // para que ningun grupo quede partido entre dos paginas.
@@ -116,8 +138,12 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
   const isFirstRender = useRef(true);
   // isFirstRender: evita la subida automatica en el primer render (incluye el re-monte de Strict Mode).
 
-  const prevDataRef = useRef(dbItemsArr);
-  // prevDataRef: guarda el dbItemsArr anterior para comparar y detectar que tipo de entidad cambio.
+  const prevDataRef = useRef(dataSource);
+  // prevDataRef: guarda la fuente de datos anterior para comparar y detectar que tipo de entidad cambio.
+
+  const prevDiscountsRef = useRef(menuDiscounts);
+  // prevDiscountsRef: guarda la lista de descuentos del menu anterior para detectar cambios en ella
+  // (relevante en la pagina Descuentos, donde los productos no cambian al editar un descuento).
 
   const uploadMenus = async (idsToUpload = resolvedMenuIds) => {
     // Itera sobre cada menuId (resuelto) y genera+sube cada menu llamando a generateAndUploadMenu.
@@ -136,16 +162,18 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
   };
 
   useLayoutEffect(() => {
-    // Efecto de SUBIDA AUTOMATICA: se dispara sincronicamente despues de cada cambio en dbItemsArr.
+    // Efecto de SUBIDA AUTOMATICA: se dispara sincronicamente despues de cada cambio en la fuente
+    // de datos (dbItemsArr, o productsData si se provee) o en discountsList.
     // Saltea el primer render (Strict Mode monta/desmonta dos veces y duplicaria la subida).
     if (isFirstRender.current) {
       isFirstRender.current = false;
-      prevDataRef.current = dbItemsArr;
+      prevDataRef.current = dataSource;
+      prevDiscountsRef.current = menuDiscounts;
       return;
     }
 
     // Si aun no hay datos (fetch pendiente) no hace nada.
-    if (!dbItemsArr) {
+    if (!dataSource) {
       return;
     }
 
@@ -164,7 +192,7 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
     };
 
     const prevCounts = countByType(prevData);
-    const newCounts = countByType(dbItemsArr);
+    const newCounts = countByType(dataSource);
 
     // Detecta tipos con cantidad diferente (agregados o eliminados).
     const allTypes = new Set([...Object.keys(prevCounts), ...Object.keys(newCounts)]);
@@ -175,23 +203,43 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
     }
 
     // Detecta items modificados (misma cantidad pero contenido diferente).
-    if (prevData.length === dbItemsArr.length) {
-      for (let i = 0; i < dbItemsArr.length; i++) {
-        if (JSON.stringify(prevData[i]) !== JSON.stringify(dbItemsArr[i])) {
-          const type = dbItemsArr[i].type || "__no_type__";
+    if (prevData.length === dataSource.length) {
+      for (let i = 0; i < dataSource.length; i++) {
+        if (JSON.stringify(prevData[i]) !== JSON.stringify(dataSource[i])) {
+          const type = dataSource[i].type || "__no_type__";
           affectedTypes.add(type);
         }
       }
     }
 
     // Detecta items sin campo "type" (sabores u otros genericos).
-    const hasNoTypeItems = dbItemsArr.some((item) => !item.type);
+    const hasNoTypeItems = dataSource.some((item) => !item.type);
     const prevHadNoTypeItems = prevData.some((item) => !item.type);
     if (hasNoTypeItems || prevHadNoTypeItems) {
       affectedTypes.add("__no_type__");
     }
 
-    prevDataRef.current = dbItemsArr;
+    prevDataRef.current = dataSource;
+
+    // En la pagina Descuentos, los productos del menu no cambian al editar un descuento,
+    // pero los descuentos (menuDiscounts, desde el contexto) si. Detecta cambios en ellos
+    // para re-subir el menu de helados automaticamente.
+    const prevDiscounts = prevDiscountsRef.current || [];
+    const discountsChanged =
+      prevDiscounts.length !== (menuDiscounts || []).length ||
+      (menuDiscounts || []).some(
+        (d, i) => JSON.stringify(prevDiscounts[i]) !== JSON.stringify(d)
+      );
+    prevDiscountsRef.current = menuDiscounts;
+    if (discountsChanged) {
+      for (const d of menuDiscounts || []) {
+        affectedTypes.add(d.type || "discount");
+      }
+      // Si la lista quedo vacia o sin tipos reconocibles, fuerza "discount".
+      if (discountsChanged && affectedTypes.size === 0) {
+        affectedTypes.add("discount");
+      }
+    }
 
     // Si no se detectaron cambios, no sube nada.
     if (affectedTypes.size === 0) {
@@ -232,8 +280,8 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
         toast.error(`No se pudo actualizar el menú automáticamente (${idsToUpload.join(", ")})`);
       });
 
-  }, [dbItemsArr]);
-  // Solo se re-ejecuta cuando dbItemsArr cambia (nuevos datos del fetch).
+  }, [dataSource, menuDiscounts]);
+  // Se re-ejecuta cuando cambia la fuente de datos (productos del menu) o los descuentos del menu.
 
   return (
     // Renderiza el contenedor de menus con tantas instancias de MenuUploadSection como paginas tenga.
@@ -247,9 +295,9 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
         return (
           <MenuUploadSection
             key={page}
-            productsList={dbItemsArr}
-            flavoursList={dbItemsArr}
-            discountsList={discountsList}
+            productsList={dataSource}
+            flavoursList={dataSource}
+            discountsList={menuDiscounts}
             kioskMenuIds={[`kiosk-${resolvedMenuIds[index]}`]}
           >
             <MenuComponent
@@ -258,7 +306,7 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
               menuId={resolvedMenuIds[index]}
               columns={columns}
               templateImg={templateImg}
-              discounts={discountsList}
+              discounts={menuDiscounts}
             />
           </MenuUploadSection>
         );
@@ -280,7 +328,7 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
             menuId={kioskId}
             columns={columns}
             templateImg={templateImg}
-            discounts={discountsList}
+            discounts={menuDiscounts}
           />
         );
       })}
@@ -289,7 +337,7 @@ function MenuContent({ menuIds, MenuComponent, KioskMenuComponent, menuPages, ch
   );
 }
 
-export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuComponent, KioskMenuComponent, menuPages = [1], chunkSize, columns: defaultColumns, templateImg, discountsList }) {
+export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuComponent, KioskMenuComponent, menuPages = [1], chunkSize, columns: defaultColumns, templateImg, discountsList, productsData }) {
   // MenuSection es un wrapper que delega todo el fetch/tabla a Section y solo agrega la capa de menu.
   // menuIds: IDs de los elementos del DOM que se capturan como imagen (ej. "ice-cream-menu").
   // MenuComponent: componente React que se pasa como prop desde Home.jsx y se reenvia a MenuContent.
@@ -299,6 +347,7 @@ export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuCompo
   // chunkSize: opcional, divide el menu en varias hojas cuando hay mas items que este limite.
   // columns: opcional, cuantas columnas de grid (solo KioskMenu).
   // templateImg: opcional, ruta de la imagen de fondo (solo KioskMenu y FrozenTreatsMenu).
+  // productsData: opcional. Fuente de productos del menu cuando difiere de dbItemsArr (pagina Descuentos).
   const columns = defaultColumns ?? 3;
 
   return (
@@ -314,6 +363,7 @@ export default function MenuSection({ h1, route, schemaRoute, menuIds, MenuCompo
         columns={columns}
         templateImg={templateImg}
         discountsList={discountsList}
+        productsData={productsData}
       />
     </Section>
   );
