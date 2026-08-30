@@ -107,6 +107,7 @@ type ComboCardProps = {
   discountedPrice: number;
   savings: number;
   imageSrc?: string;
+  centered?: boolean;
 };
 
 function ComboCard({
@@ -116,13 +117,16 @@ function ComboCard({
   discountedPrice,
   savings,
   imageSrc,
+  centered,
 }: ComboCardProps) {
   const parts = name.split(/\s+/);
   const scriptWord = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
   const displayName = parts.slice(1).join(" ").toUpperCase();
 
   return (
-    <article className="discount-combos__combo">
+    <article
+      className={`discount-combos__combo${centered ? " discount-combos__combo--centered" : ""}`}
+    >
       {imageSrc ? (
         <div className="discount-combos__image">
           <img
@@ -175,7 +179,7 @@ export default function DiscountCombosSection({
         <div className="discount-combos__body">
           {combos.map((combo, index) => (
             <React.Fragment key={combo.name}>
-              {index > 0 && (
+              {index === 1 && (
                 <div className="discount-combos__divider" aria-hidden="true" />
               )}
               <ComboCard
@@ -185,6 +189,7 @@ export default function DiscountCombosSection({
                 discountedPrice={combo.discountedPrice}
                 savings={combo.savings}
                 imageSrc={combo.imageSrc || comboImages[index]}
+                centered={combos.length === 3 && index === 2}
               />
             </React.Fragment>
           ))}

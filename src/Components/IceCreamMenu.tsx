@@ -30,6 +30,7 @@ export default function IceCreamMenu({ data, discounts = [], menuId }) {
       originalPrice,
       discountedPrice,
       savings: discount.value,
+      imageSrc: discount.imgUrl,
     };
   });
 
