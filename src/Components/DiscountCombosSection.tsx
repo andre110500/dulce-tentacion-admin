@@ -1,7 +1,5 @@
 import React from "react";
 import ribbonBannerPng from "../assets/ribbon-pink-banner.png";
-import comboFamiliarPng from "../assets/combo-familiar.png";
-import comboAmigosPng from "../assets/combo-amigos.png";
 
 const ACCENT = "#e8547e";
 
@@ -167,8 +165,6 @@ type DiscountCombosSectionProps = {
   combos: ComboData[];
 };
 
-const comboImages = [comboAmigosPng, comboFamiliarPng];
-
 export default function DiscountCombosSection({
   combos,
 }: DiscountCombosSectionProps) {
@@ -188,7 +184,7 @@ export default function DiscountCombosSection({
                 originalPrice={combo.originalPrice}
                 discountedPrice={combo.discountedPrice}
                 savings={combo.savings}
-                imageSrc={combo.imageSrc || comboImages[index]}
+                imageSrc={combo.imageSrc}
                 centered={combos.length === 3 && index === 2}
               />
             </React.Fragment>

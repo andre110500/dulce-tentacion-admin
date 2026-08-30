@@ -2,10 +2,6 @@ import fondo from "../assets/fondo.webp";
 import iceCreamTubIcon2 from "../assets/2.png";
 import iceCreamTubIcon3 from "../assets/3.png";
 import iceCreamTubIcon4 from "../assets/4.png";
-import comboFamiliarPng from "../assets/combo-familiar.png";
-import comboAmigosPng from "../assets/combo-amigos.png";
-
-const comboImages = [comboAmigosPng, comboFamiliarPng];
 
 export default function IceCreamMenuKiosk({ data, discounts = [] as any[], menuId }) {
   const iconsByFlavours = { 2: iceCreamTubIcon2, 3: iceCreamTubIcon3, 4: iceCreamTubIcon4 };
@@ -13,7 +9,7 @@ export default function IceCreamMenuKiosk({ data, discounts = [] as any[], menuI
   const iceCream = data.filter((p) => p.type === "ice-cream" && !p.outOfStock);
   const addOns = data.filter((p) => p.type === "add-on" && !p.outOfStock);
 
-  const combos = discounts.map((discount, i) => {
+  const combos = discounts.map((discount) => {
     const product = data.find((p) => p._id === discount.productId);
     const originalPrice = product ? product.price * discount.quantity : 0;
     const parts = discount.name.split(/\s+/);
@@ -24,7 +20,7 @@ export default function IceCreamMenuKiosk({ data, discounts = [] as any[], menuI
       originalPrice,
       discountedPrice: originalPrice - discount.value,
       savings: discount.value,
-      imageSrc: comboImages[i],
+      imageSrc: discount.imgUrl,
     };
   });
 
